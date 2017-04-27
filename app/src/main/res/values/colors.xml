@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="home_topbar_bg">#cdcdcd</color>
+    <color name="home_search_topbar_bg">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="user_login_bg_color">#FB6668</color>
+    <color name="line_color">#F0F0F0</color>
+     <color name="blue">#18B4ED</color>
+    <color name="white_drak">#D0EFFA</color>
+    <color name="red">#f00000</color>
+    <color name="gray">#cdcdcd</color>
+    <color name="black">#000</color>
+     <color name="default_background">#E5E5E5</color>
+
+    
+</resources>

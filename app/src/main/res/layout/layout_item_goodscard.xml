@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+   
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="#F0EFF5"
+         >
+
+        <TextView
+            android:id="@+id/tv_shoppingname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="商店名称" />
+       
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+         <ImageView
+        android:id="@+id/image_card_goods"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/select"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_launcher" />
+
+    <CheckBox
+        android:id="@+id/select"
+        style="@style/CustomCheckboxTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/tv_card_totalprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_card_goods"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_toRightOf="@+id/image_card_goods"
+        android:text="总价" />
+
+    <TextView
+        android:id="@+id/tv_card_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/image_card_goods"
+        android:text="标题" />
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_card_totalprice"
+        android:layout_alignBottom="@+id/tv_card_totalprice"
+        android:layout_marginLeft="33dp"
+        android:layout_toRightOf="@+id/tv_card_totalprice"
+        android:text="数量" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_number"
+        android:layout_toRightOf="@+id/tv_number"
+        android:src="@drawable/down" />
+        
+    </RelativeLayout>
+
+</RelativeLayout>

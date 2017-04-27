@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tv_total_sales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_toLeftOf="@+id/tv_price"
+        android:text="共1件商品"
+        android:textSize="13dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_price"
+        android:background="#F8F8F8"/>
+
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="17dp"       
+        android:text="待支付"
+        android:textColor="#FF0000" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#F8F8F8"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_state" >
+
+        <TextView
+            android:id="@+id/tv_xiaoliang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/tv_shoujia"
+            android:layout_below="@+id/tv_shangpin_name"
+            android:text="x 1" />
+
+        <ImageView
+            android:id="@+id/img_shangpin_name"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/moren" />
+
+        <TextView
+            android:id="@+id/tv_shoujia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_shangpin_name"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="41dp"
+            android:text="¥ 000" />
+
+        <TextView
+            android:id="@+id/tv_shangpin_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/img_shangpin_name"
+            android:text="TextView" />
+       
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_total_sales"
+        android:layout_alignBottom="@+id/tv_total_sales"
+        android:layout_alignRight="@+id/tv_state"
+        android:text="合计：￥ 380"
+        android:textSize="13dp" />
+
+    <Button
+        android:id="@+id/btn_wuliu"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_toLeftOf="@+id/btn_querenshouhuo"
+        android:background="@drawable/btn_red_stroke"
+        android:padding="1.5dp"
+        android:text="查看物流"
+        android:textColor="#FF0000" />
+
+    <Button
+        android:id="@+id/btn_querenshouhuo"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_alignBaseline="@+id/btn_wuliu"
+        android:layout_alignBottom="@+id/btn_wuliu"
+        android:layout_alignRight="@+id/tv_price"
+       
+        android:background="@drawable/btn_red_stroke"
+        android:padding="1.5dp"
+        android:text="确认收货"
+        android:textColor="#FF0000" />
+
+</RelativeLayout>

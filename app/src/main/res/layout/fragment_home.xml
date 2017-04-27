@@ -1,0 +1,130 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fragment.HomeFragment" >
+
+    
+
+    <!-- <ListView -->
+    <!-- android:id="@+id/listView1" -->
+    <!-- android:layout_below="@+id/home_topbar" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:scrollbars="@null" -->
+    <!-- > -->
+    <!-- </ListView> -->
+    
+    <com.example.widget.newscrollview
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:ptrMode="both"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="160dp" />
+
+            <com.example.widget.MyView
+                android:id="@+id/myView1"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="150dp"
+                app:content_bgcolor="#ffffff"
+                app:content_ringcolor="#00000000" />
+
+            <com.xinbo.widget.GridView4ScrollView
+                android:id="@+id/gridView_headview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="5"
+                android:padding="5dp"
+                android:layout_below="@+id/pager"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"></com.xinbo.widget.GridView4ScrollView>
+
+
+            <com.xinbo.widget.GridView4ScrollView
+                android:id="@+id/gridView_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/gridView_headview"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:visibility="visible">
+
+            </com.xinbo.widget.GridView4ScrollView>
+        </RelativeLayout>
+    </com.example.widget.newscrollview>
+    
+ <!--    <include layout="@layout/layout_head"/> -->
+    
+    <!--<RelativeLayout-->
+	        <!--android:id="@+id/home_topbar"-->
+	        <!--android:layout_width="match_parent"-->
+	        <!--android:layout_height="40dp"    -->
+	        <!--android:background="#fd915b" >-->
+            <!---->
+        <!--<ImageView-->
+            <!--android:id="@+id/img_qcode"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:src="@drawable/ic_img_qcode" />-->
+	<!---->
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/rl_search"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/rl_height"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_marginLeft="12dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--android:focusable="true" -->
+            <!--android:focusableInTouchMode="true" -->
+            <!--android:layout_toLeftOf="@+id/img_message"-->
+            <!--android:layout_toRightOf="@+id/img_qcode"-->
+            <!--android:background="@android:color/transparent"-->
+            	<!--&gt;-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/edittext_search"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="12dp"-->
+                <!--android:background="@null"-->
+                <!--android:drawableLeft="@drawable/ic_home_img_search"-->
+                <!--android:hint=" 搜索热门商品"-->
+                <!--android:textColorHint="#a0a0a0"-->
+                <!--android:focusable="false"-->
+                <!--android:focusableInTouchMode="false"-->
+                <!--android:textSize="13dp" >-->
+                <!--<requestFocus />-->
+           	<!--</EditText>-->
+       	<!--</RelativeLayout>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/img_message"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="6dp"-->
+            <!--android:layout_alignTop="@+id/img_qcode"-->
+            <!--android:src="@drawable/ic_img_message" />-->
+   	<!--</RelativeLayout>-->
+
+</RelativeLayout>

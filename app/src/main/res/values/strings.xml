@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">童e家</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_frist">首页</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="oldpassword">旧密码</string>
+    <string name="newpassword">新密码</string>
+    <string name="confimpassword">确认密码</string>
+    <string name="order">提交</string>
+
+
+
+
+    <color name="indicator_selected">#ff0000</color>
+    <color name="indicator_normal">#cdcdcd</color>
+
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_goods_detail">GoodsDetailActivity</string>
+    <string name="title_activity_collection">CollectionActivity</string>
+    <string name="title_activity_ji_fen">JiFenActivity</string>
+    <string name="title_activity_ke_fu">KeFuActivity</string>
+    <string name="title_activity_money_pagce">MoneyPagceActivity</string>
+    <string name="title_activity_all_order">AllOrderActivity</string>
+    <string name="title_activity_order">OrderActivity</string>
+    <string name="title_activity_un_pay">UnPayActivity</string>
+    <string name="title_activity_daishouhuo">DaishouhuoActivity</string>
+    <string name="title_activity_tuihuanhuo">TuihuanhuoActivity</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="title_activity_goods_sort">GoodsSortActivity</string>
+    <string name="title_activity_goods_sort_detail">GoodsSortDetail</string>
+    <string name="title_activity_confim">ConfimActivity</string>
+    <string name="title_activity_find_pass_word">FindPassWordActivity</string>
+
+</resources>

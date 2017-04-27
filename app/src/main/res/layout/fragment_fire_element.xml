@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fragment.FireElementFragment" >
+
+    <!-- <GridView -->
+    <!-- android:id="@+id/hot_gridview" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:numColumns="2" > -->
+    <!-- </GridView> -->
+
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        android:id="@+id/hot_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="10dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="2"
+        android:scrollbars="none"
+        android:verticalSpacing="10dp"
+        app:ptrMode="both" >
+    </com.handmark.pulltorefresh.library.PullToRefreshGridView>
+
+</RelativeLayout>

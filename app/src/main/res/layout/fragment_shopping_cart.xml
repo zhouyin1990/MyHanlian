@@ -1,0 +1,186 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.fragment.ShoppingCartFragment" >
+
+    <RelativeLayout
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#C00612" >
+
+        <TextView
+            android:id="@+id/tv_shopcar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="购物车"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/scrollView_shopcar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/titlebar"
+        ptr:ptrMode="both" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            
+            <!-- <com.baoyz.swipemenulistview.SwipeMenuListView
+                android:id="@+id/listView_card"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </com.baoyz.swipemenulistview.SwipeMenuListView> -->
+            
+            <com.example.widget.MyListview
+		       android:id="@+id/listView_card"
+		       android:padding="10dp"
+		       android:layout_width="match_parent"
+		       android:layout_height="wrap_content" >
+		   </com.example.widget.MyListview>
+
+            <RelativeLayout
+                android:id="@+id/RelativeLayout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/listView_card"
+                android:background="#cdcdcd" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="12dp"
+                    android:text="为你推荐"
+                     />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_toLeftOf="@+id/textView1"
+                    android:src="@drawable/tuijian" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/textView1"
+                    android:src="@drawable/tuijian" />
+            </RelativeLayout>
+
+            <com.xinbo.widget.GridView4ScrollView
+                android:id="@+id/shopcar_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/RelativeLayout_1"
+                android:horizontalSpacing="10dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:verticalSpacing="10dp" >
+            </com.xinbo.widget.GridView4ScrollView>
+        </RelativeLayout>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    
+    <TextView
+        android:id="@+id/tv_meiyougengduo "
+        android:layout_below="@+id/scrollView_shopcar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="----没有更多了 ------"
+        android:textSize="8dp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_meiyougengduo "
+        android:layout_above="@+id/LinearLayout1"
+        android:background="#c4c4c4" />
+
+    <RelativeLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/select_all"
+            style="@style/CustomCheckboxTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/select_all"
+            android:gravity="center"
+            android:text="全选"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="66dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toRightOf="@+id/TextView01"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="共 0 件 "
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_totalprice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/tv_jiesuan"
+            android:layout_toRightOf="@+id/tv_count"
+            android:text="合计：¥ 0 "
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_jiesuan"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="#FB5455"
+            android:gravity="center"
+            android:text="去结算" />
+    </RelativeLayout>
+
+</RelativeLayout>

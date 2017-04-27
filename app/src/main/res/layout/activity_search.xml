@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hanlian.Activity.SearchActivity" >
+    
+    <RelativeLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_top_height"
+        android:background="#cdcdcd" >
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/ic_img_back" />
+
+        <RelativeLayout
+            android:id="@+id/rl_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/rl_height"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_search"
+            android:layout_toRightOf="@+id/img_back"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/home_search_topbar_bg" >
+            <EditText
+                android:id="@+id/edittext_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_home_img_search"
+                android:hint="搜索热门商品"
+                android:textColorHint="#a0a0a0"
+                android:textSize="13dp" >
+                <requestFocus />
+            </EditText>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/img_back"
+            android:layout_marginRight="8dp"
+            android:text="搜索"
+             />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/gridView_search"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/search_bar"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:numColumns="2" >
+    </GridView>
+
+</RelativeLayout>

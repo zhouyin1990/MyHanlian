@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hanlian.Activity.MoneyPagceActivity" >
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="钱包"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@color/line_color" />
+
+        <TextView
+            android:id="@+id/tv_money_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tv_detail_title"
+            android:layout_alignBottom="@+id/tv_detail_title"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:text="1111"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/jifenbg"
+        android:layout_below="@+id/RelativeLayout1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@+id/btn_chongzhi"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"    
+            android:layout_marginBottom="10dp"
+            android:background="#40FFFFFF"
+            android:text="充值" />
+
+        <TextView
+            android:id="@+id/tv_dangqianyue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_yue"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="31dp"
+            android:text="当前余额" />
+
+        <TextView
+            android:id="@+id/tv_yue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="21dp"
+            android:layout_marginTop="18dp"
+            android:text="0.00 元"
+            android:layout_below="@+id/tv_dangqianyue"
+            android:layout_alignLeft="@+id/btn_tixian"
+            android:layout_alignStart="@+id/btn_tixian"
+            android:layout_marginStart="21dp" />
+
+        <Button
+            android:id="@+id/btn_tixian"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_above="@+id/btn_chongzhi"
+            android:layout_alignLeft="@+id/btn_chongzhi"
+            android:layout_alignRight="@+id/btn_chongzhi"
+            android:layout_marginBottom="18dp"
+            android:background="#40FFFFFF"
+            android:text="提现" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

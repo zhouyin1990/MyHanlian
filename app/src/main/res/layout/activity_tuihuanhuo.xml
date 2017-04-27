@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hanlian.Activity.TuihuanhuoActivity" >
+    
+    
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:background="#cdcdcd" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="售后申请"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imgtuhuanhuo_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_back"
+             />
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/relativeLayout1" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#f00000"
+            android:text="售后申请" 
+            android:textColor="#ffffff"
+            />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:text="进度查询"
+            android:textColor="#f00000"
+             />
+
+    </LinearLayout>
+    
+    <ListView
+        android:id="@+id/listview_jindu"
+        android:layout_width="match_parent"
+    	android:layout_below="@+id/linearlayout"
+        android:scrollbars="none"
+        android:visibility="invisible"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <ListView
+        android:id="@+id/listview_shouhou"
+        android:layout_below="@+id/linearlayout"
+        
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+    </ListView>
+
+</RelativeLayout>

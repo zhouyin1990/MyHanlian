@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50000000" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="320dp"
+        android:background="#ffffff" >
+
+        <LinearLayout
+            android:id="@+id/lineatlayout1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/tv_totalprice"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:background="#ff0000"
+                android:gravity="center"
+                android:text="总价"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_sure"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:background="#ff0000"
+                android:gravity="center"
+                android:text="去结算(0)"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/pop_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#d00"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+         <LinearLayout
+            android:id="@+id/linerlayout_wancheng"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="#ff0000"
+            android:visibility="gone"
+            android:orientation="horizontal" >
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="完成"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+		</LinearLayout>
+		
+         <LinearLayout
+        android:id="@+id/pop_addcar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_pay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#f6f7f7"
+            android:gravity="center"
+            android:text="直接购买"
+            android:textSize="18sp" />
+        
+          <TextView
+            android:id="@+id/tv_addCar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="加入购物车"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:background="#ff0000"
+             />
+        
+    </LinearLayout>
+         
+        <ListView
+            android:id="@+id/listView_choose"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearlayout_bottom"
+            android:layout_below="@+id/pop_all"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:divider="#000000"
+            android:scrollbars="none" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/tv_goods_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="201215456" />
+
+        <TextView
+            android:id="@+id/tv_goods_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_goods_code"
+            android:layout_below="@+id/tv_goods_code"
+            android:text="888" />
+
+        <ImageView
+            android:id="@+id/image_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/cancel" />
+        
+        <TextView
+            android:id="@+id/pop_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_goods_price"
+            android:layout_alignLeft="@+id/tv_goods_price"
+            android:layout_marginTop="5dp"
+            android:text="一手进货" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignTop="@+id/pop_all"
+            android:layout_toRightOf="@+id/pop_all" >
+
+            <TextView
+                android:id="@+id/pop_jia"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_bg2"
+                android:gravity="center_horizontal"
+                android:text="+"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/pop_count"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_bg2"
+                android:clickable="true"
+                android:descendantFocusability="beforeDescendants"
+                android:gravity="center"
+                android:inputType="number"
+                android:text="0"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/pop_jian"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_bg2"
+                android:gravity="center_horizontal"
+                android:text="-"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_goods"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="282dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/banner02" />
+
+</RelativeLayout>

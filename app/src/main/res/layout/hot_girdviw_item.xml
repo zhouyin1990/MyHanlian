@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/img_hot_gv_item"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:adjustViewBounds="true"  
+        android:scaleType="fitXY"
+        android:src="@drawable/new_banner" />
+
+    <TextView
+        android:id="@+id/tv_hot_title"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/img_hot_gv_item"
+        android:layout_below="@+id/img_hot_gv_item"
+        android:singleLine="true"
+        android:text="标题" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_hot_title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/tv_hot_shoujiatitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥"
+            android:textColor="#ff0000" />
+
+        <TextView
+            android:id="@+id/tv_hot_shoujia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="22"
+            android:textColor="#ff0000" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main$Generated" generated="true"><source path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res"/><source path="F:\2017424\Hanlian\lib_yuchen1008\build\generated\res\rs\release"/><source path="F:\2017424\Hanlian\lib_yuchen1008\build\generated\res\resValues\release"/></dataSet><dataSet config="release$Generated" generated="true"><source path="F:\2017424\Hanlian\lib_yuchen1008\src\release\res"/></dataSet><dataSet config="main" generated-set="main$Generated"><source path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res"><file name="color" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\color\color.xml" qualifiers="" type="color"/><file name="linkcolor" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\color\linkcolor.xml" qualifiers="" type="color"/><file name="ic_empty" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\drawable-hdpi\ic_empty.png" qualifiers="hdpi-v4" type="drawable"/><file name="ic_error" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\drawable-hdpi\ic_error.png" qualifiers="hdpi-v4" type="drawable"/><file name="ic_stub" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\drawable-hdpi\ic_stub.png" qualifiers="hdpi-v4" type="drawable"/><file name="ic_launcher" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\drawable-xhdpi\ic_launcher.png" qualifiers="xhdpi-v4" type="drawable"/><file name="custom_notify" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\layout\custom_notify.xml" qualifiers="" type="layout"/><file name="custom_toast" path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\layout\custom_toast.xml" qualifiers="" type="layout"/><file path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\values\attrs.xml" qualifiers=""><declare-styleable name="LetterSideBar">
+        <attr format="dimension|reference" name="letterSize"/>
+    </declare-styleable><declare-styleable name="ViewPagerIndicator">
+        <attr format="integer|reference" name="indicatorCount"/>
+        <attr format="dimension|reference" name="radiusSize"/>
+        
+        <attr name="layout_position">
+            <enum name="middle" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
+    </declare-styleable><declare-styleable name="FlowLayout">
+        <attr name="android:orientation"/>
+        <attr format="enum" name="layoutDirection">
+            <enum name="ltr" value="0"/>
+            <enum name="rtl" value="1"/>
+        </attr>
+        <attr format="boolean" name="debugDraw"/>
+        <attr format="float" name="weightDefault"/>
+        <attr name="android:gravity"/>
+    </declare-styleable><declare-styleable name="FlowLayout_LayoutParams">
+        <attr format="boolean" name="layout_newLine"/>
+        <attr format="float" name="layout_weight"/>
+        <attr name="android:layout_gravity"/>
+    </declare-styleable></file><file path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">lib_yuchen</string></file><file path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\values\styles.xml" qualifiers=""><style name="AppTheme" parent="AppBaseTheme">
+        
+    </style><style name="AppBaseTheme" parent="android:Theme.Light">
+        
+    </style></file><file path="F:\2017424\Hanlian\lib_yuchen1008\src\main\res\values-v14\styles.xml" qualifiers="v14"><style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        
+    </style></file></source><source path="F:\2017424\Hanlian\lib_yuchen1008\build\generated\res\rs\release"/><source path="F:\2017424\Hanlian\lib_yuchen1008\build\generated\res\resValues\release"/></dataSet><dataSet config="release" generated-set="release$Generated"><source path="F:\2017424\Hanlian\lib_yuchen1008\src\release\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="FlowLayout_LayoutParams"><attr format="boolean" name="layout_newLine"/><attr format="float" name="layout_weight"/><attr name="android:layout_gravity"/></declare-styleable><declare-styleable name="FlowLayout"><attr name="android:orientation"/><attr format="enum" name="layoutDirection">
+            <enum name="ltr" value="0"/>
+            <enum name="rtl" value="1"/>
+        </attr><attr format="boolean" name="debugDraw"/><attr format="float" name="weightDefault"/><attr name="android:gravity"/></declare-styleable><declare-styleable name="ViewPagerIndicator"><attr format="integer|reference" name="indicatorCount"/><attr format="dimension|reference" name="radiusSize"/><attr name="layout_position">
+            <enum name="middle" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr></declare-styleable><declare-styleable name="LetterSideBar"><attr format="dimension|reference" name="letterSize"/></declare-styleable></configuration></mergedItems></merger>
