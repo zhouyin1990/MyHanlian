@@ -155,7 +155,7 @@
                 android:id="@+id/listview_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="1dp" >
+                android:layout_marginTop="1dp">
             </com.xinbo.widget.ListView4ScrollView>
         </LinearLayout>
     </ScrollView>

@@ -409,11 +409,11 @@
         android:id="@+id/tv_jifen1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_usename"
-        android:layout_alignStart="@+id/tv_usename"
-        android:layout_alignTop="@+id/tv_usename"
         android:layout_marginTop="34dp"
-        android:text="积分：0" />
+        android:text="积分：0"
+        android:layout_alignTop="@+id/tv_usename"
+        android:layout_alignLeft="@+id/tv_usename"
+        android:layout_alignStart="@+id/tv_usename"/>
 
 
 </RelativeLayout>

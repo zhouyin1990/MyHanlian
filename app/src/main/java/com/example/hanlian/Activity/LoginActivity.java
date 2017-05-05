@@ -15,7 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.hanlian.DateModel.DetailBean;
+import com.example.hanlian.DateModel.LoginModel;
 import com.example.hanlian.R;
+import com.google.gson.Gson;
 import com.umeng.message.PushAgent;
 import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
@@ -25,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 import loginModel.Login;
 import utils.CountDownButtonHelper;
@@ -58,7 +62,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 	    tv_wangjimima = (TextView) findViewById(R.id.tv_wangjimima);
 		tv_wangjimima.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-				
 		mpassname.setOnClickListener(this);
 		mpassword.setOnClickListener(this);
 		mshuruyzm.setOnClickListener(this);
@@ -67,15 +70,11 @@ public class LoginActivity extends Activity implements OnClickListener{
 		tv_wangjimima.setOnClickListener(this);
 		
 		findViewById(R.id.btn_login).setOnClickListener(this);//登录
-
 	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		
 		case R.id.btn_getyzm: //获取验证码
-			
 			String phNum = srphone.getText().toString();
 			
 	//		Toast.makeText(LoginActivity.this, "phNum"+phNum, Toast.LENGTH_SHORT).show();
@@ -118,8 +117,7 @@ public class LoginActivity extends Activity implements OnClickListener{
         });
         helper.start();
 	}
-	
-	
+
 	private void getCode() {
 		//获取验证码
 		String phNum = srphone.getText().toString().trim();	
@@ -151,10 +149,21 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private void login() //登录
 	{				
 		final String usrname = mpassname.getText().toString().trim();
+        if(usrname!=null)
+		{
+			mpassname.setText(usrname);   //show usename
+		}
 	    final String userpassword = mpassword.getText().toString().trim();
 		final String useryzm = mshuruyzm.getText().toString().trim();
-		
-		  if(TextUtils.isEmpty(usrname)){
+		final String phone = srphone.getText().toString().trim();
+
+		if (phone !=null)
+		{
+			srphone.setText(phone); // show phone
+		}
+
+
+		if(TextUtils.isEmpty(usrname)){
 			  Toast.makeText(this, "请输入用户名", Toast.LENGTH_SHORT).show();
 			  return;
 		  }
@@ -181,98 +190,43 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 			@Override
 			public void onResponse(String arg0) {
+				LoginModel loginJSON = new Gson().fromJson(arg0, LoginModel.class);
+				int errorCode = loginJSON.getErrorCode();
+				if(errorCode ==0)
+				{
+					String token = loginJSON.getToken();
+                    TCHConstants.url.token=token;
 
-				try {
-					JSONObject jsonObject = new JSONObject(arg0);
-					int errorCode = jsonObject.getInt("ErrorCode");
-					JSONObject result = jsonObject.getJSONObject("Result");
+					LoginModel.ResultBean result = loginJSON.getResult();
+					String cm_shopeaddress = result.getCM_SHOPEADDRESS();
+					String cm_name = result.getCM_NAME();
+					int cm_integral = result.getCM_INTEGRAL();
+					long cm_phone = result.getCM_PHONE();
+					SharedPreferences sp = getSharedPreferences("登录", 1);
+					Editor editor = sp.edit();
+					editor.putString("success", "登录成功");
+					//保存用户名，密码,验证码
+					//editor.putString("username", usrname);
 
-					if( errorCode == 0){
-						//todo login Success
-//						String token = json.getToken();
-						String token = result.getString("Token");
-//						result.get
+					editor.putString("cm_shopeaddress",cm_shopeaddress);
 
-						SharedPreferences sp = getSharedPreferences("登录", 1);
-						Editor editor = sp.edit();
-						editor.putString("Token",token);
-						editor.putString("success", "登录成功");
-						//保存用户名，密码,验证码
-						editor.putString("username", usrname);
-						editor.putString("userpassword", userpassword);
-						editor.putString("useryzm", useryzm);
-						editor.commit();
-						startActivity(new Intent(LoginActivity.this, MainActivity.class));
-						finish();
-					}else{
-						Toast.makeText(LoginActivity.this, "errorCode"+errorCode, Toast.LENGTH_SHORT).show();
-					}
+                    editor.putString("cm_name",cm_name);
+					editor.putString("cm_phone",""+cm_phone);
 
+					editor.putInt("cm_integral",cm_integral);
 
+					editor.commit();
 
-				} catch (JSONException e) {
-					e.printStackTrace();
+					startActivity(new Intent(LoginActivity.this, MainActivity.class));
+					finish();
+				}else
+				{
+					Toast.makeText(LoginActivity.this ,"errcode ="+errorCode ,
+							Toast.LENGTH_SHORT).show();
 				}
-
-
-
-
-
-
 			}
 		});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//		HTTPUtils.get(this, url,new ResponseListener() {
-//			@Override
-//			public void onResponse(String arg0) {
-//				Login json = GsonUtils.parseJSON(arg0, Login.class);
-//				Integer errorCode = json.getErrorCode();
-//			//	Toast.makeText(LoginActivity.this, "错误代码"+arg0.toString(), Toast.LENGTH_SHORT).show();
-//				if( errorCode == 0){
-//					//todo login Success
-//					String token = json.getToken();
-//					SharedPreferences sp = getSharedPreferences("登录", 1);
-//					Editor editor = sp.edit();
-//					editor.putString("Token", token);
-//					editor.putString("success", "登录成功");
-//					//保存用户名，密码,验证码
-//					editor.putString("username", usrname);
-//					editor.putString("userpassword", userpassword);
-//					editor.putString("useryzm", useryzm);
-//					editor.commit();
-////					startActivity(new Intent(LoginActivity.this, MainActivity.class));
-////					finish();
-//				}else{
-//					Toast.makeText(LoginActivity.this, "登录失败  请检查账号密码 手机号码 验证码是否输入正确", Toast.LENGTH_SHORT).show();
-//				}
-//			}
-//
-//			@Override
-//			public void onErrorResponse(VolleyError arg0)
-//			{
-//
-//			}
-//		});
-		
 	}
 
 

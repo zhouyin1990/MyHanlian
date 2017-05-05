@@ -1,8 +1,10 @@
 package DetailsModle;
 
+import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 
-public class Details {
+public class Details implements Serializable{
 
     @Expose
     private Integer ErrorCode;

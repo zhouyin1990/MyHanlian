@@ -1,9 +1,11 @@
 package DetailsModle;
 
+import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CMOTHER {
+public class CMOTHER implements Serializable{
 
     @SerializedName("CM_GOODSDETAILSID")
     @Expose

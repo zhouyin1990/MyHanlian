@@ -45,7 +45,7 @@
             
             <com.example.widget.MyListview
 		       android:id="@+id/listView_card"
-		       android:padding="10dp"
+		       android:padding="1dp"
 		       android:layout_width="match_parent"
 		       android:layout_height="wrap_content" >
 		   </com.example.widget.MyListview>
@@ -74,7 +74,6 @@
                     android:layout_marginTop="15dp"
                     android:layout_toLeftOf="@+id/textView1"
                     android:src="@drawable/tuijian" />
-
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +98,7 @@
     </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
     
     <TextView
-        android:id="@+id/tv_meiyougengduo "
+        android:id="@+id/tv_meiyougengduo"
         android:layout_below="@+id/scrollView_shopcar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -113,40 +112,44 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tv_meiyougengduo "
+        android:layout_below="@+id/tv_meiyougengduo"
         android:layout_above="@+id/LinearLayout1"
         android:background="#c4c4c4" />
 
     <RelativeLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
         android:background="#ffffff"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <CheckBox
             android:id="@+id/select_all"
-            style="@style/CustomCheckboxTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:background="@drawable/uncheck"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="5dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:button="@null"
+            />
 
         <TextView
             android:id="@+id/TextView01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginRight="15dp"
-            android:layout_toRightOf="@+id/select_all"
             android:gravity="center"
             android:text="全选"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/select_all"
+            android:layout_toEndOf="@+id/select_all"/>
 
         <TextView
             android:id="@+id/tv_count"
@@ -158,7 +161,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="共 0 件 "
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_totalprice"
@@ -169,18 +172,19 @@
             android:layout_toLeftOf="@+id/tv_jiesuan"
             android:layout_toRightOf="@+id/tv_count"
             android:text="合计：¥ 0 "
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_jiesuan"
             android:layout_width="60dp"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:background="#FB5455"
             android:gravity="center"
-            android:text="去结算" />
+            android:text="去结算"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,13 +1,15 @@
-package com.example.fragment;
+package com.example.hanlian.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import com.example.hanlian.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.hanlian.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import utils.TCHConstants;
 
 /**

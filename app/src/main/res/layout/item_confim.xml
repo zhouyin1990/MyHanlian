@@ -17,6 +17,7 @@
 	        android:layout_height="40dp"
 	        android:layout_alignParentTop="true"
 	        android:background="#F0EFF5"
+	        android:visibility="gone"
 	         >
 	
 	        <TextView
@@ -33,7 +34,7 @@
 	    
         <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -52,7 +53,7 @@
             android:contentDescription="@null"
             android:padding="2dp"
             android:scaleType="fitXY"
-            android:src="@drawable/add" />
+            android:src="@drawable/add"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,13 +73,13 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:id="@+id/linear1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true" >
+                    android:layout_centerVertical="true">
 
                     <TextView
                         android:id="@+id/text3"
@@ -86,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text="¥"
                         android:textColor="#ff6000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/price"
@@ -96,16 +97,16 @@
                         android:layout_toRightOf="@id/text3"
                         android:text="55"
                         android:textColor="#ff6000"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
-                
+
                 <LinearLayout
                     android:id="@+id/linear2"
-                    android:layout_toLeftOf="@+id/detail"
-                    android:layout_marginRight="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true" >
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/detail">
 
                     <TextView
                         android:id="@+id/text4"
@@ -113,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:text="数量:"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                     <TextView
                         android:id="@+id/number"
@@ -123,21 +124,21 @@
                         android:layout_toRightOf="@id/text4"
                         android:text="55"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
                 </LinearLayout>
-                
+
                 <TextView
-                        android:id="@+id/detail"
-                        android:layout_width="40dp"
-			            android:layout_height="40dp"
-			            android:padding="2dp"
-			            android:layout_alignParentRight="true"
-	                    android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:text="详情"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                    android:id="@+id/detail"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="详情"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
 
 
             </RelativeLayout>
@@ -147,80 +148,10 @@
         
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/confirm_detail_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-    
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="颜色: " />
-
-        <TextView
-            android:id="@+id/color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="白色" />
-
+        <ListView
+            android:id="@+id/spec_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp" >
-        
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="尺码: " />
-
-        <TextView
-            android:id="@+id/size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/textView3"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="100cm" />
-
-        <TextView
-            android:id="@+id/number2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="5" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/number2"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:text="数量: " />
-        
-    </RelativeLayout>
-        
-    </LinearLayout>
-        
-    </LinearLayout>
-    
-
 </LinearLayout>

@@ -42,17 +42,29 @@ public class CardGoodsInfo extends Model implements Serializable, Cloneable{
 	JSONObject GOODSLIST;
 
 
+//	@Override
+//	public CardGoodsInfo clone()
+//	{
+//		try
+//		{
+//			return (CardGoodsInfo) super.clone();
+//		} catch (CloneNotSupportedException e)
+//		{
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+
+
 	@Override
-	public CardGoodsInfo clone()
+	public  CardGoodsInfo clone()
 	{
-		try
-		{
+		try {
 			return (CardGoodsInfo) super.clone();
-		} catch (CloneNotSupportedException e)
-		{
+		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return  null ;
 	}
 
 	public JSONObject getGOODSLIST() {

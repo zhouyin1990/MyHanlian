@@ -1,4 +1,4 @@
-package com.example.fragment;
+package com.example.hanlian.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,15 +7,21 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.hanlian.Activity.GoodsDetailActivity;
@@ -39,24 +45,16 @@ import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import utils.TCHConstants;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 首页
@@ -218,7 +216,7 @@ public class HomeFragment extends Fragment implements OnPageChangeListener,Scrol
             	mPager.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 height = mPager.getHeight();
                 mPager.getWidth();                
-                scrollView.setScrollViewListener(HomeFragment.this);		                
+                scrollView.setScrollViewListener(HomeFragment.this);
             }  
         });								
 //        ViewTreeObserver vto = viewpager.getViewTreeObserver();  
@@ -325,7 +323,6 @@ public class HomeFragment extends Fragment implements OnPageChangeListener,Scrol
 			
 			if( jsonArrayShows.length() != 0 )
 			{
-				
 				position%=jsonArrayShows.length() ;
 				BannerItemFragment ItemFragment = new BannerItemFragment(position);
 				Bundle bundle = new Bundle();
@@ -491,8 +488,8 @@ public class HomeFragment extends Fragment implements OnPageChangeListener,Scrol
 			ImageView mImageView = (ImageView) layout.findViewById(R.id.img_gridview_item);
 			// TODO 文字 
 			 ImageLoader.getInstance().displayImage
-			 (TCHConstants.url.imgurl + mGridViewImgRes[position], mImageView);
-			mTextView.setText(str[position]);
+			 (TCHConstants.url.imgurl + mGridViewImgRes[position], mImageView, MyApplication.options);
+			  mTextView.setText(str[position]);
 			return layout;
 		}
 

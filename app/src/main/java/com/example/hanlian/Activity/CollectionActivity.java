@@ -53,11 +53,8 @@ public class CollectionActivity extends Activity implements OnClickListener {
 	private TextView mtv_baby;
 	private TextView mtv_store;
 	private ImageView mTV_back;
-	String account = "80750112";
-	String password = "222222";
-	String token2;
-	private String TestTkoen;
 	private JSONArray goodsList = new JSONArray();
+	private String token;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,26 +83,15 @@ public class CollectionActivity extends Activity implements OnClickListener {
 
 	// 参数上传
 	private void intidata() {
-		// 刷新测试token
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("account", account);
-		params.put("password", password);
-		HTTPUtils.get(CollectionActivity.this, TCHConstants.url.GETTESTTOKEN, params, new ResponseListener() {
 
-			@Override
-			public void onResponse(String arg0) {
-				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
-				Integer errorCode = parseJSON.getErrorCode();
-				if (errorCode == 0) {
-					
-					token2 = parseJSON.getToken();
 					// 查询收藏
-					pageSize += 10;
-					Map<String, String> parms = new HashMap<String, String>();
+		pageSize += 10;
+		token = TCHConstants.url.token;
+		Map<String, String> parms = new HashMap<String, String>();
 					Intent intent = getIntent();
 					parms.put("pageNum", pageNum + "");
 					parms.put("pageSize", pageSize + "");
-					parms.put("token", token2);
+					parms.put("token", token);
 					// TODO
 					HTTPUtils.get(CollectionActivity.this, TCHConstants.url.QueryMyCollectionurl, parms,
 							new ResponseListener() {
@@ -130,16 +116,7 @@ public class CollectionActivity extends Activity implements OnClickListener {
 
 								}
 							});
-				}else
-				{
-					Toast.makeText(CollectionActivity.this, "errorCode"+errorCode, Toast.LENGTH_SHORT).show();
-				}
-			}
-			@Override
-			public void onErrorResponse(VolleyError arg0) {
 
-			}
-		});
 	}
 	private void intiUI() {
 		mtv_baby = (TextView) findViewById(R.id.tv_baby);
@@ -174,7 +151,10 @@ public class CollectionActivity extends Activity implements OnClickListener {
 					@Override
 					public void onClick(View arg0) {
 						if (dialog != null && dialog.isShowing()) {
-							DelMyCollection();
+						//	DelMyCollection();
+							Delollection();
+
+
 							dialog.dismiss();
 						}
 					}
@@ -184,63 +164,127 @@ public class CollectionActivity extends Activity implements OnClickListener {
 		});
 	}
 
-	private void DelMyCollection() {
-		// 刷新测试token
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("account", account);
-		params.put("password", password);
-		HTTPUtils.get(CollectionActivity.this, TCHConstants.url.GETTESTTOKEN, params, new ResponseListener() {
+	private void Delollection() {
 
-			@Override
-			public void onResponse(String arg0) {
+		Map<String, String> parm = new HashMap<String, String>();
+		for (int i = 0; i < list.size(); i++) {
 
-				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
-				Integer errorCode = parseJSON.getErrorCode();
-				if (errorCode == 0) {
-					TestTkoen = parseJSON.getToken();
-					Map<String, String> parm = new HashMap<String, String>();
+		//	String cmgoodsid = list.get(i).getCMGOODSID();
+			String cmgoodsid = list.get(i).getCMGOODSID();
 
-					// String cmgoodsid = list.get(0).getCMGOODSID();
-					// String cmgoodsid = list.get().getCMGOODSID();
-					for (int i = 0; i < list.size(); i++) {
 
-						String cmgoodsid = list.get(i).getCMGOODSID();
-						parm.put("goodsid", cmgoodsid);
-						parm.put("token", TestTkoen);
+			parm.put("goodsid", cmgoodsid);
+			parm.put("token", token);
+		}
+
+		// 删除收藏
+		HTTPUtils.get(CollectionActivity.this, TCHConstants.url.DelMyCollectionurl, parm,
+				new ResponseListener() {
+
+					@Override
+					public void onResponse(String arg0) {
+						Deltecollection Deltejson = GsonUtils.parseJSON(arg0, Deltecollection.class);
+						Integer errorCode2 = Deltejson.getErrorCode();
+						if (errorCode2 == 0) {
+
+							intidata();
+
+							Toast.makeText(CollectionActivity.this,"取消收藏", Toast.LENGTH_SHORT).show();
+						}
 					}
 
-					// 删除收藏
-					HTTPUtils.get(CollectionActivity.this, TCHConstants.url.DelMyCollectionurl, parm,
-							new ResponseListener() {
+					@Override
+					public void onErrorResponse(VolleyError arg0) {
 
-								@Override
-								public void onResponse(String arg0) {
-									Deltecollection Deltejson = GsonUtils.parseJSON(arg0, Deltecollection.class);
-									Integer errorCode2 = Deltejson.getErrorCode();
-									if (errorCode2 == 0) {
+					}
+				});
 
-										intidata();
 
-										Toast.makeText(CollectionActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
-									}
-								}
 
-								@Override
-								public void onErrorResponse(VolleyError arg0) {
 
-								}
-							});
-
-				}
-			}
-
-			@Override
-			public void onErrorResponse(VolleyError arg0) {
-
-			}
-		});
 
 	}
+
+//	private void DelMyCollection() {
+//		// 刷新测试token
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("account", account);
+//		params.put("password", password);
+//		HTTPUtils.get(CollectionActivity.this, TCHConstants.url.GETTESTTOKEN, params, new ResponseListener() {
+//
+//			@Override
+//			public void onResponse(String arg0) {
+//
+//				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
+//				Integer errorCode = parseJSON.getErrorCode();
+//				if (errorCode == 0) {
+//					TestTkoen = parseJSON.getToken();
+//					Map<String, String> parm = new HashMap<String, String>();
+//
+//					// String cmgoodsid = list.get(0).getCMGOODSID();
+//					// String cmgoodsid = list.get().getCMGOODSID();
+//					for (int i = 0; i < list.size(); i++) {
+//
+//						String cmgoodsid = list.get(i).getCMGOODSID();
+//						parm.put("goodsid", cmgoodsid);
+//						parm.put("token", token);
+//					}
+//
+//					// 删除收藏
+//					HTTPUtils.get(CollectionActivity.this, TCHConstants.url.DelMyCollectionurl, parm,
+//							new ResponseListener() {
+//
+//								@Override
+//								public void onResponse(String arg0) {
+//									Deltecollection Deltejson = GsonUtils.parseJSON(arg0, Deltecollection.class);
+//									Integer errorCode2 = Deltejson.getErrorCode();
+//									if (errorCode2 == 0) {
+//
+//										intidata();
+//
+//										Toast.makeText(CollectionActivity.this,"取消收藏", Toast.LENGTH_SHORT).show();
+//									}
+//								}
+//
+//								@Override
+//								public void onErrorResponse(VolleyError arg0) {
+//
+//								}
+//							});
+//
+//				}
+//			}
+//
+//			@Override
+//			public void onErrorResponse(VolleyError arg0) {
+//
+//			}
+//		});
+//
+//	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	class CollectionMyAdapter extends BaseAdapter {
 
@@ -293,15 +337,15 @@ public class CollectionActivity extends Activity implements OnClickListener {
 //						TCHConstants.url.imgurl + goodsList.getJSONObject(position).getString("CM_MAINFIGUREPATH"),
 //						holder.img_hot_gv_item, MyApplication.options);//图片地址
 //
-//				
-//				
+//
+//
 //			} catch (JSONException e) {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			
-			
-			
+
+
+
 			return layout;
 		}
 

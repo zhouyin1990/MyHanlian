@@ -68,12 +68,13 @@
             android:text="13667274010" />
 
         <TextView
-            android:id="@+id/tv_adress"
+            android:id="@+id/tv_orderadress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_shouhuoname"
+            android:text="浙江省台州市康平路5号"
             android:layout_alignParentBottom="true"
-            android:text="浙江省台州市康平路5号" />
+            android:layout_alignLeft="@+id/tv_shouhuoname"
+            android:layout_alignStart="@+id/tv_shouhuoname"/>
 
     </RelativeLayout>
 
@@ -81,16 +82,21 @@
         android:id="@+id/confim_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/RelativeLayout2" >
+        android:layout_below="@+id/RelativeLayout2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
     </ListView>
-    
+
       <RelativeLayout
-        android:id="@+id/LinearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="#ffffff"
-        android:orientation="horizontal" >
+          android:id="@+id/LinearLayout1"
+          android:layout_width="match_parent"
+          android:layout_height="50dp"
+          android:background="#ffffff"
+          android:orientation="horizontal"
+
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/tv_count"

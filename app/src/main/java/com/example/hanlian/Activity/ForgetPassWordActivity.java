@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -26,6 +28,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import utils.TCHConstants;
 
 public class ForgetPassWordActivity extends AppCompatActivity {
@@ -41,7 +44,20 @@ public class ForgetPassWordActivity extends AppCompatActivity {
     EditText edConfimpassword;
     @BindView(R.id.btn)
     Button btnOrder;
+    @BindView(R.id.tv_detail_title)
+    TextView tvDetailTitle;
+    @BindView(R.id.linearLayout3)
+    RelativeLayout linearLayout3;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.linearlayout1)
+    RelativeLayout linearlayout1;
+    @BindView(R.id.textView5)
+    TextView textView5;
+    @BindView(R.id.linearLayout4)
+    RelativeLayout linearLayout4;
     private AlertView alertView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,28 +73,25 @@ public class ForgetPassWordActivity extends AppCompatActivity {
                 finish();
             }
         });
-       // 修改密码
+        // 修改密码
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String oldPassword = edOldpassword.getText().toString().trim();
                 String newPassWord = edNewpassword.getText().toString().trim();
                 String confimpassword = edConfimpassword.getText().toString().trim();
-                if (TextUtils.isEmpty(oldPassword))
-                {
+                if (TextUtils.isEmpty(oldPassword)) {
                     showAlertView("请填旧写密码");
                     edOldpassword.requestFocus();
                     return;
                 }
-                if (TextUtils.isEmpty(newPassWord))
-                {
+                if (TextUtils.isEmpty(newPassWord)) {
                     showAlertView("请填写新密码");
                     edNewpassword.requestFocus();
                     return;
                 }
 
-                if (TextUtils.isEmpty(confimpassword))
-                {
+                if (TextUtils.isEmpty(confimpassword)) {
                     showAlertView("请填写确认密码");
                     edConfimpassword.requestFocus();
                     return;
@@ -89,17 +102,17 @@ public class ForgetPassWordActivity extends AppCompatActivity {
                     return;
                 }
 
-                SharedPreferences sp = getSharedPreferences("登录",1);
-                String token = sp.getString("Token","");
+                SharedPreferences sp = getSharedPreferences("登录", 1);
+                String token = sp.getString("Token", "");
                 HashMap<String, String> parms = new HashMap<>();
-                parms.put("oldpassword",oldPassword);
-                parms.put("newpassword",newPassWord);
-                parms.put("confirmpassword",confimpassword);
-                parms.put("token",token);
+                parms.put("oldpassword", oldPassword);
+                parms.put("newpassword", newPassWord);
+                parms.put("confirmpassword", confimpassword);
+                parms.put("token", token);
                 HTTPUtils.get(ForgetPassWordActivity.this, TCHConstants.url.ModifyPassword, parms, new ResponseListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(ForgetPassWordActivity.this,"ErrorCode="+volleyError.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgetPassWordActivity.this, "ErrorCode=" + volleyError.toString(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -108,13 +121,11 @@ public class ForgetPassWordActivity extends AppCompatActivity {
 
                             JSONObject jsonObject = new JSONObject(s);
                             int errcode = jsonObject.getInt("ErrorCode");
-                            if(errcode ==0)
-                            {
+                            if (errcode == 0) {
                                 showAlertView2("修改成功");
-                            }else
-                            {
+                            } else {
                                 Toast.makeText(ForgetPassWordActivity.this,
-                                        "修改失败-"+errcode,Toast.LENGTH_SHORT).show();
+                                        "修改失败-" + errcode, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -124,6 +135,7 @@ public class ForgetPassWordActivity extends AppCompatActivity {
             }
         });
     }
+
     private void showAlertView(String message) {
         alertView = new AlertView("提示", message, "确定", null, null,
                 ForgetPassWordActivity.this, AlertView.Style.Alert, new OnItemClickListener() {
@@ -134,13 +146,14 @@ public class ForgetPassWordActivity extends AppCompatActivity {
         });
         alertView.show();
     }
+
     private void showAlertView2(String message) {
         alertView = new AlertView("提示", message, "确定", null, null,
                 ForgetPassWordActivity.this, AlertView.Style.Alert, new OnItemClickListener() {
             @Override
             public void onItemClick(Object o, int position) {
                 alertView.dismiss();
-                Intent intent=new Intent(ForgetPassWordActivity.this ,LoginActivity.class);
+                Intent intent = new Intent(ForgetPassWordActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -157,5 +170,8 @@ public class ForgetPassWordActivity extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.tv_detail_title)
+    public void onViewClicked() {
 
+    }
 }

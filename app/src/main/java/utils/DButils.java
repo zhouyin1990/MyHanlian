@@ -31,8 +31,5 @@ public final class DButils {
 		{
 			List<CardGoodsInfo> info = new Select().from(CardGoodsInfo.class).execute();
 			return info;
-					
 		}
-	
-	
 }

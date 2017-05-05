@@ -89,56 +89,30 @@ public class UnPayActivity extends Activity implements OnClickListener{
 	
 	
 	private void intidata() {
-		 HashMap<String, String> params = new HashMap<String , String >();		
-		 params.put("account", account);
-		 params.put("password", password);
-		 HTTPUtils.get(UnPayActivity.this, TCHConstants.url.GETTESTTOKEN, params, new ResponseListener() {
-			
-			@Override
-			public void onResponse(String arg0) {
-				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
-				Integer errorCode = parseJSON.getErrorCode();
-				if(errorCode == 0)
-				{
-				  uptoekn = parseJSON.getToken();
-				  //查询待付款			
-				    pageSize += 10;
+
 					Map<String, String> parms1 = new HashMap<String, String>();
 					Intent intent = getIntent();
-					parms1.put("pageNum", pageNum +" ");
+					parms1.put("pageNum", pageNum +"");
 					parms1.put("pageSize", pageSize +"");
-					parms1.put("token", uptoekn);     
-					// TODO 
-					HTTPUtils.get(UnPayActivity.this, TCHConstants.url.QueryMyOrders_Arrearageuri, parms1, new ResponseListener() {
-						
+					parms1.put("token", TCHConstants.url.token);
+					// TODO
+					HTTPUtils.get(UnPayActivity.this,TCHConstants.url.QueryMyOrders_Arrearageuri, parms1, new ResponseListener() {
+
 						@Override
-						public void onResponse(String arg0) {							
+						public void onResponse(String arg0) {
 							Unpay unpayjson = GsonUtils.parseJSON(arg0, Unpay.class);
 							List<UnpayModel.Result> result = unpayjson.getResult();
 							unlist.clear();
 							unlist.addAll(result);
-							unpay_listview.setAdapter(payAdapter);	
+							unpay_listview.setAdapter(payAdapter);
 							payAdapter.notifyDataSetChanged();
-							
 						}
-						
+
 						@Override
 						public void onErrorResponse(VolleyError arg0) {
-							
+
 						}
 					});
-					
-			
-				  
-				}
-				
-			}
-			
-			@Override
-			public void onErrorResponse(VolleyError arg0) {
-				
-			}
-		});				
 	}
 
 

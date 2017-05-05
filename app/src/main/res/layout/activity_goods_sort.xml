@@ -48,7 +48,7 @@
             </EditText>
         </RelativeLayout>
     </RelativeLayout>
-    
+
     <LinearLayout
         android:id="@+id/sort_linearLayout"
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
         android:layout_below="@+id/view_line"
         android:background="#fff"
         android:orientation="horizontal"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical">
 
         <ListView
             android:id="@+id/sort_listView"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-             >
+            >
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/sort_recyclerview"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/gray"
                 android:paddingLeft="2dp"
-                android:paddingRight="2dp" />
+                android:paddingRight="2dp"/>
 
             <ListView
                 android:id="@+id/sort_listView2"
@@ -92,7 +92,7 @@
                 android:divider="@null"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
-                android:scrollbars="none" />
+                android:scrollbars="none"/>
         </LinearLayout>
 
     </LinearLayout>

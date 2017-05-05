@@ -1,11 +1,12 @@
 package DetailsModle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+public class Result implements Serializable{
 
     @SerializedName("CM_GOODSID")
     @Expose
@@ -323,4 +324,15 @@ public class Result {
         this.CMOTHER = CMOTHER;
     }
 
+	@Override
+	public String toString() {
+		return "Result [CMGOODSID=" + CMGOODSID + ", CMTITLE=" + CMTITLE + ", CMSALES=" + CMSALES + ", CMHTML=" + CMHTML
+				+ ", CMBRANDID=" + CMBRANDID + ", CMMAINFIGUREPATH=" + CMMAINFIGUREPATH + ", CMFIGURESPATH="
+				+ CMFIGURESPATH + ", CMCREATETIME=" + CMCREATETIME + ", CMORIGINALPRICE=" + CMORIGINALPRICE
+				+ ", CMPRESENTPRICE=" + CMPRESENTPRICE + ", CMISOFF=" + CMISOFF + ", CMSELLERID=" + CMSELLERID
+				+ ", CMSELLERNAME=" + CMSELLERNAME + ", CMISCOLLECTION=" + CMISCOLLECTION + ", CMOTHER=" + CMOTHER
+				+ "]";
+	}
+    
+    
 }

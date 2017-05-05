@@ -28,7 +28,7 @@ public class FristActivity extends Activity {
 		welcomeimg.startAnimation(anima);
 		anima.setAnimationListener(new AlphaAnima());
 		
-// 		��������
+ 	//	��������
 //	welcomeimg.postDelayed(new Runnable()
 //	{
 //		
@@ -60,10 +60,14 @@ public class FristActivity extends Activity {
 					finish();
 				}else{
 					//未登录的用户 跳转登录页面
-	//				startActivity(new Intent(FristActivity.this, MainActivity.class ));
+					//startActivity(new Intent(FristActivity.this, MainActivity.class ));
 					startActivity(new Intent(FristActivity.this,LoginActivity.class ));
 					finish();
 				}
+
+
+//				startActivity(new Intent(FristActivity.this,MainActivity.class ));
+//				finish();
 			}
 
 			@Override

@@ -107,7 +107,6 @@
         android:layout_alignBaseline="@+id/btn_wuliu"
         android:layout_alignBottom="@+id/btn_wuliu"
         android:layout_alignRight="@+id/tv_price"
-       
         android:background="@drawable/btn_red_stroke"
         android:padding="1.5dp"
         android:text="确认收货"

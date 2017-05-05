@@ -38,11 +38,8 @@ public class AllOrderActivity extends Activity implements OnClickListener {
 	private ListView listView_allorder;
 	private AllOrderAdapter adapter;
 	private String arg0;
-	String account ="80750112" ;
-    String password ="222222";
     private int pageNum = 1;
     private int pageSize = 0;
-	String uptoekn ;
 	private DisplayImageOptions options;
 	ArrayList<Result> allorderlist =new ArrayList<Result>();
 	ArrayList<TBORDERDETAIL> detailslist =new ArrayList<TBORDERDETAIL>();
@@ -80,26 +77,14 @@ public class AllOrderActivity extends Activity implements OnClickListener {
 	}
 
 	private void initData() {
-		 HashMap<String, String> params = new HashMap<String , String >();		
-		 params.put("account", account);
-		 params.put("password", password);
-		 HTTPUtils.get(AllOrderActivity.this, TCHConstants.url.GETTESTTOKEN, params, new ResponseListener() {
-			@Override
-			public void onResponse(String arg0) {
-				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
-				Integer errorCode = parseJSON.getErrorCode();
-				  Toast.makeText(AllOrderActivity.this, "errorCode"+errorCode, Toast.LENGTH_SHORT).show();
-				if(errorCode == 0)
-				{
-				  uptoekn = parseJSON.getToken();
+
 				  
-				   Toast.makeText(AllOrderActivity.this, "uptoekn"+uptoekn, Toast.LENGTH_SHORT).show();
-				  //查询订单		
+				  //查询订单
 				    pageSize += 10;				
 					Map<String, String> parms1 = new HashMap<String, String>();
 					parms1.put("pageNum", pageNum +"");
 					parms1.put("pageSize", pageSize +"");
-					parms1.put("token", uptoekn);     
+					parms1.put("token", TCHConstants.url.token);
 					// TODO 
 					HTTPUtils.get(AllOrderActivity.this, TCHConstants.url.QueryMyAllOrders_Url, parms1, new ResponseListener() {
 						
@@ -126,18 +111,6 @@ public class AllOrderActivity extends Activity implements OnClickListener {
 						}
 					});
 				}
-				
-			}
-			
-			@Override
-			public void onErrorResponse(VolleyError arg0) {
-				
-			}
-		});				
-	
-		
-		
-	}
 
 	private void initUI() {
 		img_allorder_back = (ImageView) findViewById(R.id.img_allorder_back);
@@ -224,10 +197,7 @@ public class AllOrderActivity extends Activity implements OnClickListener {
 		public long getItemId(int position) {
 			return 0;
 		}
-
-			
 	}
-	
 	class ViewHolder {
 		ImageView img_shangpin_name;
 		TextView  tv_shangpin_name;
@@ -250,6 +220,7 @@ public class AllOrderActivity extends Activity implements OnClickListener {
 
 		default:
 			break;
+
 		}
 	}
 

@@ -1,13 +1,18 @@
-package com.example.fragment;
+package com.example.hanlian.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.android.volley.VolleyError;
 import com.example.hanlian.Activity.AllOrderActivity;
 import com.example.hanlian.Activity.CollectionActivity;
@@ -17,24 +22,17 @@ import com.example.hanlian.Activity.JiFenActivity;
 import com.example.hanlian.Activity.KeFuActivity;
 import com.example.hanlian.Activity.LoginActivity;
 import com.example.hanlian.Activity.MoneyPagceActivity;
-import com.example.hanlian.R;
 import com.example.hanlian.Activity.TuihuanhuoActivity;
 import com.example.hanlian.Activity.UnPayActivity;
-import com.example.hanlian.TestToken.TestToken;
-import com.xinbo.utils.GsonUtils;
+import com.example.hanlian.DateModel.personinfo;
+import com.example.hanlian.R;
+import com.google.gson.Gson;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.HashMap;
+import java.util.Map;
 
-import myinfoModel.Myinfo;
-import myinfoModel.Result;
 import utils.TCHConstants;
 
 /**
@@ -50,11 +48,13 @@ public class UserFragment extends Fragment implements OnClickListener{
 	private TextView unregist;
 	private TextView jifeninfo , tv_quanbudingdan,tv_daifukuang,tv_daishouhuo,tv_tuihuanhuo;	
 	String token;
-	String account ="111111" ;
-    String password ="222222" ;
-    private String Testtoken ;
 	private RelativeLayout re_forgetPassWord;
 	private TextView tv_goforget;
+	private TextView shopname;
+	private TextView tv_jifen;
+	private TextView tv_adress1;
+	private TextView tv_usename;
+	private SharedPreferences sp;
 
 	public UserFragment() {
 		
@@ -81,8 +81,11 @@ public class UserFragment extends Fragment implements OnClickListener{
 	}					
 
 	private void intidata() {
+
+
+
 		
-	//	intidouxiangjifen(); // 头像积分	 
+		intidouxiangjifen(); // 头像积分
 		
 	}	
 	
@@ -90,66 +93,61 @@ public class UserFragment extends Fragment implements OnClickListener{
 	
 	
 	private void intidouxiangjifen() {		
-	    // 刷新token 
-		 HashMap<String, String> params = new HashMap<String , String >();		
-		 params.put("account", account);
-		 params.put("password", password);
-				 
-		HTTPUtils.get(getContext(), TCHConstants.url.GETTESTTOKEN, params, new ResponseListener() {							
-			@Override
-			public void onResponse(String arg0) {
-				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
-				Integer errorCode = parseJSON.getErrorCode();
-				if(errorCode == 0)
-				{
-					token = parseJSON.getToken();
-					//查询个人信息		
-					Map<String, String> parms = new HashMap<String, String>();				
-					parms.put("token", token);   					
-					
-					HTTPUtils.get(getContext(), TCHConstants.url.QueryMyInformationurl, parms ,new ResponseListener() {			
+	    // 刷新token
+					Map<String, String> parms = new HashMap<String, String>();
+					String token = TCHConstants.url.token;
+					parms.put("token", token);
+					HTTPUtils.get(getContext(), TCHConstants.url.QueryMyInformationurl, parms ,new ResponseListener() {
 						@Override
 						public void onResponse(String arg0) {
-							 Myinfo infojson  = GsonUtils.parseJSON(arg0, Myinfo.class);
-							 Integer errorCode = infojson.getErrorCode();
-							 if(errorCode==0)
-							 { 					 
-								 Result result = infojson.getResult();
-								 if(result != null)
-								 {
-									 String cmnickname = result.getCMNICKNAME();
-									 Integer cmintegral = result.getCMINTEGRAL();
-								//	 nameinfo.setText(cmnickname); //保存名称
-								//	 jifeninfo.setText("积分 "+cmintegral);	//保存这积分 信息										 
-								 }
-					
-							 }				
-						}			
+							Log.e("arg0",arg0+"");
+							personinfo personinfo = new Gson().fromJson(arg0, personinfo.class);
+							String token1 = personinfo.getToken();
+
+							TCHConstants.url.token=token1;
+							//personinfo personinfo = GsonUtils.parseJSON(arg0,personinfo.class);
+							com.example.hanlian.DateModel.personinfo.ResultBean
+									result1 = personinfo.getResult();
+
+							int cm_integral = result1.getCM_INTEGRAL();
+							String cm_shopeaddress = result1.getCM_SHOPEADDRESS();
+							long cm_phone = result1.getCM_PHONE();
+							String cm_name = result1.getCM_NAME();
+							String cm_shopname = result1.getCM_SHOPNAME();
+
+//							try {
+//								JSONObject jsonResult = new JSONObject(arg0.toString()).getJSONObject("Result");
+//								String cm_shopname1 = jsonResult.getString("CM_SHOPNAME");
+//								int cm_integral1 = jsonResult.getInt("CM_INTEGRAL");
+////								jsonResult.getString()
+//								tv_jifen.setText(""+cm_integral1);
+//
+//							} catch (JSONException e) {
+//								e.printStackTrace();
+//							}
+							jifeninfo.setText("积分:"+cm_integral);
+
+							shopname.setText("店铺名:"+cm_shopname);
+
+							tv_usename.setText("用户名:"+cm_name);
+						}
 						@Override
 						public void onErrorResponse(VolleyError arg0) {
-							
+
 						}
 					});
-				}				
-			}			
-			@Override
-			public void onErrorResponse(VolleyError arg0) {
-				Toast.makeText(getContext(), "网络错误"+token, Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 
 	private void intiUI() {
+
+		sp = getContext().getSharedPreferences("登录", 1);
 		recollection = (RelativeLayout) layout.findViewById(R.id.re_collection);
 		recollection.setOnClickListener(this);
 		layout.findViewById(R.id.re_jifen).setOnClickListener(this);
 		layout.findViewById(R.id.re_kefu).setOnClickListener(this);
 		layout.findViewById(R.id.re_moneypagck).setOnClickListener(this);
-		
 		unregist = (TextView) layout.findViewById(R.id.tv_unrigster); //注销
-		
 		jifeninfo = (TextView) layout.findViewById(R.id.tv_jifen1);
-		
 		tv_quanbudingdan = (TextView) layout.findViewById(R.id.tv_quanbudingdan);
 		tv_daifukuang = (TextView) layout.findViewById(R.id.tv_daifukung);	
 		tv_daishouhuo = (TextView) layout.findViewById(R.id.tv_daishouhuo);
@@ -159,6 +157,11 @@ public class UserFragment extends Fragment implements OnClickListener{
 		tv_daishouhuo.setOnClickListener(this);
 		tv_tuihuanhuo.setOnClickListener(this);	
 		unregist.setOnClickListener(this);
+
+		shopname = (TextView) layout.findViewById(R.id.shop_name);
+		tv_jifen = (TextView) layout.findViewById(R.id.tv_jifen);
+		tv_adress1 = (TextView) layout.findViewById(R.id.tv_detialadress);
+		tv_usename = (TextView) layout.findViewById(R.id.tv_usename);
 
 
 		re_forgetPassWord = (RelativeLayout) layout.findViewById(R.id.re_xiugai_password);
@@ -228,7 +231,6 @@ public class UserFragment extends Fragment implements OnClickListener{
 	}
 
 	private void cleartoken() {
-	    SharedPreferences sp = getContext().getSharedPreferences("登录", 1);
 	    Editor editor = sp.edit();
 		String token = sp.getString("Token","");
 		editor.clear();

@@ -207,7 +207,6 @@ public class FindPassWordActivity extends Activity implements OnClickListener
 						}		
 
 					}
-					
 					@Override
 					public void onErrorResponse(VolleyError arg0) {
 						Toast.makeText(FindPassWordActivity.this, "arg0"+arg0, Toast.LENGTH_SHORT).show();
@@ -217,11 +216,7 @@ public class FindPassWordActivity extends Activity implements OnClickListener
 			
 			
 		}
-   		
-		
-		
-		
-		
+
     // 找回用户名
 	private void Findusename() {
 		
@@ -326,7 +321,7 @@ public class FindPassWordActivity extends Activity implements OnClickListener
 						dialog();
 						Toast.makeText(FindPassWordActivity.this, "发送验证码成功，请注意查收", Toast.LENGTH_SHORT).show();
 					}else{
-						Toast.makeText(FindPassWordActivity.this, "发送验证码失败"+errcode, Toast.LENGTH_SHORT).show();
+						Toast.makeText(FindPassWordActivity.this, "errcode="+errcode, Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

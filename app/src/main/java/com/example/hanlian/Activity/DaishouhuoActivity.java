@@ -151,7 +151,6 @@ public class DaishouhuoActivity extends Activity  implements OnClickListener{
 		case R.id.img_daoshouhuo_back:
 			finish();
 			break;
-
 		default:
 			break;
 		}
@@ -160,7 +159,6 @@ public class DaishouhuoActivity extends Activity  implements OnClickListener{
 	class DaishouhuoAdapter extends BaseAdapter{
 		View layout = null;
 		ViewHolder holder;
-		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if(convertView == null){

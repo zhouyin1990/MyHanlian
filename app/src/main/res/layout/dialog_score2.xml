@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
         android:gravity="center"
         android:padding="18dp"
-        android:layout_marginTop="18dp"
         android:text="是否取消收藏"
         android:textColor="#999999"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-         >
+        >
 
         <Button
             android:id="@+id/no"
@@ -31,8 +32,8 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:text="取消 "
-             android:textSize="18sp"
-            android:textColor="#cdcdcd" />
+            android:textColor="#cdcdcd"
+            android:textSize="18sp"/>
 
         <Button
             android:id="@+id/yes"
@@ -43,9 +44,9 @@
             android:layout_marginLeft="85dp"
             android:layout_weight="1"
             android:background="@color/white"
-             android:textSize="18sp"
             android:text="确定  "
-            android:textColor="#cdcdcd" />
+            android:textColor="#cdcdcd"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 

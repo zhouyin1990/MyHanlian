@@ -1,4 +1,4 @@
-package com.example.fragment;
+package com.example.hanlian.Fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,15 +14,27 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -39,22 +51,16 @@ import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import DetailsModle.CMOTHER;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RelativeLayout.LayoutParams;
 import utils.CardGoodsInfo;
 import utils.DButils;
 import utils.OnCheckChangeListener1;
@@ -63,12 +69,6 @@ import utils.OnNumberChangeListener2;
 import utils.OnTotalPriceChangeListener;
 import utils.TCHConstants;
 import utils.Utils;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 购物车
@@ -95,6 +95,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	int pageNum=1 ;
 	int pageSize= 0 ;
 	private tuijianAdapter tuijianAdapter;
+
 
 	public ShoppingCartFragment() {
 	}
@@ -132,14 +133,23 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		isSelectAll = false;
 		select_all.setChecked(false);
 	}
-	
-	private void intidata1() {
+    //TODO 解决在购物车进入推荐商品 详情页加入购物车返回后不能实时显示(需要切换界面才能显示)
+	@Override
+    public void onResume() {
+        super.onResume();
+		List<CardGoodsInfo> list1 = DButils.query();
+		infolist.clear();
+		infolist.addAll(list1);
+		cardAdapter.notifyDataSetChanged();
+	}
+
+    private void intidata1() {
 		pageSize +=10 ;
 		Map<String, String> params =new HashMap<String, String>();
 		params.put("type", 0+"");
-		params.put("classifyID",0+"" );
+		params.put("classifyID",0+"");
 		params.put("pageNum",  pageNum+"");
-		params.put("pageSize",pageSize+"" );
+		params.put("pageSize",pageSize+"");
 		
 		HTTPUtils.get(getContext(), TCHConstants.url.QueryPromotionData, params, new ResponseListener() {
 			
@@ -174,8 +184,9 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		
 		infolist.clear();
 		infolist.addAll(list);
-		
+
 		cardAdapter.notifyDataSetChanged();
+
 		intidata1();//推荐
 	}
 	// TODO 数据排序
@@ -300,7 +311,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				isSelectAll = true;
 				
 				if (isChecked) {
-
+					buttonView.setBackgroundDrawable(getResources().getDrawable(R.drawable.checked));
 					if (infolist.size() != 0) {
 						for (int i = 0; i < infolist.size(); i++) {
 							infolist.get(i).setIscheck(true);
@@ -308,7 +319,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 
 					}
 				} else {
-
+					buttonView.setBackgroundDrawable(getResources().getDrawable(R.drawable.uncheck));
 					for (int i = 0; i < infolist.size(); i++) {
 						infolist.get(i).setIscheck(false);
 					}
@@ -379,7 +390,6 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				allcouts += num;
 				tv_count.setText("共" + allcouts + "件");
 				Log.e("num", num + "");
-//				Log.e("allcouts", allcouts + "");
 			}
 
 		});
@@ -414,10 +424,6 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("token", token);// TODO
 			params.put("goodsjson", object4.toString());// json
-			params.put("source", "1");// 手机端
-			params.put("paytype", "1");// 支付方式
-										// 暂时写1
-										// 支付宝
 
 			HTTPUtils.post(getContext(), TCHConstants.url.SUBMITORDER,
 					params, new ResponseListener() {
@@ -430,7 +436,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 								if (errocode == 0) {
 									Toast.makeText(getContext(), "购物车提交订单",
 											Toast.LENGTH_SHORT).show();
-									//TODO 支付成功后做什么
+									//TODO
 									for (int i = 0; i < infolist.size(); i++) {
 										boolean ischeck = infolist.get(i).isIscheck();
 										if(ischeck){
@@ -465,9 +471,11 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	class CardAdapter extends BaseAdapter {
 		
 		private OnNumberChangeListener2 numchangelistener;
+
 		public void setOnNumberChangeListener(OnNumberChangeListener2 onNumberChangeListener) {
 			this.numchangelistener = onNumberChangeListener;
 		}
+
 		private OnTotalPriceChangeListener ontotalpricechangelistener;
 
 		public void setOntotalpricechangelistener(OnTotalPriceChangeListener ontotalpricechangelistener) {
@@ -477,7 +485,6 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View view = null;
 			ViewHold hold = null;
-			
 			if (convertView == null) {
 				hold = new ViewHold();
 				view = mInflater.inflate(R.layout.item_cart, null);
@@ -498,7 +505,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			final CardGoodsInfo goodsInfo = infolist.get(position);
 			
 			hold.name.setText(goodsInfo.getTitle());
-			hold.price.setText("¥" + goodsInfo.getTotalprice());
+			hold.price.setText("¥"+ goodsInfo.getTotalprice());
 			hold.number.setText(goodsInfo.getCount() + "");
 			hold.checkBox.setChecked(goodsInfo.isIscheck());
 			
@@ -690,7 +697,9 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		tv_goods_code = (TextView) view.findViewById(R.id.tv_goods_code);
 		tv_sure = (TextView) view.findViewById(R.id.tv_sure);
 		tv_totalprice = (TextView) view.findViewById(R.id.tv_totalprice);
+
 		view.findViewById(R.id.pop_confirm).setOnClickListener(this);
+
 		ImageView image_close = (ImageView) view.findViewById(R.id.image_close);
 		image_close.setOnClickListener(new OnClickListener() {
 
@@ -745,7 +754,6 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			}
 		});
 	}
-	
 	// 颜色适配器
 	class ColorAdapter extends BaseAdapter {
 		private OnCheckChangeListener1 oncheckchangelistener;
@@ -878,7 +886,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			this.onNumberChangeListener = onNumberChangeListener;
 		}
 
-		class Holder extends android.support.v7.widget.RecyclerView.ViewHolder {
+		class Holder extends RecyclerView.ViewHolder {
 
 			private TextView tv_size, tv_jian, tv_jia;
 			private TextView et_count;
@@ -1073,7 +1081,5 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		}
 		
 	}
-	
-	
-	
+
 }

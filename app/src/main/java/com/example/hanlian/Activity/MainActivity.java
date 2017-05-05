@@ -9,18 +9,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.fragment.FireElementFragment;
-import com.example.fragment.HomeFragment;
-import com.example.fragment.NewFragment;
-import com.example.fragment.ShoppingCartFragment;
-import com.example.fragment.UserFragment;
+import com.example.hanlian.Fragment.FireElementFragment;
+import com.example.hanlian.Fragment.HomeFragment;
+import com.example.hanlian.Fragment.NewFragment;
+import com.example.hanlian.Fragment.ShoppingCartFragment;
+import com.example.hanlian.Fragment.UserFragment;
 import com.example.hanlian.R;
 import com.umeng.message.PushAgent;
 
 public class MainActivity extends FragmentActivity {
 	
 	private FragmentTabHost mTabHost;
-	//String letters[] = new String[] { "simple", "contacts", "custom", "throttle" };
 	String indicatorLetter[] = new String[] { "首页", "热门","新品" ,"购物车", "我的" };
 	Class clas[] =new Class[]{HomeFragment.class ,FireElementFragment.class , NewFragment.class ,ShoppingCartFragment.class ,UserFragment.class };
 	int images[] =new int [] {R.drawable.home_selector ,R.drawable.fire_element_selector ,R.drawable.new_selector ,
