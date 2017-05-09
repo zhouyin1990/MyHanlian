@@ -10,10 +10,7 @@
     <string name="newpassword">新密码</string>
     <string name="confimpassword">确认密码</string>
     <string name="order">提交</string>
-
-
-
-
+    <string name="ordertotal">订单总额：¥</string>
     <color name="indicator_selected">#ff0000</color>
     <color name="indicator_normal">#cdcdcd</color>
 
@@ -31,6 +28,7 @@
     <string name="title_activity_tuihuanhuo">TuihuanhuoActivity</string>
     <string name="cancel">取消</string>
     <string name="sure">确定</string>
+    <string name="confimpay">确认支付</string>
     <string name="title_activity_goods_sort">GoodsSortActivity</string>
     <string name="title_activity_goods_sort_detail">GoodsSortDetail</string>
     <string name="title_activity_confim">ConfimActivity</string>

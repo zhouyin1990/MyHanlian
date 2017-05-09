@@ -54,7 +54,6 @@ public class CollectionActivity extends Activity implements OnClickListener {
 	private TextView mtv_store;
 	private ImageView mTV_back;
 	private JSONArray goodsList = new JSONArray();
-	private String token;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +80,16 @@ public class CollectionActivity extends Activity implements OnClickListener {
 	//
 	// }
 
-	// 参数上传
+
 	private void intidata() {
 
 					// 查询收藏
 		pageSize += 10;
-		token = TCHConstants.url.token;
 		Map<String, String> parms = new HashMap<String, String>();
 					Intent intent = getIntent();
 					parms.put("pageNum", pageNum + "");
 					parms.put("pageSize", pageSize + "");
-					parms.put("token", token);
+					parms.put("token", TCHConstants.url.token);
 					// TODO
 					HTTPUtils.get(CollectionActivity.this, TCHConstants.url.QueryMyCollectionurl, parms,
 							new ResponseListener() {
@@ -174,7 +172,7 @@ public class CollectionActivity extends Activity implements OnClickListener {
 
 
 			parm.put("goodsid", cmgoodsid);
-			parm.put("token", token);
+			parm.put("token", TCHConstants.url.token);
 		}
 
 		// 删除收藏
@@ -185,24 +183,19 @@ public class CollectionActivity extends Activity implements OnClickListener {
 					public void onResponse(String arg0) {
 						Deltecollection Deltejson = GsonUtils.parseJSON(arg0, Deltecollection.class);
 						Integer errorCode2 = Deltejson.getErrorCode();
+						String token = Deltejson.getToken();
+						TCHConstants.url.token=token;
+
 						if (errorCode2 == 0) {
-
 							intidata();
-
 							Toast.makeText(CollectionActivity.this,"取消收藏", Toast.LENGTH_SHORT).show();
 						}
 					}
-
 					@Override
 					public void onErrorResponse(VolleyError arg0) {
 
 					}
 				});
-
-
-
-
-
 	}
 
 //	private void DelMyCollection() {

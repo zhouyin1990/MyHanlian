@@ -76,6 +76,10 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
                 // TODO Auto-generated method stub
                 Shouhoushenqing shouhoujson = GsonUtils.parseJSON(arg0, Shouhoushenqing.class);
                 errorCode2 = shouhoujson.getErrorCode();
+                String token = shouhoujson.getToken();
+                TCHConstants.url.token=token;
+                Toast.makeText(TuihuanhuoActivity.this,
+                        "token == " + token, Toast.LENGTH_SHORT).show();
                 if (errorCode2 == 0) {
                     List<Result> result = shouhoujson.getResult();
                     if (result != null && result.size() != 0) {

@@ -9,7 +9,7 @@ public class Deltecollection {
     @Expose
     private Object ErrorMsg;
     @Expose
-    private Object Token;
+    private String Token;
     @Expose
     private Integer PageNum;
     @Expose
@@ -56,7 +56,7 @@ public class Deltecollection {
      * @return
      *     The Token
      */
-    public Object getToken() {
+    public String getToken() {
         return Token;
     }
 
@@ -65,7 +65,7 @@ public class Deltecollection {
      * @param Token
      *     The Token
      */
-    public void setToken(Object Token) {
+    public void setToken(String Token) {
         this.Token = Token;
     }
 

@@ -74,17 +74,13 @@ public class UserFragment extends Fragment implements OnClickListener{
 	        if (parent!=null){	        	
 	          parent.removeAllViewsInLayout();
 	        }
-			
 		}
-		
 		return layout;
 	}					
 
 	private void intidata() {
 
 
-
-		
 		intidouxiangjifen(); // 头像积分
 		
 	}	
@@ -95,15 +91,13 @@ public class UserFragment extends Fragment implements OnClickListener{
 	private void intidouxiangjifen() {		
 	    // 刷新token
 					Map<String, String> parms = new HashMap<String, String>();
-					String token = TCHConstants.url.token;
-					parms.put("token", token);
+					parms.put("token", TCHConstants.url.token);
 					HTTPUtils.get(getContext(), TCHConstants.url.QueryMyInformationurl, parms ,new ResponseListener() {
 						@Override
 						public void onResponse(String arg0) {
 							Log.e("arg0",arg0+"");
 							personinfo personinfo = new Gson().fromJson(arg0, personinfo.class);
 							String token1 = personinfo.getToken();
-
 							TCHConstants.url.token=token1;
 							//personinfo personinfo = GsonUtils.parseJSON(arg0,personinfo.class);
 							com.example.hanlian.DateModel.personinfo.ResultBean
@@ -119,7 +113,7 @@ public class UserFragment extends Fragment implements OnClickListener{
 //								JSONObject jsonResult = new JSONObject(arg0.toString()).getJSONObject("Result");
 //								String cm_shopname1 = jsonResult.getString("CM_SHOPNAME");
 //								int cm_integral1 = jsonResult.getInt("CM_INTEGRAL");
-////								jsonResult.getString()
+//								jsonResult.getString()
 //								tv_jifen.setText(""+cm_integral1);
 //
 //							} catch (JSONException e) {
@@ -130,6 +124,9 @@ public class UserFragment extends Fragment implements OnClickListener{
 							shopname.setText("店铺名:"+cm_shopname);
 
 							tv_usename.setText("用户名:"+cm_name);
+
+							tv_adress1.setText(cm_shopeaddress);
+
 						}
 						@Override
 						public void onErrorResponse(VolleyError arg0) {

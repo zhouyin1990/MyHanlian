@@ -318,7 +318,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 					}
 				}
 			}
-
 			@Override
 			public void onErrorResponse(VolleyError arg0) {
 			}
@@ -354,7 +353,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 		re_kinds = (RelativeLayout) findViewById(R.id.re_kinds);
 		re_kinds.setOnClickListener(this);
 
-		// 直接购买
+		//直接购买
 		TextView tv_pay = (TextView) findViewById(R.id.tv_pay);
 		tv_pay.setOnClickListener(this);
 		// 加入购物车
@@ -477,7 +476,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 				hold = (ViewHolder) layout.getTag();
 			}
 
-			//TODO
 			if (splits.length != 0) {
 				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + splits[position], hold.image_goods, MyApplication.options);
 				//ImageLoader.getInstance().displayImage(TCHConstants.url.detailimgurl +split3[position] , hold.image_goods, MyApplication.options);
@@ -651,28 +649,21 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-
 				number ++;
-
 			}
-
 			JSONArray array2 = new JSONArray();
-
 			JSONObject object2 = new JSONObject();
 			try {
 				object2.put("CM_SELLERID", resultList.get(0).getCMSELLERID());
 				object2.put("GOODSID", resultList.get(0).getCMGOODSID());
 				object2.put("GOODSDETAILS", array);
 				array2.put(0, object2);
-
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-
 			JSONObject object3 = new JSONObject();
 			try {
 				object3.put("GOODSLIST", array2);
-
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -685,7 +676,8 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			cardGoodsInfo.setShoppingName(cmsellername);
 			cardGoodsInfo.setTotalprice(toalcount * cmsales);
 			cardGoodsInfo.setCount(toalcount);
-			cardGoodsInfo.setGOODSLIST(object3);
+			cardGoodsInfo.setGOODSLIST(object3.toString());
+			Log.e("cardGoodsInfo",cardGoodsInfo.toString());
 
 			DButils.insert(cardGoodsInfo);
 			Toast.makeText(GoodsDetailActivity.this, "成功添加购物车", Toast.LENGTH_SHORT).show();
@@ -743,7 +735,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 
 
 //			Log.e("resultList**", resultList.get(0).toString());
-//               TODO
 //			Intent intent = new Intent(GoodsDetailActivity.this, FirmorderActivity.class);
 //			intent.setAction("action");
 //			intent.putExtra("order", object4.toString());
@@ -834,13 +825,26 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 								String token1 = object.getString("Token");
 								TCHConstants.url.token=token1;
 								String result = object.getString("Result");
+								// 截取订单号
 								String orderid = result.substring(9,27);
+								// 截取 订单金额
+								String money = result.substring(result.lastIndexOf(":") + 1, result.length() - 1);
+								TCHConstants.url.orderid=orderid;
+								TCHConstants.url.ordermoney=money;
+								Log.e("orderid=",orderid);
+								Log.e("money=",money);
+								Toast.makeText(GoodsDetailActivity.this ,"orderid=="+orderid , Toast.LENGTH_SHORT).show();
+								Toast.makeText(GoodsDetailActivity.this ,"money=="+money , Toast.LENGTH_SHORT).show();
 								//TODO 提交成功跳转到确认订单页
 								Intent intent = new Intent(GoodsDetailActivity.this, FirmorderActivity.class);
 								intent.setAction("action");
 								intent.putExtra("order", object4.toString());
 								intent.putExtra("resultList",resultList);
-								intent.putExtra("orderid",orderid);
+
+
+
+
+
 								startActivity(intent);
 
 							} else {
@@ -1013,8 +1017,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 	private View linearlayout_bottom2;
 	private String goodsid;
 	private String goodsid2;
-	String account ="80750112" ;
-	String password ="222222"; //TODO 跳过登录测试  暂时写死
 
 	// 尺寸的适配器
 	class SizeAdpeter extends RecyclerView.Adapter<SizeAdpeter.Holder> {
@@ -1139,6 +1141,19 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 							onNumberChangeListener.onNumberChange(change);
 						}
 					}
+
+					if (x == 0) {
+						change[position] = x;
+						hold.et_count.setText(x + "");
+
+						if (onNumberChangeListener != null) {
+							onNumberChangeListener.onNumberChange(change);
+						}
+					}
+
+
+
+
 
 					changeNum = 0;
 					for (int i = 0; i < change.length; i++) {
@@ -1380,91 +1395,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 		}
 	}
 
-//	private void JoinMyCollection() {
-//
-//		Intent intent = getIntent();
-//		goodsid2 = intent.getStringExtra("goodsid");
-//		HashMap<String, String> parms = new HashMap<String , String >();
-//		parms.put("account", account);
-//		parms.put("password", password);
-//		// TODO 获取测试token
-//		HTTPUtils.get(GoodsDetailActivity.this, TCHConstants.url.GETTESTTOKEN, parms, new ResponseListener() {
-//
-//			@Override
-//			public void onResponse(String arg0) {
-//
-//				TestToken parseJSON = GsonUtils.parseJSON(arg0, TestToken.class);
-//				Integer errorCode = parseJSON.getErrorCode();
-//				if(errorCode==0)
-//				{
-//					TestTkoen = parseJSON.getToken();
-//					if (!" ".equals(TestTkoen)) {
-//						Map<String, String> parms = new HashMap<String, String>();
-//						parms.put("goodsid", goodsid2.toString().trim());
-//						parms.put("token", TestTkoen);
-//						if (!islike) {
-//							HTTPUtils.get(GoodsDetailActivity.this, TCHConstants.url.JoinCollectionurl, parms,
-//									new ResponseListener() {
-//										@Override
-//										public void onResponse(String arg0) {
-//
-//											Joincollection joincollection = GsonUtils.parseJSON(arg0, Joincollection.class);
-//											// 收藏token作为参数传到查询收藏界面
-//											Integer errorCode = joincollection.getErrorCode();
-//											if (errorCode == 0) {
-//												if (!" ".equals(TestTkoen))
-//												{
-//													islike = true;
-//													image_collection.setImageResource(R.drawable.like);
-//													Toast.makeText(GoodsDetailActivity.this, "已收藏", Toast.LENGTH_SHORT).show();
-//												}
-//											} else
-//											{
-//
-//											}
-//										}
-//										@Override
-//										public void onErrorResponse(VolleyError arg0) {
-//
-//										}
-//									});
-//						} else {
-//							Map<String, String> parm = new HashMap<String, String>();
-//							parm.put("goodsid",goodsid.toString().trim());
-//							parm.put("token",token1);
-//
-//							// 取消收藏
-//							HTTPUtils.get(GoodsDetailActivity.this, TCHConstants.url.DelMyCollectionurl, parm,
-//									new ResponseListener() {
-//
-//										@Override
-//										public void onResponse(String arg0) {
-//											Deltecollection Deltejson = GsonUtils.parseJSON(arg0, Deltecollection.class);
-//											Integer errorCode2 = Deltejson.getErrorCode();
-//											if(errorCode2==0)
-//											{
-//												islike=false ;
-//												image_collection.setImageResource(R.drawable.unlike);
-//												Toast.makeText(GoodsDetailActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
-//											}
-//										}
-//										@Override
-//										public void onErrorResponse(VolleyError arg0) {
-//
-//										}
-//									});
-//						}
-//					}
-//				}
-//
-//			}
-//
-//			@Override
-//			public void onErrorResponse(VolleyError arg0) {
-//
-//			}
-//		});
-//	}
+
 
     private  void  Joincollection() {
 		Intent intent = getIntent();
@@ -1520,7 +1451,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 									Toast.makeText(GoodsDetailActivity.this, "取消收藏", Toast.LENGTH_SHORT).show();
 								}
 							}
-
 							@Override
 							public void onErrorResponse(VolleyError arg0) {
 

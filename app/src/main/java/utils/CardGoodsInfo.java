@@ -38,42 +38,52 @@ public class CardGoodsInfo extends Model implements Serializable, Cloneable{
 	public void setZongjia(int zongjia) {
 		Zongjia = zongjia;
 	}
+//	@Column
+//	JSONObject GOODSLIST;
 	@Column
-	JSONObject GOODSLIST;
+	String GOODSLIST;
+
+	@Override
+	public CardGoodsInfo clone()
+	{
+		try
+		{
+			return (CardGoodsInfo) super.clone();
+		} catch (CloneNotSupportedException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 
 //	@Override
-//	public CardGoodsInfo clone()
+//	public  CardGoodsInfo clone()
 //	{
-//		try
-//		{
+//		try {
 //			return (CardGoodsInfo) super.clone();
-//		} catch (CloneNotSupportedException e)
-//		{
+//		} catch (CloneNotSupportedException e) {
 //			e.printStackTrace();
 //		}
-//		return null;
+//		return  null ;
 //	}
 
+//	public JSONObject getGOODSLIST() {
+//		return GOODSLIST;
+//	}
+//
+//	public void setGOODSLIST(JSONObject gOODSLIST) {
+//		GOODSLIST = gOODSLIST;
+//	}
 
-	@Override
-	public  CardGoodsInfo clone()
-	{
-		try {
-			return (CardGoodsInfo) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return  null ;
-	}
-
-	public JSONObject getGOODSLIST() {
+	public String getGOODSLIST() {
 		return GOODSLIST;
 	}
 
-	public void setGOODSLIST(JSONObject gOODSLIST) {
+	public void setGOODSLIST(String gOODSLIST) {
 		GOODSLIST = gOODSLIST;
 	}
+
 
 	public String getTitle() {
 		return title;
@@ -138,5 +148,22 @@ public class CardGoodsInfo extends Model implements Serializable, Cloneable{
 
 	public void setIscheck(boolean ischeck) {
 		this.ischeck = ischeck;
+	}
+
+
+	@Override
+	public String toString() {
+		return "CardGoodsInfo{" +
+				"title='" + title + '\'' +
+				", ImgURL='" + ImgURL + '\'' +
+				", totalprice=" + totalprice +
+				", goodsid='" + goodsid + '\'' +
+				", count=" + count +
+				", shoppingName='" + shoppingName + '\'' +
+				", shoppingID='" + shoppingID + '\'' +
+				", ischeck=" + ischeck +
+				", Zongjia=" + Zongjia +
+				", GOODSLIST=" + GOODSLIST +
+				'}';
 	}
 }

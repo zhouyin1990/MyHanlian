@@ -80,8 +80,8 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 		String cm_shopeaddress = sp.getString("cm_shopeaddress","");
 		String cm_phone = sp.getString("cm_phone","");
 		String cm_name = sp.getString("cm_name", "");
-        tv_adress.setText(cm_shopeaddress);
-        tv_phone.setText(cm_phone);
+		tv_adress.setText(cm_shopeaddress);
+		tv_phone.setText(cm_phone);
 		tv_shouhuoname.setText(cm_name);
 
 		try {
@@ -119,7 +119,7 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 						specList.add(new productSpec(color, size, number));
 					}
 				}
-		}
+			}
 
 			myAdapter.notifyDataSetChanged();
 
@@ -358,7 +358,9 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 				finish();
 				break;
 			case R.id.tv_jiesuan:
-			//todo  跳到支付宝支付
+				//todo  跳到支付页面
+				Intent intent=new Intent(FirmorderActivity.this ,PayActivity.class);
+				startActivity(intent);
 				break;
 
 			default:

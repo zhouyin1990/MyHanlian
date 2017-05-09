@@ -93,7 +93,7 @@ public class AllOrderActivity extends Activity implements OnClickListener {
 						   AllOrders allorderjson = GsonUtils.parseJSON(arg0, AllOrders.class);
 						   
 						   Integer errorCode2 = allorderjson.getErrorCode();
-						   Toast.makeText(AllOrderActivity.this, "errorCode2"+errorCode2, Toast.LENGTH_SHORT).show();
+						   Toast.makeText(AllOrderActivity.this, "errorCode=="+errorCode2, Toast.LENGTH_SHORT).show();
 						   if( errorCode2==0)
 						   {
 							   List<Result> result = allorderjson.getResult();

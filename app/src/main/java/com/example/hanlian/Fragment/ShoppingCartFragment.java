@@ -51,6 +51,7 @@ import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,7 +81,6 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	private View layout;
 	private MyListview listView_card;
 	private CardAdapter cardAdapter;
-	private boolean isFirst;
 	private CheckBox select_all;
 	private boolean isSelectAll;
 	private TextView tv_count;
@@ -95,6 +95,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	int pageNum=1 ;
 	int pageSize= 0 ;
 	private tuijianAdapter tuijianAdapter;
+	private boolean isFirst;
 
 
 	public ShoppingCartFragment() {
@@ -109,8 +110,8 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			initUI();
 			initData();
 			
-			Log.e("数量", allcouts + "");
-			Log.e("价格", allprice + "");
+			Log.e("数量==", allcouts + "");
+			Log.e("价格==", allprice + "");
 
 //		} else {
 //			ViewGroup parent = (ViewGroup) layout.getParent();
@@ -132,12 +133,22 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		allprice = 0;
 		isSelectAll = false;
 		select_all.setChecked(false);
+		cardAdapter.notifyDataSetChanged();
+		
 	}
     //TODO 解决在购物车进入推荐商品 详情页加入购物车返回后不能实时显示(需要切换界面才能显示)
 	@Override
     public void onResume() {
         super.onResume();
+        isFirst = true;
+        allcouts = 0;
+		allprice = 0;
+		isSelectAll = false;
+		select_all.setChecked(false);
 		List<CardGoodsInfo> list1 = DButils.query();
+
+
+
 		infolist.clear();
 		infolist.addAll(list1);
 		cardAdapter.notifyDataSetChanged();
@@ -180,6 +191,11 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 
 	private void initData() {
 		List<CardGoodsInfo> list = DButils.query();
+
+	//	JSONObject goodslist = list.get(0).getGOODSLIST();
+
+	//	Log.e("goodslist==",goodslist.toString());
+
 		sortData(list);
 		
 		infolist.clear();
@@ -259,41 +275,14 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 					try {
 						object4.put("INTEGRAL", 0);
 						object4.put("ORDERS", array3);
-						Map<String, String> params = new HashMap<String, String>();
-						params.put("account", "111111");
-						params.put("password", "222222");
-
-						HTTPUtils.get(getContext(), TCHConstants.url.GETTESTTOKEN, params,
-								new ResponseListener() {
-									@Override
-									public void onResponse(String arg0) {
-										try {
-											JSONObject object = new JSONObject(arg0);
-											int errocode = object.getInt("ErrorCode");
-											if (errocode == 0) {
-												String token = object.getString("Token");
-												//获取token和json后提交
-												submitOrder(object4, token);
-											}
-
-										} catch (JSONException e) {
-											e.printStackTrace();
-										}
-
-									}
-
-									@Override
-									public void onErrorResponse(VolleyError arg0) {
-
-									}
-								});
+						submitOrder(object4, TCHConstants.url.token);
 
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}else{
 					Toast.makeText(getContext(), "请选择商品", Toast.LENGTH_SHORT).show();
-				}				
+				}
 			}
 		});
 
@@ -353,18 +342,18 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		// set creator
 		listView_card.setMenuCreator(creator);
 
-		listView_card.setOnItemClickListener(new OnItemClickListener() {
-                     // 跳转到详情
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// TODO
-				CardGoodsInfo cardGoodsInfo = infolist.get(position);
-				String goodsid = cardGoodsInfo.getGoodsid();
-				Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
-				intent.putExtra("goodsid", goodsid);
-				startActivity(intent);
-			}
-		});
+//		listView_card.setOnItemClickListener(new OnItemClickListener() {
+//                     // 跳转到详情
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				// TODO
+//				CardGoodsInfo cardGoodsInfo = infolist.get(position);
+//				String goodsid = cardGoodsInfo.getGoodsid();
+//				Intent intent = new Intent(getContext(), GoodsDetailActivity.class);
+//				intent.putExtra("goodsid", goodsid);
+//				startActivity(intent);
+//			}
+//		});
 
 		listView_card.setOnMenuItemClickListener(new MyListview.OnMenuItemClickListener() {
 			@Override
@@ -403,9 +392,6 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 //				Log.e("allprice", allprice + "");
 			}
 		});
-		
-		
-		
          tuijian_gv = (GridView) layout.findViewById(R.id.shopcar_gridview);
 		
 		 tuijian_gv.setOnItemClickListener(new OnItemClickListener() {
@@ -501,7 +487,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				view = convertView;
 				hold = (ViewHold)view.getTag();
 			}
-
+			
 			final CardGoodsInfo goodsInfo = infolist.get(position);
 			
 			hold.name.setText(goodsInfo.getTitle());
@@ -575,6 +561,13 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			
 			isSelectAll = false;
 			
+			// 重新进入界面时归零
+			if(isFirst){
+				numchangelistener.onNumberChange(0);
+				ontotalpricechangelistener.TotalPriceChange(0);
+				isFirst = false;
+			}
+			
 			return view;
 		}
 
@@ -605,7 +598,11 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		RelativeLayout relative;
 		ImageView imageChange;
 	}
-	
+
+
+
+
+
 	
 	class tuijianAdapter extends  BaseAdapter
 	{
@@ -627,10 +624,10 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			
+
 			viewHolder holder = null;
-   			View layout = null;			
-   			if(convertView==null)
+			View layout = null;
+			if(convertView==null)
    			{
    				holder = new viewHolder();		
    			    layout = mInflater.inflate(R.layout.tuijian_gridview_item, null); // 复用 hot gv item

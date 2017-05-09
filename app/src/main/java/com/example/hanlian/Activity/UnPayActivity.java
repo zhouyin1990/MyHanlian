@@ -34,8 +34,6 @@ import utils.TCHConstants;
 
 public class UnPayActivity extends Activity implements OnClickListener{
 
-	String account ="111111" ;
-    String password ="222222";
     private int pageNum = 1;
     private int pageSize = 0;; 
     private DisplayImageOptions options;

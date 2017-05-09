@@ -121,6 +121,10 @@ public class ForgetPassWordActivity extends AppCompatActivity {
 
                             JSONObject jsonObject = new JSONObject(s);
                             int errcode = jsonObject.getInt("ErrorCode");
+                            String token1 = jsonObject.getString("Token");
+                            TCHConstants.url.token=token1 ;
+
+
                             if (errcode == 0) {
                                 showAlertView2("修改成功");
                             } else {
