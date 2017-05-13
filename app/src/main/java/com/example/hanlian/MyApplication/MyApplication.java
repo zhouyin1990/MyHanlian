@@ -14,8 +14,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.PushAgent;
 import com.xinbo.app.BaseApp;
 
 import utils.CardGoodsInfo;
@@ -38,22 +36,22 @@ public class MyApplication extends Application{
 		initializeDB();
 
 
-		PushAgent mPushAgent = PushAgent.getInstance(this);
-		//注册推送服务，每次调用register方法都会回调该接口
-		mPushAgent.register(new IUmengRegisterCallback() {
-
-		    @Override
-		    public void onSuccess(String deviceToken) {
-		        //注册成功会返回device token
-		    	Log.e("deviceToken" , deviceToken);
-
-		    }
-
-		    @Override
-		    public void onFailure(String s, String s1) {
-		    	Log.e("deviceToken" , s);
-		    }
-		});		
+//		PushAgent mPushAgent = PushAgent.getInstance(this);
+//		//注册推送服务，每次调用register方法都会回调该接口
+//		mPushAgent.register(new IUmengRegisterCallback() {
+//
+//		    @Override
+//		    public void onSuccess(String deviceToken) {
+//		        //注册成功会返回device token
+//		    	Log.e("deviceToken" , deviceToken);
+//
+//		    }
+//
+//		    @Override
+//		    public void onFailure(String s, String s1) {
+//		    	Log.e("deviceToken" , s);
+//		    }
+//		});
 		options = new DisplayImageOptions.Builder() 
 				.showImageOnLoading(R.drawable.err)
 				// 设置图片在下载期间显示的默认图片

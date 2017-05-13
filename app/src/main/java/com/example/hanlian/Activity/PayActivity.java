@@ -2,6 +2,7 @@ package com.example.hanlian.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.hanlian.R;
+import com.example.hanlian.alipay.PayUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,16 +43,19 @@ public class PayActivity extends AppCompatActivity {
                 break;
             case R.id.confim_pay:
                 aliipay();
-                wechatpay();
                 break;
         }
     }
-
-    private void wechatpay() {
-
-    }
-
     private void aliipay() {
+    //// TODO: 2017/5/10 待传 orderid
+        PayUtil payUtil = new PayUtil(PayActivity.this, "", new PayUtil.CallbackListener() {
+            @Override
+            public void updateOrderState() {
+                Log.e("支付成功", "支付成功后执行");
+            }
+        });
+
+        payUtil.pay();
 
     }
 }

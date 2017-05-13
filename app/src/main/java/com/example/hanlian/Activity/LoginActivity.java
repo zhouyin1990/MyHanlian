@@ -7,6 +7,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,10 +20,12 @@ import com.example.hanlian.DateModel.DetailBean;
 import com.example.hanlian.DateModel.LoginModel;
 import com.example.hanlian.R;
 import com.google.gson.Gson;
-import com.umeng.message.PushAgent;
+//import com.umeng.message.PushAgent;
 import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import loginModel.Login;
+import okhttp3.Call;
 import utils.CountDownButtonHelper;
 import utils.CountDownButtonHelper.OnFinishListener;
 import utils.TCHConstants;
@@ -50,7 +54,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		intiUi();		
 	}	
 	private void intiUi() {
@@ -90,11 +94,11 @@ public class LoginActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.btn_login: //登录
 		     login();
-//			startActivity(new Intent(LoginActivity.this,MainActivity.class));  
+//			startActivity(new Intent(LoginActivity.this,MainActivity.class));
 //			finish();
 			break;
 		case R.id.ed_phNum: //手机验证是否符合规则
-			String strnumber = srphone.getText().toString();						
+			String strnumber = srphone.getText().toString();
 			break;
 		case R.id.tv_wangjimima :
 			 Intent intent10= new Intent(LoginActivity.this, FindPassWordActivity.class);
@@ -120,31 +124,42 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 	private void getCode() {
 		//获取验证码
-		String phNum = srphone.getText().toString().trim();	
-		String url = TCHConstants.url.getcode + phNum;		
-		HTTPUtils.get(this, url,new ResponseListener() {
-			
-			@Override
-			public void onResponse(String arg0) {
-				Login codeResult = GsonUtils.parseJSON(arg0, Login.class);
-				Integer errorCode = codeResult.getErrorCode();				
-				if( errorCode == 0){
-					//获取成功
-					Toast.makeText(LoginActivity.this, "验证码获取成功，请注意查收短信", Toast.LENGTH_SHORT).show();
-				}else{
-					//验证码获取失败
-					Toast.makeText(LoginActivity.this, "验证码获取失败", Toast.LENGTH_SHORT).show();
-				}
-			}			
-			@Override
-			public void onErrorResponse(VolleyError arg0){
+		String phNum = srphone.getText().toString().trim();
 
-			}
-		});
-		
-		
+        OkHttpUtils.get().addParams("phone",phNum).url(TCHConstants.url.getcode).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+
+                Log.e("response==",response);
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString());
+
+                    int errorCode = jsonObject.getInt("ErrorCode");
+                    if (errorCode==0)
+                    {
+                        //获取成功
+                        Toast.makeText(LoginActivity.this, "验证码获取成功，请注意查收短信", Toast.LENGTH_SHORT).show();
+
+                    }else
+                    {
+                        Toast.makeText(LoginActivity.this, "验证码获取失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 	}
-	
+
 
 	private void login() //登录
 	{				
@@ -205,10 +220,16 @@ public class LoginActivity extends Activity implements OnClickListener{
 					SharedPreferences sp = getSharedPreferences("登录", 1);
 					Editor editor = sp.edit();
 					editor.putString("success", "登录成功");
-					//保存用户名，密码,验证码
-					//editor.putString("username", usrname);
+					//保存用户名，
+					editor.putString("username", usrname);
+					editor.putString("phone", phone);
+
+
+
 
 					editor.putString("cm_shopeaddress",cm_shopeaddress);
+
+
 
                     editor.putString("cm_name",cm_name);
 					editor.putString("cm_phone",""+cm_phone);
@@ -229,7 +250,5 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 	}
 
-
-	
 }
 

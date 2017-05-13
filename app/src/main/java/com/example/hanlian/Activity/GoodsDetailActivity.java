@@ -12,12 +12,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.hanlian.Fragment.BannerItemFragment;
 import com.example.hanlian.MyApplication.MyApplication;
 import com.example.hanlian.R;
 import com.example.widget.MyView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.message.PushAgent;
 import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
@@ -29,6 +31,7 @@ import DetailsModle.Details;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -41,6 +44,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -119,12 +123,15 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 	private boolean isChangeJian;// 减
 	private SizeAdpeter sizeAdpeter;
 	private JSONObject object;
+//	存放详情图片地址
+	private   ArrayList<String> arrayList = new ArrayList<>();
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goods_detail);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		initUI();
 		initData();
 		iscollection1();// 进入时候判断是否收藏
@@ -171,9 +178,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 					cmfigurespath = result.getCMFIGURESPATH();
 					Integer price = result.getCMPRESENTPRICE();
 					Integer salesnumber = result.getCMSALES();
-
-
-
 					String cmtitle = result.getCMTITLE();
 					List<CMOTHER> cmother = result.getCMOTHER();
 					cmotherlist.addAll(cmother);
@@ -182,7 +186,25 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 					splits = cmfigurespath.split("\\|"); //分割图片
 					String cmhtml = result.getCMHTML();
 
-					Log.e("cm_chtml",cmhtml);
+					Log.e("cm_chtml",cmhtml+"");
+
+					if(cmhtml!=null)
+					{
+						String[] detailsplit = cmhtml.split("\"");
+						for (int i = 0; i < detailsplit.length; i++) {
+							if (detailsplit[i].length() > 25) {
+								arrayList.add(detailsplit[i]);
+							}
+						}
+
+					}
+
+					Log.e("arrayListsize==",arrayList.size()+"");
+
+
+
+
+
 
 					splitslist.clear();
 					splitslist.add(splits);
@@ -322,8 +344,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			public void onErrorResponse(VolleyError arg0) {
 			}
 		});
-
-
 	}
 
 	private void initUI() {
@@ -476,19 +496,41 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 				hold = (ViewHolder) layout.getTag();
 			}
 
-			if (splits.length != 0) {
-				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + splits[position], hold.image_goods, MyApplication.options);
+			if (arrayList.size() != 0) {
+//				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + splits[position], hold.image_goods, MyApplication.options);
 				//ImageLoader.getInstance().displayImage(TCHConstants.url.detailimgurl +split3[position] , hold.image_goods, MyApplication.options);
+				if(!TextUtils.isEmpty(arrayList.get(position)))
+				{
+//					ImageLoader.getInstance().displayImage(arrayList.get(position), hold.image_goods, MyApplication.options);
+
+					Glide.with(GoodsDetailActivity.this).load(arrayList.get(position)).dontAnimate().placeholder(R.drawable.ic_empty);
+				}
+
+
+
+				final ViewHolder finalHold = hold;
+				Glide.with(GoodsDetailActivity.this).load(arrayList.get(position)).asBitmap().into(new SimpleTarget<Bitmap>() {
+					@Override
+					public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+						finalHold.image_goods.setImageBitmap(resource);
+					}
+
+					@Override
+					public void onLoadFailed(Exception e, Drawable errorDrawable) {
+						super.onLoadFailed(e, errorDrawable);
+//						LogUtil.e("LLpp:加载失败："+resultBean.pic+" title:"+resultBean.title);
+						finalHold.image_goods.setVisibility(View.GONE);
+					}
+				});
 
 			}
-
 			return layout;
 		}
 
 		@Override
 		public int getCount() {
 			// TODO1
-			return splits.length;
+			return  arrayList.size();
 		}
 
 
@@ -677,7 +719,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			cardGoodsInfo.setTotalprice(toalcount * cmsales);
 			cardGoodsInfo.setCount(toalcount);
 			cardGoodsInfo.setGOODSLIST(object3.toString());
-			Log.e("cardGoodsInfo",cardGoodsInfo.toString());
+			Log.e("cardGoodsInfo==",cardGoodsInfo.toString());
 
 			DButils.insert(cardGoodsInfo);
 			Toast.makeText(GoodsDetailActivity.this, "成功添加购物车", Toast.LENGTH_SHORT).show();
@@ -753,7 +795,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 		for (int i = 0; i < cmidlist.size(); i++) {
 
 			JSONObject object = new JSONObject();
-
 			try {
 				object.put("GOODSDETAILSID", cmidlist.get(i));
 				object.put("SPEC_NUMBER", strlistData.get(i));
@@ -820,31 +861,25 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 							JSONObject object = new JSONObject(arg0);
 							int errocode = object.getInt("ErrorCode");
 							if (errocode == 0) {
-								Toast.makeText(GoodsDetailActivity.this, "提交成功",
-										Toast.LENGTH_SHORT).show();
+
 								String token1 = object.getString("Token");
 								TCHConstants.url.token=token1;
 								String result = object.getString("Result");
 								// 截取订单号
-								String orderid = result.substring(9,27);
+//								String orderid = result.substring(9,27);
+								String orderid =result.substring(result.indexOf(":")+1,result.indexOf(","));
+
 								// 截取 订单金额
 								String money = result.substring(result.lastIndexOf(":") + 1, result.length() - 1);
 								TCHConstants.url.orderid=orderid;
 								TCHConstants.url.ordermoney=money;
 								Log.e("orderid=",orderid);
 								Log.e("money=",money);
-								Toast.makeText(GoodsDetailActivity.this ,"orderid=="+orderid , Toast.LENGTH_SHORT).show();
-								Toast.makeText(GoodsDetailActivity.this ,"money=="+money , Toast.LENGTH_SHORT).show();
 								//TODO 提交成功跳转到确认订单页
 								Intent intent = new Intent(GoodsDetailActivity.this, FirmorderActivity.class);
 								intent.setAction("action");
 								intent.putExtra("order", object4.toString());
 								intent.putExtra("resultList",resultList);
-
-
-
-
-
 								startActivity(intent);
 
 							} else {

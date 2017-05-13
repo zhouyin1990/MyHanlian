@@ -10,7 +10,7 @@
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="#F00000"
+        android:background="#ffffff"
         android:orientation="vertical" >
 
         <TextView
@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="待付款"
-            android:textColor="#FFFFFF"
             android:textSize="18sp" />
         <View
             android:id="@+id/textView11"
@@ -36,7 +35,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="24dp"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back_black" />
 
     </RelativeLayout>
     <ListView

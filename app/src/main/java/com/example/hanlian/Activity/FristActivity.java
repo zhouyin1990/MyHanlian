@@ -12,7 +12,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.example.hanlian.R;
-import com.umeng.message.PushAgent;
 
 public class FristActivity extends Activity {
 
@@ -21,7 +20,7 @@ public class FristActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frist);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		welcomeimg  = (ImageView) findViewById(R.id.Img_welcome);
 		AlphaAnimation anima = new AlphaAnimation(0.3f, 1.0f);
 		anima.setDuration(100);
@@ -54,24 +53,24 @@ public class FristActivity extends Activity {
 			public void onAnimationEnd(Animation animation) {
 				SharedPreferences sp = getSharedPreferences("登录", 1);
 				String success = sp.getString("success","");
-				if("登录成功".equals(success)){
-					//已经登录的用户 直接进入app
-					startActivity(new Intent(FristActivity.this, MainActivity.class ));
-					finish();
-				}else{
-					//未登录的用户 跳转登录页面
-					//startActivity(new Intent(FristActivity.this, MainActivity.class ));
-					startActivity(new Intent(FristActivity.this,LoginActivity.class ));
-					finish();
-				}
+//				if("登录成功".equals(success)){
+//					//已经登录的用户 直接进入app
+//					startActivity(new Intent(FristActivity.this, MainActivity.class ));
+//					finish();
+//				}else{
+//					//未登录的用户 跳转登录页面
+//					//startActivity(new Intent(FristActivity.this, MainActivity.class ));
+//					startActivity(new Intent(FristActivity.this,LoginActivity.class ));
+//					finish();
+//				}
 
-
-//				startActivity(new Intent(FristActivity.this,MainActivity.class ));
-//				finish();
+				startActivity(new Intent(FristActivity.this,LoginActivity.class ));
+				finish();
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
+
 				
 			}
 		}

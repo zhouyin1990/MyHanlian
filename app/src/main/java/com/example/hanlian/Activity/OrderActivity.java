@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.example.hanlian.R;
-import com.umeng.message.PushAgent;
 
 public class OrderActivity extends Activity {
 
@@ -12,7 +11,7 @@ public class OrderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		
 	}
 

@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.hanlian.R;
-import com.umeng.message.PushAgent;
 
 public class MoneyPagceActivity extends Activity implements OnClickListener {
 
@@ -20,7 +19,7 @@ public class MoneyPagceActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_money_pagce);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		intiUI();
 	}
 

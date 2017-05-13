@@ -40,6 +40,7 @@ import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.example.hanlian.Activity.FirmorderActivity;
 import com.example.hanlian.Activity.GoodsDetailActivity;
 import com.example.hanlian.Adapter.Result;
 import com.example.hanlian.Adapter.Tuijian;
@@ -105,13 +106,13 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.mInflater = inflater;
 //		if (layout == null) {
-			layout = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
-			// 测试数据
-			initUI();
-			initData();
-			
-			Log.e("数量==", allcouts + "");
-			Log.e("价格==", allprice + "");
+		layout = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
+		// 测试数据
+		initUI();
+		initData();
+
+		Log.e("数量==", allcouts + "");
+		Log.e("价格==", allprice + "");
 
 //		} else {
 //			ViewGroup parent = (ViewGroup) layout.getParent();
@@ -134,36 +135,34 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		isSelectAll = false;
 		select_all.setChecked(false);
 		cardAdapter.notifyDataSetChanged();
-		
+
 	}
-    //TODO 解决在购物车进入推荐商品 详情页加入购物车返回后不能实时显示(需要切换界面才能显示)
+	//TODO 解决在购物车进入推荐商品 详情页加入购物车返回后不能实时显示(需要切换界面才能显示)
 	@Override
-    public void onResume() {
-        super.onResume();
-        isFirst = true;
-        allcouts = 0;
+	public void onResume() {
+		super.onResume();
+		isFirst = true;
+		allcouts = 0;
 		allprice = 0;
 		isSelectAll = false;
 		select_all.setChecked(false);
 		List<CardGoodsInfo> list1 = DButils.query();
-
-
 
 		infolist.clear();
 		infolist.addAll(list1);
 		cardAdapter.notifyDataSetChanged();
 	}
 
-    private void intidata1() {
+	private void intidata1() {
 		pageSize +=10 ;
 		Map<String, String> params =new HashMap<String, String>();
 		params.put("type", 0+"");
 		params.put("classifyID",0+"");
 		params.put("pageNum",  pageNum+"");
 		params.put("pageSize",pageSize+"");
-		
+
 		HTTPUtils.get(getContext(), TCHConstants.url.QueryPromotionData, params, new ResponseListener() {
-			
+
 			@Override
 			public void onResponse(String arg0) {
 				Tuijian tuijianjson = GsonUtils.parseJSON(arg0, Tuijian.class);
@@ -171,33 +170,39 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				tuijianlist.clear();
 				tuijianlist.addAll(result);
 				if(tuijianlist !=null)
-				{					
+				{
 					String cmfigurespath = tuijianlist.get(0).getCMFIGURESPATH();
-				    split = cmfigurespath.split("\\|"); //分割图片
-				    tuijian_gv.setAdapter(tuijianAdapter);
-				    
-				    tuijianAdapter.notifyDataSetChanged();
+					split = cmfigurespath.split("\\|"); //分割图片
+					tuijian_gv.setAdapter(tuijianAdapter);
+
+					tuijianAdapter.notifyDataSetChanged();
 				}
 			}
-			
+
 			@Override
 			public void onErrorResponse(VolleyError arg0) {
-				
+
 			}
 		});
-		
-		
+
+
 	}
 
 	private void initData() {
 		List<CardGoodsInfo> list = DButils.query();
 
-	//	JSONObject goodslist = list.get(0).getGOODSLIST();
 
-	//	Log.e("goodslist==",goodslist.toString());
+		if (list.size()!=0)
+		{
+
+			String goodslist = list.get(0).getGOODSLIST();
+
+			Log.e("goodslist==",goodslist+"");
+		}
+
 
 		sortData(list);
-		
+
 		infolist.clear();
 		infolist.addAll(list);
 
@@ -207,23 +212,23 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	}
 	// TODO 数据排序
 	private List<CardGoodsInfo> sortData(List<CardGoodsInfo> list){
-		
+
 		Map<Integer, ArrayList<CardGoodsInfo>> data = new HashMap<Integer, ArrayList<CardGoodsInfo>>();
-		
+
 		if(list.size() < 3){
 			return list;
 		}
-		
+
 		for (int i = 0; i < list.size() - 1; i++) {
 			ArrayList<CardGoodsInfo> dataList = new ArrayList<CardGoodsInfo>();
-			
+
 			dataList.add(list.get(0));
-			
+
 			String firstName = list.get(0).getShoppingName();
-			
+
 			for (int j = i + 1; j < list.size(); j++) {
 				String name = list.get(j).getShoppingName();
-				
+
 				if(firstName.equals(name)){
 					dataList.add(list.get(j));
 					list.remove(j);
@@ -233,21 +238,33 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			data.put(i, dataList);
 			list.remove(0);
 		}
-		
+
 		for (int i = 0; i < data.size(); i++) {
 			list.addAll(data.get(i));
 		}
-		
+
 		return list;
 	}
 
 	private void initUI() {
 		titlebar = layout.findViewById(R.id.titlebar);
 		initPopWindow();
-		
+
 		tuijianAdapter = new tuijianAdapter();
 		// 结算
 		tv_jiesuan = (TextView) layout.findViewById(R.id.tv_jiesuan);
+
+		tv_jiesuan.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getContext(), FirmorderActivity.class);
+				startActivity(intent);
+
+			}
+		});
+
+
+
 
 		tv_jiesuan.setOnClickListener(new OnClickListener() {
 
@@ -292,13 +309,13 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		tv_totalprice = (TextView) layout.findViewById(R.id.tv_totalprice);
 		// 全选
 		select_all = (CheckBox) layout.findViewById(R.id.select_all);
-		select_all.setOnCheckedChangeListener(new OnCheckedChangeListener() { 
+		select_all.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 				isSelectAll = true;
-				
+
 				if (isChecked) {
 					buttonView.setBackgroundDrawable(getResources().getDrawable(R.drawable.checked));
 					if (infolist.size() != 0) {
@@ -359,14 +376,14 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			@Override
 			public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 				switch (index) {
-				case 0:
-					if (infolist.size() != 0) {
-						CardGoodsInfo cardGoodsInfo = infolist.get(position);
-						DButils.delete("goodsid = ?", cardGoodsInfo);
-						infolist.remove(position);
-						cardAdapter.notifyDataSetChanged();
-					}
-					break;
+					case 0:
+						if (infolist.size() != 0) {
+							CardGoodsInfo cardGoodsInfo = infolist.get(position);
+							DButils.delete("goodsid = ?", cardGoodsInfo);
+							infolist.remove(position);
+							cardAdapter.notifyDataSetChanged();
+						}
+						break;
 				}
 				return false;
 			}
@@ -392,70 +409,73 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 //				Log.e("allprice", allprice + "");
 			}
 		});
-         tuijian_gv = (GridView) layout.findViewById(R.id.shopcar_gridview);
-		
-		 tuijian_gv.setOnItemClickListener(new OnItemClickListener() {
+		tuijian_gv = (GridView) layout.findViewById(R.id.shopcar_gridview);
+
+		tuijian_gv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent=new Intent(getActivity(), GoodsDetailActivity.class);
-				 String goodsid = tuijianlist.get(position).getCMGOODSID();
-				 intent.putExtra("goodsid", goodsid) ;      			
-				 startActivity(intent);
+				String goodsid = tuijianlist.get(position).getCMGOODSID();
+				intent.putExtra("goodsid", goodsid) ;
+				startActivity(intent);
 			}
-		});		
+		});
 	}
-	//-------------------------提交订单------------------------------	
+	//-------------------------提交订单------------------------------
 	private void submitOrder(JSONObject object4, String token) {
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("token", token);// TODO
-			params.put("goodsjson", object4.toString());// json
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("token", token);// TODO
+		params.put("goodsjson", object4.toString());// json
 
-			HTTPUtils.post(getContext(), TCHConstants.url.SUBMITORDER,
-					params, new ResponseListener() {
+		HTTPUtils.post(getContext(), TCHConstants.url.SUBMITORDER,
+				params, new ResponseListener() {
 
-						@Override
-						public void onResponse(String arg0) {
-							try {
-								JSONObject object = new JSONObject(arg0);
-								int errocode = object.getInt("ErrorCode");
-								if (errocode == 0) {
-									Toast.makeText(getContext(), "购物车提交订单",
-											Toast.LENGTH_SHORT).show();
-									//TODO
-									for (int i = 0; i < infolist.size(); i++) {
-										boolean ischeck = infolist.get(i).isIscheck();
-										if(ischeck){
-											DButils.delete("goodsid = ?", infolist.get(i));
-											infolist.remove(i);
-											cardAdapter.notifyDataSetChanged();
-										}
-									}									
-									
-								} else {
-									Toast.makeText(getContext(),
-											"ErrorCode = " + errocode, Toast.LENGTH_SHORT).show();
+					@Override
+					public void onResponse(String arg0) {
+						try {
+							JSONObject object = new JSONObject(arg0);
+							int errocode = object.getInt("ErrorCode");
+							if (errocode == 0) {
+								Toast.makeText(getContext(), "购物车提交订单",
+										Toast.LENGTH_SHORT).show();
+								String token1 = object.getString("Token");
+								TCHConstants.url.token=token1;
+
+								//TODO
+								for (int i = 0; i < infolist.size(); i++) {
+									boolean ischeck = infolist.get(i).isIscheck();
+									if(ischeck){
+										DButils.delete("goodsid = ?", infolist.get(i));
+										infolist.remove(i);
+										cardAdapter.notifyDataSetChanged();
+									}
 								}
 
-							} catch (JSONException e) {
-								e.printStackTrace();
+							} else {
+								Toast.makeText(getContext(),
+										"ErrorCode = " + errocode, Toast.LENGTH_SHORT).show();
 							}
 
+						} catch (JSONException e) {
+							e.printStackTrace();
 						}
 
-						@Override
-						public void onErrorResponse(VolleyError arg0) {
+					}
 
-						}
-					});
-		}
+					@Override
+					public void onErrorResponse(VolleyError arg0) {
+
+					}
+				});
+	}
 
 	private int dp2px(int dp) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 
 	class CardAdapter extends BaseAdapter {
-		
+
 		private OnNumberChangeListener2 numchangelistener;
 
 		public void setOnNumberChangeListener(OnNumberChangeListener2 onNumberChangeListener) {
@@ -487,16 +507,16 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				view = convertView;
 				hold = (ViewHold)view.getTag();
 			}
-			
+
 			final CardGoodsInfo goodsInfo = infolist.get(position);
-			
+
 			hold.name.setText(goodsInfo.getTitle());
 			hold.price.setText("¥"+ goodsInfo.getTotalprice());
 			hold.number.setText(goodsInfo.getCount() + "");
 			hold.checkBox.setChecked(goodsInfo.isIscheck());
-			
+
 			String shoppingName = goodsInfo.getShoppingName();
-			
+
 			// 隐藏相同的商店名称
 			if(position > 0){
 				String lastName = infolist.get(position - 1).getShoppingName();
@@ -511,22 +531,22 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				hold.shoppingName.setVisibility(View.VISIBLE);
 				hold.shoppingName.setText(shoppingName);
 			}
-			
+
 			ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + goodsInfo.getImgURL(),
 					hold.goodsImage);
-           
+
 			// 选中监听
 			hold.checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					
-					
+
+
 					goodsInfo.setIscheck(isChecked);
 
 					int count = goodsInfo.getCount();
 					int totalprice = goodsInfo.getTotalprice();
-					
+
 					if (isChecked) {
 						buttonView.setBackgroundDrawable(getResources().getDrawable(R.drawable.checked));
 						if(!isSelectAll){
@@ -544,30 +564,30 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			});
 			// TODO 弹出ppwod
 			hold.imageChange.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
-					
+
 					ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + goodsInfo.getImgURL(), image_goods);
 					tv_goods_code.setText(goodsInfo.getShoppingID());
 					tv_goods_price.setText("¥" + goodsInfo.getTitle());
-					
-					if(popupWindow != null) 
+
+					if(popupWindow != null)
 					{
-						popupWindow.showAtLocation(titlebar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);				
+						popupWindow.showAtLocation(titlebar, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
 					}
 				}
 			});
-			
+
 			isSelectAll = false;
-			
+
 			// 重新进入界面时归零
 			if(isFirst){
 				numchangelistener.onNumberChange(0);
 				ontotalpricechangelistener.TotalPriceChange(0);
 				isFirst = false;
 			}
-			
+
 			return view;
 		}
 
@@ -587,7 +607,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		}
 
 	}
-	
+
 	class ViewHold {
 		TextView name;
 		TextView price;
@@ -603,7 +623,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 
 
 
-	
+
 	class tuijianAdapter extends  BaseAdapter
 	{
 
@@ -628,34 +648,34 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			viewHolder holder = null;
 			View layout = null;
 			if(convertView==null)
-   			{
-   				holder = new viewHolder();		
-   			    layout = mInflater.inflate(R.layout.tuijian_gridview_item, null); // 复用 hot gv item
-   			    holder.img_tuijian_gv_item = (ImageView) layout.findViewById(R.id.img_tuijian_gv_item);
-   			    holder.tv_tuijian_title = (TextView) layout.findViewById(R.id.tv_tuijian_title);
-   	            holder.tv_tuijian_shoujia = (TextView) layout.findViewById(R.id.tv_tuijian_shoujia);		
-   			    layout.setTag(holder);
-   			}else
-   			{
-   				layout = convertView;
-   				holder = (viewHolder) layout.getTag();
-   			}	
-           String cmmainfigurepath = tuijianlist.get(position).getCMMAINFIGUREPATH();
-           String cmtitle = tuijianlist.get(position).getCMTITLE();
-           Integer cmpresentprice = tuijianlist.get(position).getCMPRESENTPRICE();
-           holder.tv_tuijian_title.setText(cmtitle);
-           holder.tv_tuijian_shoujia.setText("" +cmpresentprice);                      
-           ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + cmmainfigurepath, 
-        		  holder.img_tuijian_gv_item, MyApplication.options);
-   		   return layout;
-   		}				
-   		class viewHolder
-   		{
-   			ImageView img_tuijian_gv_item;
-   			TextView tv_tuijian_title;
-   			TextView tv_tuijian_shoujia;
-   		}		
-	
+			{
+				holder = new viewHolder();
+				layout = mInflater.inflate(R.layout.tuijian_gridview_item, null); // 复用 hot gv item
+				holder.img_tuijian_gv_item = (ImageView) layout.findViewById(R.id.img_tuijian_gv_item);
+				holder.tv_tuijian_title = (TextView) layout.findViewById(R.id.tv_tuijian_title);
+				holder.tv_tuijian_shoujia = (TextView) layout.findViewById(R.id.tv_tuijian_shoujia);
+				layout.setTag(holder);
+			}else
+			{
+				layout = convertView;
+				holder = (viewHolder) layout.getTag();
+			}
+			String cmmainfigurepath = tuijianlist.get(position).getCMMAINFIGUREPATH();
+			String cmtitle = tuijianlist.get(position).getCMTITLE();
+			Integer cmpresentprice = tuijianlist.get(position).getCMPRESENTPRICE();
+			holder.tv_tuijian_title.setText(cmtitle);
+			holder.tv_tuijian_shoujia.setText("" +cmpresentprice);
+			ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + cmmainfigurepath,
+					holder.img_tuijian_gv_item, MyApplication.options);
+			return layout;
+		}
+		class viewHolder
+		{
+			ImageView img_tuijian_gv_item;
+			TextView tv_tuijian_title;
+			TextView tv_tuijian_shoujia;
+		}
+
 	}
 
 	private PopupWindow popupWindow;
@@ -680,7 +700,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	private ImageView image_goods;
 	private TextView tv_goods_code;
 	private ListView listView_choose;
-	
+
 	// TODO 初始化点击购物车时候的弹窗
 	private void initPopWindow() {
 		View view = mInflater.inflate(R.layout.layout_pop_addcar, null);
@@ -717,10 +737,10 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		});
 
 		listView_choose = (ListView) view.findViewById(R.id.listView_choose);
-		
+
 		width = listView_choose.getWidth();
-		
-		
+
+
 //        cmtitle = resultList.get(0).getCMTITLE();
 //        cmtitle = infolist.get(0).getTitle();
 //		//商家id
@@ -746,7 +766,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				if (check) {
 					map.put(position, num);
 				} else {
-					map.remove(position); 
+					map.remove(position);
 				}
 			}
 		});
@@ -853,7 +873,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 		}
 
 	}
-	
+
 	// 尺寸的适配器
 	class SizeAdpeter extends RecyclerView.Adapter<SizeAdpeter.Holder> {
 		int changeNum;// 各颜色选择数量
@@ -929,7 +949,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 					int k = kucun[position];
 
 					String xianshi = hold.et_count.getText().toString().trim();// et
-																				// 显示的数量
+					// 显示的数量
 					int x = Integer.parseInt(xianshi);
 					if (x < k) {
 						// 当显示数量小于库存 可以继续增加
@@ -940,7 +960,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 						if (onNumberChangeListener != null) {
 							onNumberChangeListener.onNumberChange(change);
 						}
-						
+
 					} else {
 						Toast.makeText(getActivity(), "超出库存", Toast.LENGTH_SHORT).show();
 					}
@@ -957,7 +977,7 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				@Override
 				public void onClick(View v) {
 					String xianshi = hold.et_count.getText().toString().trim();// et
-																				// 显示的数量
+					// 显示的数量
 					int x = Integer.parseInt(xianshi);
 					if (x > 0) {
 						x -= 1;
@@ -1031,12 +1051,12 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 			view.setLayoutParams(params);
 			return new Holder(view);
 		}
-		
+
 
 	}
 
 	TextWatcher mEtWatcher = new TextWatcher() {
-		
+
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			if (s.toString().trim().startsWith("0") && s.toString().trim().length() == 1) {
@@ -1044,18 +1064,18 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 				editText.setSelection(1);
 			}
 		}
-		
+
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 		}
-		
+
 		@Override
 		public void afterTextChanged(Editable s) {
 		}
 	};
 	private View titlebar;
 
-	
+
 	class ViewHoldColor {
 		TextView tv_goods_color;
 		RecyclerView recycleview;
@@ -1069,14 +1089,14 @@ public class ShoppingCartFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.pop_confirm:// 确定
-			
-			break;
+			case R.id.pop_confirm:// 确定
 
-		default:
-			break;
+				break;
+
+			default:
+				break;
 		}
-		
+
 	}
 
 }

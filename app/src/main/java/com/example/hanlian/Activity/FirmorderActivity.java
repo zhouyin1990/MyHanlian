@@ -2,15 +2,20 @@ package com.example.hanlian.Activity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.VolleyError;
 import com.example.hanlian.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.message.PushAgent;
+import com.xinbo.utils.HTTPUtils;
+import com.xinbo.utils.ResponseListener;
+
 import DetailsModle.Result;
 import android.app.Activity;
 import android.content.Intent;
@@ -65,16 +70,16 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_confim);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		intiUI();
 		intiData();
 
 	}
 
 	private void intiData() {
-//		List<CardGoodsInfo> list = DButils.query();
-//		infolist.clear();
-//		infolist.addAll(list);
+		List<CardGoodsInfo> list = DButils.query();
+		infolist.clear();
+		infolist.addAll(list);
 //		myAdapter.notifyDataSetChanged();
 		SharedPreferences sp = getSharedPreferences("登录", 1);
 		String cm_shopeaddress = sp.getString("cm_shopeaddress","");
@@ -99,7 +104,7 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 //			Log.e("goodsDETAILS===", goodsDETAILS.toString());
 
 			for (int i = 0; i < goodsDETAILS.length(); i++) {
-				int number = 0;
+				int number = 0 ;
 				String size = "";
 
 				String id = goodsDETAILS.getJSONObject(i).getString("GOODSDETAILSID");
@@ -120,18 +125,13 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 					}
 				}
 			}
-
 			myAdapter.notifyDataSetChanged();
-
-			tv_count.setText("共" + totalNumber + "件 ");
+			tv_count.setText("共" + totalNumber + "件");
 			tv_totalprice.setText("合计：¥ " + totalPrice);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-
-
 	}
 
 	private void intiUI() {
@@ -140,7 +140,6 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 		tv_totalprice = (TextView) findViewById(R.id.tv_totalprice);
 		findViewById(R.id.tv_jiesuan).setOnClickListener(this);
 		findViewById(R.id.tv_collectionback).setOnClickListener(this);
-
 
 		tv_shouhuoname = (TextView) findViewById(R.id.tv_shouhuoname);
 		tv_phone=(TextView)findViewById(R.id.tv_phone);
@@ -227,7 +226,7 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 			} else {
 				hold.spec_listview.setVisibility(View.GONE);//
 
-				//hold.spec_listview.setVisibility(View.VISIBLE)
+			//hold.spec_listview.setVisibility(View.VISIBLE)
 			}
 			specAdapter specAdapter = new specAdapter();
 			setListViewHeightBasedOnChildren(hold.spec_listview);
@@ -361,6 +360,8 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 				//todo  跳到支付页面
 				Intent intent=new Intent(FirmorderActivity.this ,PayActivity.class);
 				startActivity(intent);
+
+				//--------提交成功后-----------
 				break;
 
 			default:
@@ -368,6 +369,106 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 		}
 
 	}
+
+
+
+//		tv_jiesuan.setOnClickListener(new OnClickListener() {
+//
+//			@SuppressWarnings("unused")
+//			@Override
+//			public void onClick(View v) {
+//
+//				JSONArray array3 = new JSONArray();
+//				for (int i = 0; i < infolist.size(); i++) {
+//
+//					boolean ischeck = infolist.get(i).isIscheck();
+//					if (ischeck) {
+//						JSONObject object3 = new JSONObject();
+//						try {
+//							object3.put("GOODSLIST", infolist.get(i).getGOODSLIST());
+//
+//							array3.put(i, object3);
+//						} catch (JSONException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//				if (array3 != null) {
+//					final JSONObject object4 = new JSONObject();
+//					try {
+//						object4.put("INTEGRAL", 0);
+//						object4.put("ORDERS", array3);
+//						submitOrder(object4, TCHConstants.url.token);
+//
+//					} catch (JSONException e) {
+//						e.printStackTrace();
+//					}
+//				}else{
+//					Toast.makeText(getContext(), "请选择商品", Toast.LENGTH_SHORT).show();
+//				}
+//			}
+//		});
+
+	//-------------------------提交订单------------------------------
+	private void submitOrder(JSONObject object4, String token) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("token", token);// TODO
+		params.put("goodsjson", object4.toString());// json
+
+		HTTPUtils.post(FirmorderActivity.this, TCHConstants.url.SUBMITORDER,
+				params, new ResponseListener() {
+
+					@Override
+					public void onResponse(String arg0) {
+						try {
+							JSONObject object = new JSONObject(arg0);
+							int errocode = object.getInt("ErrorCode");
+							if (errocode == 0) {
+								Toast.makeText(FirmorderActivity.this, "提交订单成功",
+										Toast.LENGTH_SHORT).show();
+								String token1 = object.getString("Token");
+								TCHConstants.url.token=token1;
+
+								//TODO 提交成功后 删除该商品
+								for (int i = 0; i < infolist.size(); i++) {
+									boolean ischeck = infolist.get(i).isIscheck();
+									if(ischeck){
+										DButils.delete("goodsid = ?", infolist.get(i));
+										infolist.remove(i);
+										myAdapter.notifyDataSetChanged();
+									}
+								}
+
+							} else {
+								Toast.makeText(FirmorderActivity.this,
+										"ErrorCode = " + errocode, Toast.LENGTH_SHORT).show();
+							}
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					@Override
+					public void onErrorResponse(VolleyError arg0) {
+
+
+
+					}
+				});
+
+
+
+
+
+
+	}
+
+
+
+
+
 
 
 }

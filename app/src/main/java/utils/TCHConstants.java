@@ -11,7 +11,11 @@ public final class TCHConstants
 		//订单金额
 		public static String ordermoney ="";
 		public static final String Host = "http://www.zuichu.cc/";
-		public static final String getcode = Host + "api/Login/SendLoginCode?phone=";//获取验证码
+
+//		public static final String getcode = Host + "api/Login/SendLoginCode?phone=";//获取验证码
+		public static final String getcode = Host + "api/Login/SendLoginCode";//获取验证码
+
+
 		public static final String hoturl = Host + "api/PageData/QueryHotData"; //热门
     	public static final String newurl = Host +"api/PageData/QueryNewData"; // 新品
         public static final String homeurl = Host +"api/PageData/QueryFirstData"; // 首页
@@ -55,6 +59,9 @@ public final class TCHConstants
 		public static final String Login = "http://www.zuichu.cc/api/Login/UserLogin";
         //alipay
 		public static final String AliPay = Host+"api/PayStartCall/AliPay_app";
+		//删除订单
+		public static final String  DelMyOrder =Host +"api/UserDoMain/DelMyOrder";
+
 
 
 

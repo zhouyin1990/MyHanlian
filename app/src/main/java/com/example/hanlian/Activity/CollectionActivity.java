@@ -21,11 +21,9 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.hanlian.R;
-import com.example.hanlian.TestToken.TestToken;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.umeng.message.PushAgent;
 import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
@@ -59,7 +57,7 @@ public class CollectionActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collection);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		getWindow().getAttributes().gravity = Gravity.RIGHT; // 居中
 		// 查询收藏
 		intiUI();
@@ -183,8 +181,10 @@ public class CollectionActivity extends Activity implements OnClickListener {
 					public void onResponse(String arg0) {
 						Deltecollection Deltejson = GsonUtils.parseJSON(arg0, Deltecollection.class);
 						Integer errorCode2 = Deltejson.getErrorCode();
-						String token = Deltejson.getToken();
-						TCHConstants.url.token=token;
+						
+						//// TODO: 2017/5/11  删除不返回token
+//						String token = Deltejson.getToken();
+//						TCHConstants.url.token=token;
 
 						if (errorCode2 == 0) {
 							intidata();

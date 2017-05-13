@@ -372,13 +372,13 @@
                 android:id="@+id/tv_wangjimima"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:text="忘记密码"
                 android:layout_alignBaseline="@+id/tv_go1"
                 android:layout_alignBottom="@+id/tv_go1"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/img_mima"
                 android:layout_toRightOf="@+id/img_mima"
-                android:layout_toEndOf="@+id/img_mima" />
+                android:text="修改密码"/>
 
             <TextView
                 android:id="@+id/tv_go1"

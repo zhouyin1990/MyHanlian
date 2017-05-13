@@ -15,7 +15,6 @@ import com.example.hanlian.Fragment.NewFragment;
 import com.example.hanlian.Fragment.ShoppingCartFragment;
 import com.example.hanlian.Fragment.UserFragment;
 import com.example.hanlian.R;
-import com.umeng.message.PushAgent;
 
 public class MainActivity extends FragmentActivity {
 	
@@ -28,7 +27,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 	    intiUI();
 	}
 	private void intiUI() {	

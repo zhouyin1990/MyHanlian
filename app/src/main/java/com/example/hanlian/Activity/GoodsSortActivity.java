@@ -21,10 +21,10 @@ import com.android.volley.VolleyError;
 import com.example.hanlian.Adapter.CustomAdapter;
 import com.example.hanlian.Adapter.GoodsInfo;
 import com.example.hanlian.Adapter.MyAdapter;
+import com.example.hanlian.Adapter.ViewHolder;
 import com.example.hanlian.MyApplication.MyApplication;
 import com.example.hanlian.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.message.PushAgent;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
 
@@ -62,7 +62,7 @@ public class GoodsSortActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_goods_sort);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		initView();
 		initData();
 		
@@ -91,30 +91,33 @@ public class GoodsSortActivity extends Activity implements OnClickListener {
 		});
 		
 		sort_listView3 = (ListView) findViewById(R.id.sort_listView2);
-//		sort_listView3.setAdapter(new CustomAdapter<GoodsInfo>(GoodsSortActivity.this, sortData3,
-//				R.layout.item_sort2) {// 自定义adapter
-//
+		sort_listView3.setAdapter(new CustomAdapter<GoodsInfo>(GoodsSortActivity.this, sortData3,
+				R.layout.item_sort2) {
+			@Override
+			public void convert(ViewHolder holder, GoodsInfo t) {
+
+				ImageView item_sort_image = holder.getView(R.id.item_sort_image);
+				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + t.image,item_sort_image, MyApplication.options);
+//				item_sort_image.setImageDrawable(getResources().getDrawable(R.drawable.new_banner_02));
+				holder.getView(R.id.item_sort_name).setVisibility(View.GONE);
+			}// 自定义adapter
 //			public void convert(RecyclerView.ViewHolder holder, GoodsInfo t) {
 //				ImageView item_sort_image = holder.getView(R.id.item_sort_image);
 //				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + t.image,item_sort_image, MyApplication.options);
 //				item_sort_image.setImageDrawable(getResources().getDrawable(R.drawable.new_banner_02));
 //				holder.getView(R.id.item_sort_name).setVisibility(View.GONE);
 //			}
-//		});
-
-
-
-
-		sort_listView3.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				sort_listView3.setItemChecked(position, true);
-				Intent intent=new Intent(getApplicationContext(), GoodsDetailActivity.class);
-				intent.putExtra("goodsid", sortData3.get(position).id) ;
-				startActivity(intent);
-			}
 		});
+//		sort_listView3.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				sort_listView3.setItemChecked(position, true);
+//				Intent intent=new Intent(getApplicationContext(), GoodsDetailActivity.class);
+//				intent.putExtra("goodsid", sortData3.get(position).id) ;
+//				startActivity(intent);
+//			}
+//		});
 		sort_recyclerview = (RecyclerView) findViewById(R.id.sort_recyclerview);
 		StaggeredGridLayoutManager layoutManager = 
 				new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);//水平流
@@ -264,40 +267,5 @@ public class GoodsSortActivity extends Activity implements OnClickListener {
 		TextView name;
 		ImageView image;
 	}
-
-
-
-     class  MyAdapter3 extends BaseAdapter
-	 {
-
-
-		 @Override
-		 public int getCount() {
-			 return 0;
-		 }
-
-		 @Override
-		 public Object getItem(int position) {
-			 return null;
-		 }
-
-		 @Override
-		 public long getItemId(int position) {
-			 return 0;
-		 }
-
-		 @Override
-		 public View getView(int position, View convertView, ViewGroup parent) {
-
-
-
-
-
-			 return null;
-		 }
-	 }
-
-
-
 
 }

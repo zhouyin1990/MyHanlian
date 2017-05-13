@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:background="@color/white"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="7dp"
         android:id="@+id/re_alipay"
         android:layout_below="@+id/re_chose_pay"
         android:layout_alignParentLeft="true"
@@ -54,7 +54,7 @@
         <ImageView
             android:id="@+id/imageView6"
             android:scaleType="fitXY"
-            android:padding="5dp"
+            android:padding="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@mipmap/ic_alipay88"

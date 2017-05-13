@@ -31,12 +31,12 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         >
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="58b7de3e8f4a9d2d6700244c"/>
-        <meta-data
-            android:name="UMENG_MESSAGE_SECRET"
-            android:value="401a0fd662a4cc536d8269cf602e08f2"/>
+        <!--<meta-data-->
+            <!--android:name="UMENG_APPKEY"-->
+            <!--android:value="58b7de3e8f4a9d2d6700244c"/>-->
+        <!--<meta-data-->
+            <!--android:name="UMENG_MESSAGE_SECRET"-->
+            <!--android:value="401a0fd662a4cc536d8269cf602e08f2"/>-->
 
         <activity
             android:name=".Activity.FristActivity"

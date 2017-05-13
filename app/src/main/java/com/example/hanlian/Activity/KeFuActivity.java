@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.example.hanlian.R;
-import com.umeng.message.PushAgent;
 
 public class KeFuActivity extends Activity  implements OnClickListener
 {
@@ -15,7 +14,7 @@ public class KeFuActivity extends Activity  implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ke_fu);
-		PushAgent.getInstance(this).onAppStart();
+//		PushAgent.getInstance(this).onAppStart();
 		intiUI();
 	}
 

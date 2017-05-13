@@ -12,12 +12,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.hanlian.Activity.AllOrderActivity;
 import com.example.hanlian.Activity.CollectionActivity;
 import com.example.hanlian.Activity.DaishouhuoActivity;
 import com.example.hanlian.Activity.ForgetPassWordActivity;
+import com.example.hanlian.Activity.GoodsDetailActivity;
 import com.example.hanlian.Activity.JiFenActivity;
 import com.example.hanlian.Activity.KeFuActivity;
 import com.example.hanlian.Activity.LoginActivity;
@@ -29,10 +31,16 @@ import com.example.hanlian.R;
 import com.google.gson.Gson;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.Call;
 import utils.TCHConstants;
 
 /**
@@ -47,7 +55,6 @@ public class UserFragment extends Fragment implements OnClickListener{
 	private RelativeLayout recollection;
 	private TextView unregist;
 	private TextView jifeninfo , tv_quanbudingdan,tv_daifukuang,tv_daishouhuo,tv_tuihuanhuo;	
-	String token;
 	private RelativeLayout re_forgetPassWord;
 	private TextView tv_goforget;
 	private TextView shopname;
@@ -79,10 +86,7 @@ public class UserFragment extends Fragment implements OnClickListener{
 	}					
 
 	private void intidata() {
-
-
 		intidouxiangjifen(); // 头像积分
-		
 	}	
 	
 	
@@ -92,47 +96,104 @@ public class UserFragment extends Fragment implements OnClickListener{
 	    // 刷新token
 					Map<String, String> parms = new HashMap<String, String>();
 					parms.put("token", TCHConstants.url.token);
-					HTTPUtils.get(getContext(), TCHConstants.url.QueryMyInformationurl, parms ,new ResponseListener() {
-						@Override
-						public void onResponse(String arg0) {
-							Log.e("arg0",arg0+"");
-							personinfo personinfo = new Gson().fromJson(arg0, personinfo.class);
-							String token1 = personinfo.getToken();
-							TCHConstants.url.token=token1;
-							//personinfo personinfo = GsonUtils.parseJSON(arg0,personinfo.class);
-							com.example.hanlian.DateModel.personinfo.ResultBean
-									result1 = personinfo.getResult();
 
-							int cm_integral = result1.getCM_INTEGRAL();
-							String cm_shopeaddress = result1.getCM_SHOPEADDRESS();
-							long cm_phone = result1.getCM_PHONE();
-							String cm_name = result1.getCM_NAME();
-							String cm_shopname = result1.getCM_SHOPNAME();
+		OkHttpUtils.get().params(parms).url(TCHConstants.url.QueryMyInformationurl).build().execute(new StringCallback() {
+			@Override
+			public void onError(Call call, Exception e, int id) {
+				Log.e("Exception e==",e+"");
+			}
 
-//							try {
-//								JSONObject jsonResult = new JSONObject(arg0.toString()).getJSONObject("Result");
-//								String cm_shopname1 = jsonResult.getString("CM_SHOPNAME");
-//								int cm_integral1 = jsonResult.getInt("CM_INTEGRAL");
-//								jsonResult.getString()
-//								tv_jifen.setText(""+cm_integral1);
+			@Override
+			public void onResponse(String response, int id) {
+
+//				personinfo personinfo = new Gson().fromJson(response, personinfo.class);
+
+				try {
+					JSONObject jsonObject = new JSONObject(response);
+					String token = jsonObject.getString("Token");
+					TCHConstants.url.token=token;
+
+					String cm_shopname = jsonObject.getJSONObject("Result").getString("CM_SHOPNAME");
+					String cm_integral = jsonObject.getJSONObject("Result").getString("CM_INTEGRAL");
+
+					String cm_name = jsonObject.getJSONObject("Result").getString("CM_NAME");
+					String CM_SHOPEADDRESS = jsonObject.getJSONObject("Result").getString("CM_SHOPEADDRESS");
+
+
+					jifeninfo.setText("积分:"+cm_integral);
+
+					shopname.setText("店铺名:"+cm_shopname);
+
+					tv_usename.setText("用户名:"+cm_name);
+
+					tv_adress1.setText(CM_SHOPEADDRESS);
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+//				String token= personinfo.getToken();
+//				Toast.makeText(getContext(), "token=="+token, Toast.LENGTH_SHORT).show();
+//				com.example.hanlian.DateModel.personinfo.ResultBean
+//						result1 = personinfo.getResult();
+//				int cm_integral = result1.getCM_INTEGRAL();
+//				String cm_shopeaddress = result1.getCM_SHOPEADDRESS();
+//				long cm_phone = result1.getCM_PHONE();
+//				String cm_name = result1.getCM_NAME();
+//				String cm_shopname = result1.getCM_SHOPNAME();
 //
-//							} catch (JSONException e) {
-//								e.printStackTrace();
-//							}
-							jifeninfo.setText("积分:"+cm_integral);
+//				jifeninfo.setText("积分:"+cm_integral);
+//
+//				shopname.setText("店铺名:"+cm_shopname);
+//
+//				tv_usename.setText("用户名:"+cm_name);
+//
+//				tv_adress1.setText(cm_shopeaddress);
+			}
+		});
 
-							shopname.setText("店铺名:"+cm_shopname);
-
-							tv_usename.setText("用户名:"+cm_name);
-
-							tv_adress1.setText(cm_shopeaddress);
-
-						}
-						@Override
-						public void onErrorResponse(VolleyError arg0) {
-
-						}
-					});
+//
+//					HTTPUtils.get(getContext(), TCHConstants.url.QueryMyInformationurl, parms ,new ResponseListener() {
+//						@Override
+//						public void onResponse(String arg0) {
+//							Log.e("arg0",arg0+"");
+//							personinfo personinfo = new Gson().fromJson(arg0, personinfo.class);
+//							String token= personinfo.getToken();
+//							TCHConstants.url.token=token;
+//							Toast.makeText(getContext(), "token=="+token, Toast.LENGTH_SHORT).show();
+//							com.example.hanlian.DateModel.personinfo.ResultBean
+//									result1 = personinfo.getResult();
+//
+//							int cm_integral = result1.getCM_INTEGRAL();
+//							String cm_shopeaddress = result1.getCM_SHOPEADDRESS();
+//							long cm_phone = result1.getCM_PHONE();
+//							String cm_name = result1.getCM_NAME();
+//							String cm_shopname = result1.getCM_SHOPNAME();
+//
+////							try {
+////								JSONObject jsonResult = new JSONObject(arg0.toString()).getJSONObject("Result");
+////								String cm_shopname1 = jsonResult.getString("CM_SHOPNAME");
+////								int cm_integral1 = jsonResult.getInt("CM_INTEGRAL");
+////								jsonResult.getString()
+////								tv_jifen.setText(""+cm_integral1);
+////
+////							} catch (JSONException e) {
+////								e.printStackTrace();
+////							}
+//							jifeninfo.setText("积分:"+cm_integral);
+//
+//							shopname.setText("店铺名:"+cm_shopname);
+//
+//							tv_usename.setText("用户名:"+cm_name);
+//
+//							tv_adress1.setText(cm_shopeaddress);
+//
+//						}
+//						@Override
+//						public void onErrorResponse(VolleyError arg0) {
+//
+//						}
+//					});
 	}
 
 	private void intiUI() {
@@ -216,12 +277,6 @@ public class UserFragment extends Fragment implements OnClickListener{
 					Intent intent14=new Intent(getActivity(), ForgetPassWordActivity.class) ;
 					startActivity(intent14);
 					break;
-
-
-
-
-				
-				
 			default:
 			}
 		
@@ -235,7 +290,6 @@ public class UserFragment extends Fragment implements OnClickListener{
 		Intent intent= new Intent(getContext(), LoginActivity.class);
 		startActivity(intent);
 		getActivity().finish();
-		
 	    }
 
 	}
