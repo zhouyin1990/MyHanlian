@@ -140,11 +140,11 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:text="新品"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        
+
         <com.handmark.pulltorefresh.library.PullToRefreshGridView
             android:id="@+id/sort_detail_gridview"
             android:layout_width="match_parent"
@@ -158,7 +158,7 @@
             ptr:ptrMode="both"
              />
 <!--             ptr:ptrMode="both  -->
-        
+
     </RelativeLayout>
 
 </RelativeLayout>

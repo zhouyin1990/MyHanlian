@@ -34,7 +34,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import utils.LogUtil;
 import utils.TCHConstants;
+import utils.ToastUtils;
 
 /**
  * 产品分类详情
@@ -52,6 +54,7 @@ public class GoodsSortDetail extends Activity implements OnClickListener {
 	private TextView sort_detail_new;
 	private int size = 4;//出现显示两条数据
 	private int lastDataNum ;//上次数据长度
+	private int sort ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +62,21 @@ public class GoodsSortDetail extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_goods_sort_detail);
 //		PushAgent.getInstance(this).onAppStart();
 		initView();
-		initData(77, size);
+
+		sort = getIntent().getIntExtra("sort", 0);
+
+
+		LogUtil.e("sort ==",""+sort);
+
+		initData(sort, size);
+
 		
 	}	
 	private void initView() {
 		findViewById(R.id.sort_detail_back).setOnClickListener(this);
 		findViewById(R.id.sort_detail_search).setOnClickListener(this);
-		
+
+
 		sort_detail_linear1 = (LinearLayout) findViewById(R.id.sort_detail_linear1);
 		sort_detail_linear1.setOnClickListener(this);
 		sort_detail_linear2 = (LinearLayout) findViewById(R.id.sort_detail_linear2);
@@ -87,7 +98,7 @@ public class GoodsSortDetail extends Activity implements OnClickListener {
 			    try {
 			    	Intent intent=new Intent(getApplicationContext(), GoodsDetailActivity.class);
 			    	String goodsid = goodsList.getJSONObject(position).getString("CM_GOODSID");
-			    	Toast.makeText(getApplicationContext(),goodsid+ "goodsid", Toast.LENGTH_SHORT).show();
+//					ToastUtils.ShowToast(getApplicationContext(),goodsid);
 					intent.putExtra("goodsid", goodsid);
 					Log.e("goodsid***", goodsid);
 					startActivity(intent);
@@ -101,15 +112,15 @@ public class GoodsSortDetail extends Activity implements OnClickListener {
 			@Override
 			public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
 				// 下拉加载更多
-				size++;
-				initData(77, size);
+				size+=3;
+				initData(sort, size);
 			}
 
 			@Override
 			public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
 				// 上拉加载更多
-				size++;
-				initData(77, size);
+				size+=3;
+				initData(sort, size);
 				
 			}
 		});
@@ -127,15 +138,16 @@ public class GoodsSortDetail extends Activity implements OnClickListener {
 		HTTPUtils.get(getApplicationContext(), TCHConstants.url.goodsSortDetail,params,new ResponseListener() {         
 			@Override
 			public void onResponse(String arg0) {
-				sort_detail_gridview.onRefreshComplete();								
+//				sort_detail_gridview.onRefreshComplete();
+
 				try {
 					goodsList = new JSONObject(arg0.toString()).getJSONArray("Result");
-					if(lastDataNum >= goodsList.length()){
-				//		Toast.makeText(getApplicationContext(), "没有更多数据！", 1000).show();
-					}
-					lastDataNum = goodsList.length();
-					
-					
+//					if(lastDataNum >= goodsList.length()){
+//						Toast.makeText(getApplicationContext(), "没有更多数据！", Toast.LENGTH_SHORT).show();
+//					}
+//					lastDataNum = goodsList.length();
+					LogUtil.e("goodsList ==",""+goodsList.length());
+//
 					if (goodsList.length() > 0) {
 						imageAdapter.notifyDataSetChanged();
 						((LinearLayout) findViewById(R.id.tab))
@@ -234,25 +246,25 @@ public class GoodsSortDetail extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.sort_detail_linear1://综合分类
-			initData(77, 4);
+			initData(sort, 4);
 			sort_detail_all.setTextColor(getResources().getColor(R.color.red));
 			sort_detail_buy.setTextColor(getResources().getColor(R.color.black));
 			sort_detail_new.setTextColor(getResources().getColor(R.color.black));
 			break;
 		case R.id.sort_detail_linear2://销量分类
-			initData(29, 4);
+			initData(sort, 4);
 			sort_detail_all.setTextColor(getResources().getColor(R.color.black));
 			sort_detail_buy.setTextColor(getResources().getColor(R.color.red));
 			sort_detail_new.setTextColor(getResources().getColor(R.color.black));
 			break;
 		case R.id.sort_detail_linear3://新品分类
-			initData(30, 4);
+			initData(sort, 4);
 			sort_detail_all.setTextColor(getResources().getColor(R.color.black));
 			sort_detail_buy.setTextColor(getResources().getColor(R.color.black));
 			sort_detail_new.setTextColor(getResources().getColor(R.color.red));
 			break;
 		case R.id.sort_detail_search://搜索
-			gosearch();
+//			gosearch();
 			break;
 		default:
 			break;

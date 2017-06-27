@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import com.example.hanlian.R;
 
 public class FristActivity extends Activity {
-
 	private ImageView welcomeimg;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,52 +25,38 @@ public class FristActivity extends Activity {
 		anima.setDuration(100);
 		welcomeimg.startAnimation(anima);
 		anima.setAnimationListener(new AlphaAnima());
-		
- 	//	��������
-//	welcomeimg.postDelayed(new Runnable()
-//	{
-//		
-//		@Override
-//		public void run()
-//		{
-//			Intent intent =new Intent(FristActivity.this, MainActivity.class);
-//			startActivity(intent);
-//		}
-//	}, 2000);
-		
 	}
 	//��������
 		private class AlphaAnima implements AnimationListener
 		{
-
 			@Override
 			public void onAnimationStart(Animation animation) {
-				
 			}
-
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				SharedPreferences sp = getSharedPreferences("登录", 1);
 				String success = sp.getString("success","");
+
+
 //				if("登录成功".equals(success)){
 //					//已经登录的用户 直接进入app
 //					startActivity(new Intent(FristActivity.this, MainActivity.class ));
 //					finish();
 //				}else{
 //					//未登录的用户 跳转登录页面
-//					//startActivity(new Intent(FristActivity.this, MainActivity.class ));
+					startActivity(new Intent(FristActivity.this, MainActivity.class ));
 //					startActivity(new Intent(FristActivity.this,LoginActivity.class ));
-//					finish();
+					finish();
 //				}
+//
+//				startActivity(new Intent(FristActivity.this, MainActivity.class ));
+//				finish();
 
-				startActivity(new Intent(FristActivity.this,LoginActivity.class ));
-				finish();
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
 
-				
 			}
 		}
 		@Override

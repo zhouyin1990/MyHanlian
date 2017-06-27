@@ -45,5 +45,17 @@
         android:layout_below="@+id/RelativeLayout1"       
         android:scrollbars="none" >
     </ListView>
+    <TextView
+        android:id="@+id/meiy"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listview_unpay"
+        android:layout_centerInParent="true"
+
+        android:text="----------没有更多----------"
+        />
+
+
 
 </RelativeLayout>

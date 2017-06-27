@@ -116,7 +116,6 @@
             android:hint="投诉内容....."
             android:textColorHint="#a0a0a0"
             android:textSize="13dp" >
-
             <requestFocus />
         </EditText>
     </RelativeLayout>

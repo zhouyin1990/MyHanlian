@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ordernumber"
+            android:layout_marginTop="@dimen/maginleftscree"
+            android:layout_marginLeft="@dimen/maginleftscree"
+            />
+
+        <TextView
+            android:id="@+id/tv_ordernumber"
+            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/maginleftscree"
+            android:text="40081111111"/>
+
+       
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_orderstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/orderstate"
+        android:layout_marginTop="@dimen/maginleftscree"
+       android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/maginleftscree"
+        />
+
+    <ImageView
+        android:id="@+id/img_shouhou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="19dp"
+        app:srcCompat="@drawable/err"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/tv_shouhoutitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/linearLayout5"
+        android:layout_alignRight="@+id/linearLayout5"
+        android:layout_alignTop="@+id/img_shouhou"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:text="title"/>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/img_shouhou"
+        android:layout_alignLeft="@+id/tv_shouhoutitle"
+        android:layout_alignStart="@+id/tv_shouhoutitle"
+        android:text="销量：x"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:background="@drawable/btn_red_stroke"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:text="@string/btn_shouhou"
+        android:padding="3dp"
+        android:textColor="@color/red"
+        android:layout_alignBottom="@+id/tv"
+        android:layout_alignRight="@+id/tv_orderstate"
+        android:layout_alignEnd="@+id/tv_orderstate"/>
+0
+    <TextView
+        android:id="@+id/tv_salernmber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tv"
+        android:layout_toRightOf="@+id/tv"
+        android:text="22"/>
+</RelativeLayout>

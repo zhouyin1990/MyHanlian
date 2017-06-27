@@ -5,6 +5,9 @@ public class GoodsInfo {
 	public String image;//图片 url
 	public String name;
 	public int id;
+
+
+
 	public GoodsInfo(String image, String name, int id) {
 		super();
 		this.image = image;
@@ -30,7 +33,4 @@ public class GoodsInfo {
 		this.id = id;
 	}
 
-
-
-	
 }

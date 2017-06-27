@@ -52,6 +52,7 @@ public abstract class CustomAdapter<T> extends BaseAdapter {
 			holder = ViewHolder.getViewHolder(mContext, parent, convertView, layoutID, position);
 		}
 		convert(holder, getItem(position));
+
 		return holder.getConvertView();
 	}
 	

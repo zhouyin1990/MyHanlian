@@ -1,6 +1,28 @@
 apply plugin: 'com.android.application'
 
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
+    }
+}
+// Required because retrolambda is on maven central
+repositories {
+    mavenCentral()
+}
+apply plugin: 'me.tatarka.retrolambda'
+
 android {
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -9,15 +31,31 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        //      jackOptions.enabled =true ; 网上都需要  这边不需要 可能是版本是1.8 的缘故
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            //正式打包时，避免提示错误,提示错误要不要终止
+            lintOptions {
+                abortOnError false;
+                checkReleaseBuilds false
+                // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+                disable 'MissingTranslation'
+            }
+
+
         }
     }
 }
+
+
+
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -27,6 +65,7 @@ dependencies {
     compile project(':lib_pull')
     compile project(':lib_SwipeMenuListView')
     compile project(':lib_yuchen1008')
+    compile files('libs/alipaySdk-20170309.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
@@ -35,16 +74,11 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.bigkoo:alertview:1.0.3'
     compile 'com.google.code.gson:gson:2.2.4'
-
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
-
-    testCompile 'junit:junit:4.12'
-    compile files('libs/alipaySdk-20170309.jar')
-
-
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    testCompile 'junit:junit:4.12'
 
 
 

@@ -89,11 +89,14 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView2"
-            android:layout_alignLeft="@+id/btn_login"
             android:text="服务热线："
             android:textSize="20dp"
-            android:layout_alignTop="@+id/textView2"/>
+            android:layout_alignBaseline="@+id/tv_call"
+            android:layout_alignBottom="@+id/tv_call"
+            android:layout_alignLeft="@+id/btn_login"
+            android:layout_alignStart="@+id/btn_login"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"/>
 
         <ImageView
             android:id="@+id/imageView1"
@@ -119,14 +122,14 @@
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="0576—88275333"
+            android:layout_marginTop="27dp"
+            android:text="@string/tv_cont"
             android:textSize="20dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginStart="13dp"
             android:layout_below="@+id/tv_wangjimima"
             android:layout_toRightOf="@+id/textView1"
             android:layout_toEndOf="@+id/textView1"/>

@@ -49,14 +49,13 @@ public class UnPayActivity extends Activity implements OnClickListener{
 	private TextView TV_unpay;
 	private ListView unpay_listview;
 	private PayAdapter payAdapter;
-
-
 	String uptoekn ;
 	ArrayList<UnpayModel.Result> unlist =new ArrayList<UnpayModel.Result>();
 	ArrayList<TBORDERDETAIL> orderdetailslist =new ArrayList<TBORDERDETAIL>();
 	private ImageView img_uppayback;
 	private Button btn_pay;
 	private Button btn_cannelorder;
+	private TextView tv_meiyou;
 
 
 	@Override
@@ -74,13 +73,8 @@ public class UnPayActivity extends Activity implements OnClickListener{
 	private void intiUi() {
 		unpay_listview = (ListView) findViewById(R.id.listview_unpay);
 		img_uppayback = (ImageView) findViewById(R.id.img_uppayback);
+		tv_meiyou = (TextView)findViewById(R.id.meiy);
 		img_uppayback.setOnClickListener(this);
-		btn_cannelorder = (Button) findViewById(R.id.btn_cannelorder);
-		btn_pay = (Button) findViewById(R.id.btn_pay);
-		btn_cannelorder.setOnClickListener(this);
-		btn_pay.setOnClickListener(this);
-
-
 
 		payAdapter = new PayAdapter();	               
 	}
@@ -116,10 +110,19 @@ public class UnPayActivity extends Activity implements OnClickListener{
 					HTTPUtils.get(UnPayActivity.this,TCHConstants.url.QueryMyOrders_Arrearageuri, parms1, new ResponseListener() {
 						@Override
 						public void onResponse(String arg0) {
+							Log.e("查询代付款订单json==",arg0);
 							Unpay unpayjson = GsonUtils.parseJSON(arg0, Unpay.class);
 							List<UnpayModel.Result> result = unpayjson.getResult();
 							unlist.clear();
 							unlist.addAll(result);
+//							if (unlist.size()>3)
+//							{
+//                              tv_meiyou.setVisibility(View.VISIBLE);
+//							}else
+//							{
+//								tv_meiyou.setVisibility(View.INVISIBLE);
+//
+//							}
 							unpay_listview.setAdapter(payAdapter);
 							payAdapter.notifyDataSetChanged();
 						}
@@ -153,7 +156,7 @@ public class UnPayActivity extends Activity implements OnClickListener{
 			return 0;
 		}
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 
 			viewHolder holder = null;
 			View layout = null;
@@ -166,22 +169,26 @@ public class UnPayActivity extends Activity implements OnClickListener{
 				holder.tv_xiaoliang = (TextView) layout.findViewById(R.id.tv_xiaoliang);
 				holder.tv_price = (TextView) layout.findViewById(R.id.tv_price);
 				holder.tv_total_sales = (TextView)layout.findViewById(R.id.tv_total_sales);
-
-
-
-
+//                holder.btn_cannelorder=(Button)layout.findViewById(R.id.btn_cannelorder);
+                holder.btn_pay=(Button)layout.findViewById(R.id.btn_pay);
 				layout.setTag(holder);
 			} else {
 				layout = convertView;
 				holder = (viewHolder) layout.getTag();
 			}
+//			String cmorderid = unlist.get(position).getCMORDERID();
+
+
 			List<TBORDERDETAIL> tborderdetails = unlist.get(position).getTBORDERDETAILS();
 			orderdetailslist.clear();
 			orderdetailslist.addAll(tborderdetails);
 			orderdetailslist.size();
 			String cmtitle = orderdetailslist.get(0).getCMTITLE();
 			Integer cmpresentprice = orderdetailslist.get(0).getCMPRESENTPRICE(); //单价
-			Integer cmmoney = orderdetailslist.get(0).getCMMONEY();  //总价
+			double cmmoney = orderdetailslist.get(0).getCMMONEY();  //总价
+
+
+
 			Integer cmnumber = orderdetailslist.get(0).getCMNUMBER();// 销量
 			String cmmainfigurepath = orderdetailslist.get(0).getCMMAINFIGUREPATH(); //图片路境
 			holder.tv_shangpin_name.setText(cmtitle);
@@ -191,14 +198,43 @@ public class UnPayActivity extends Activity implements OnClickListener{
 			holder.tv_total_sales.setText("共"+cmnumber +"件商品");		
 			if(cmmainfigurepath !=null)
 			{
-				
-				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl+cmmainfigurepath, holder.img_shangpin_name, options);							
+				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl+cmmainfigurepath, holder.img_shangpin_name, options);
 			}
+
+//			holder.btn_cannelorder.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					cancelorder();
+//				}
+//			});
+
+
+
+
+			holder.btn_pay.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+
+					for (int i = 0; i <unlist.size() ; i++) {
+
+						String cmorderid = unlist.get(position).getCMORDERID();
+						double cmmoneysun = unlist.get(position).getCMMONEYSUN();
+
+						TCHConstants.url.ordermoney= cmmoneysun+" ";
+
+						TCHConstants.url.orderid= cmorderid ;
+
+						Log.e("cmorderid==" ,cmorderid);
+						Log.e("ordermoney==" ,cmmoneysun+" ");
+					}
+
+					Intent intent= new Intent(UnPayActivity.this , PayActivity.class);
+					startActivity(intent );
+				}
+			});
+
 			return layout;
-
-
-
-
 
 		}
 
@@ -209,46 +245,26 @@ public class UnPayActivity extends Activity implements OnClickListener{
 			TextView tv_xiaoliang;
 			TextView tv_total_sales ;
 			TextView  tv_price ; // 总价
-			Button    btn_cannelorder ;
 			Button    btn_pay;
-
 		}
 	}
-
-
-
 	@Override
 	public void onClick(View v) {
 	  switch (v.getId()) {
 	case R.id.img_uppayback:
 		finish();
 		break;
-		  case R.id.btn_cannelorder:
-			  cancelorder();
-			  break;
-		  case R.id.btn_pay:
-			  pay();
-			  break;
 	default:
 		break;
 	}
-		
-		
 	}
 
-	private void pay() {
-
-    //todo 跳转到支付页面支付
 
 
 
-
-	}
     //todo 返回token 赋值
 	private void cancelorder() {
-//		String cmorderid = unlist.get(0).getCMORDERID();
 		HashMap<String, String> parms = new HashMap<>();
-
 		for (int i = 0; i < unlist.size(); i++) {
 
 			String orderid = unlist.get(i).getCMORDERID();
@@ -256,10 +272,7 @@ public class UnPayActivity extends Activity implements OnClickListener{
 			parms.put("token", TCHConstants.url.token);
 		}
 
-//		parms.put("orderid",cmorderid);
-//		parms.put("token",TCHConstants.url.token);
-
-
+//
 		OkHttpUtils.get().params(parms).url(TCHConstants.url.DelMyOrder).build().execute(new StringCallback() {
 			@Override
 			public void onError(Call call, Exception e, int id) {
@@ -268,7 +281,7 @@ public class UnPayActivity extends Activity implements OnClickListener{
 
 			@Override
 			public void onResponse(String response, int id) {
-				Log.e("response  ==",""+response);
+				Log.e("取消订单json == ",""+response);
 				try {
 					JSONObject jsonObject = new JSONObject(response);
 					String token = jsonObject.getString("Token");
@@ -277,6 +290,7 @@ public class UnPayActivity extends Activity implements OnClickListener{
 					if (errorCode==0)
 					{
 						Toast.makeText(UnPayActivity.this ,"已删除订单",Toast.LENGTH_SHORT).show();
+						intidata();//删除后重新查询
 					}else
 					{
                       Log.e("取消订单errorCode==",""+errorCode);

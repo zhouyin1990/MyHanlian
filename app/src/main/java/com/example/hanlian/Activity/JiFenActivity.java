@@ -55,14 +55,14 @@ public class JiFenActivity extends Activity implements OnClickListener{
 //		PushAgent.getInstance(this).onAppStart();
 		intiUI();
 		intijifen();//积分
-		intidata();
+//		intidata();
 	}
 
 	private void intidata() {
 		pageSize +=10 ;
 		Map<String, String> params =new HashMap<String, String>();
 		params.put("type", 0+"");
-		params.put("classifyID",0+"" );
+		params.put("classifyID",0+"");
 		params.put("pageNum",  pageNum+"");
 		params.put("pageSize",pageSize+"" );
 		
@@ -106,44 +106,44 @@ public class JiFenActivity extends Activity implements OnClickListener{
 		findViewById(R.id.tv_jifen_back).setOnClickListener(this);;
 		btn_jifenduihuan = (Button) findViewById(R.id.btn_jifenduihuan);
 		btn_jifenduihuan.setOnClickListener(this);
-		jifengv = (GridView) findViewById(R.id.jifen_gridView_detail);
-		
-		jifengv.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent=new Intent(JiFenActivity.this, GoodsDetailActivity.class);
-				 String goodsid = tuijianlist.get(position).getCMGOODSID();
-				 intent.putExtra("goodsid", goodsid) ;      			
-				startActivity(intent);
-			}
-		});
-		
-		
-		
-		jifenadapter = new jifenadapter();
-		
-		
-		
-		tuijiangv = (PullToRefreshScrollView) findViewById(R.id.tuijian_gridview_gridview);				
-		//上拉下拉刷新
-		tuijiangv.setOnRefreshListener(new OnRefreshListener2<ScrollView>() {
-
-			@Override
-			public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-				// TODO Auto-generated method stub
-				intidata();
-				tuijiangv.onRefreshComplete();
-			}
-
-			@Override
-			public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-				// TODO Auto-generated method stub
-				intidata();
-				tuijiangv.onRefreshComplete();
-			}
-
-		});
+//		jifengv = (GridView) findViewById(R.id.jifen_gridView_detail);
+//
+//		jifengv.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				Intent intent=new Intent(JiFenActivity.this, GoodsDetailActivity.class);
+//				 String goodsid = tuijianlist.get(position).getCMGOODSID();
+//				 intent.putExtra("goodsid", goodsid) ;
+//				startActivity(intent);
+//			}
+//		});
+//
+//
+//
+//		jifenadapter = new jifenadapter();
+//
+//
+//
+//		tuijiangv = (PullToRefreshScrollView) findViewById(R.id.tuijian_gridview_gridview);
+//		//上拉下拉刷新
+//		tuijiangv.setOnRefreshListener(new OnRefreshListener2<ScrollView>() {
+//
+//			@Override
+//			public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+//				// TODO Auto-generated method stub
+//				intidata();
+//				tuijiangv.onRefreshComplete();
+//			}
+//
+//			@Override
+//			public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+//				// TODO Auto-generated method stub
+//				intidata();
+//				tuijiangv.onRefreshComplete();
+//			}
+//
+//		});
 	}
 	
 

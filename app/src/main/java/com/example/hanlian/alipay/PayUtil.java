@@ -58,7 +58,7 @@ public class PayUtil {
 					callbackListener.updateOrderState(); // 调用回调接口修改订单状态
 				} else {
 					// 判断resultStatus 为非“9000”则代表可能支付失败
-					// “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+					// “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认 最终交易是否成功以服务端异步通知为准（小概率状态）
 					if (TextUtils.equals(resultStatus, "8000")) {
 						Toast.makeText(activity, "支付结果确认中", Toast.LENGTH_SHORT).show();
 					} else {
@@ -77,13 +77,14 @@ public class PayUtil {
 	public void pay(){
 		
 		HashMap<String, String> params = new HashMap<String , String >();		
-		params.put("orderid",orderid);
+		params.put("orderids",orderid);
 	//	params.put("money", price +"");
 		
 		HTTPUtils.get(activity, TCHConstants.url.AliPay, params, new ResponseListener() {
 			
 			@Override
 			public void onResponse(String arg0) {
+
 				try {
 					sign = new JSONObject(arg0.toString()).getString("Result");
 					// 仅需对sign 做URL编码
@@ -98,7 +99,6 @@ public class PayUtil {
 							
 //							Map<String, String> result = alipay.payV2(sign, false);
 							Log.e("支付接口", result.toString());
-							
 							Message msg = new Message();
 							msg.what = SDK_PAY_FLAG;
 							msg.obj = result;
@@ -114,12 +114,12 @@ public class PayUtil {
 					e.printStackTrace();
 				}
 			}
-			
+
 			@Override
 			public void onErrorResponse(VolleyError arg0) {
 			}
 		});
-		
+
 	}
 
 }

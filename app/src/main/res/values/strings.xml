@@ -11,8 +11,12 @@
     <string name="confimpassword">确认密码</string>
     <string name="order">提交</string>
     <string name="ordertotal">订单总额：¥</string>
-    <color name="indicator_selected">#ff0000</color>
-    <color name="indicator_normal">#cdcdcd</color>
+    <string name="confimshouhuo">确认收货</string>
+    <string name="querylogistics">查询物流</string>
+    <string name="ordernumber">订单编号：</string>
+    <string name="ordertime">下单时间：</string>
+    <string name="orderstate">状态</string>
+
 
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -33,5 +37,13 @@
     <string name="title_activity_goods_sort_detail">GoodsSortDetail</string>
     <string name="title_activity_confim">ConfimActivity</string>
     <string name="title_activity_find_pass_word">FindPassWordActivity</string>
+    <string name="btn_shouhou">申请售后</string>
+    <string name="tv_cont">400-600-9388</string>
+    <string name="tv_express_number">请填写快递单号</string>
+    <string name="tv_expressnumber">快递单号:</string>
+    <string name="tv_express_name">快递公司:</string>
+    <string name="ed_express_number">请选择快递单号</string>
+    <string name="ed_choose_express_compang">请选择物流公司</string>
+
 
 </resources>

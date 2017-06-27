@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import utils.LogUtil;
 import utils.TCHConstants;
 
 /**
@@ -124,6 +125,8 @@ public class FireElementFragment extends Fragment {
 				String goodsid = hotlist.get(position).getCMGOODSID();
 			    intent.putExtra("goodsid", goodsid) ;
 			    startActivity(intent);
+
+//				LogUtil.v(" ==",""+AA);
 			}
 		});
 		
@@ -166,7 +169,7 @@ public class FireElementFragment extends Fragment {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			 viewHolder holder = null;
+			viewHolder holder = null;
 			View layout = null;
 			
 			if(convertView==null)

@@ -13,17 +13,17 @@ import org.json.JSONObject;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.NullDecoder;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.hanlian.Fragment.BannerItemFragment;
-import com.example.hanlian.MyApplication.MyApplication;
 import com.example.hanlian.R;
+import com.example.widget.MyListview;
 import com.example.widget.MyView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
-import com.xinbo.widget.ListView4ScrollView;
 
 import DetailsModle.CMOTHER;
 import DetailsModle.Details;
@@ -43,6 +43,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -56,6 +57,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -86,7 +88,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 	protected boolean isDragging;
 	private int realnum = 5;
 	private Runnable action;
-	private ListView4ScrollView listview_detail;
 	private ImageAdapter adapter;
 	private PopupWindow popupWindow;
 	private View parent;
@@ -109,7 +110,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 	private OnchangeListen onchangelisten;
 	private ArrayList<CMOTHER> cmotherlist = new ArrayList<CMOTHER>();
 	private ArrayList<String[]> splitslist = new ArrayList<String[]>();
-	private ArrayList<DetailsModle.Result> resultList = new ArrayList<DetailsModle.Result>(); //详情容器
+	private ArrayList<DetailsModle.Result> resultList = new ArrayList<DetailsModle.Result>(); //详情
 	ArrayList<collectionModel.Result> queryresultlist = new ArrayList<collectionModel.Result>();
 	private SharedPreferences sp;
 	private int pageNum = 1;
@@ -125,6 +126,9 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 	private JSONObject object;
 //	存放详情图片地址
 	private   ArrayList<String> arrayList = new ArrayList<>();
+//	private MyListview listview_detail;
+	private RecyclerView recyclerView;
+	private Myrecviewadapter myrecviewadapter;
 
 
 	@Override
@@ -198,14 +202,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 						}
 
 					}
-
 					Log.e("arrayListsize==",arrayList.size()+"");
-
-
-
-
-
-
 					splitslist.clear();
 					splitslist.add(splits);
 					myview.setRealNum(splitslist.get(0).length);
@@ -233,8 +230,15 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 ////						detailsplitslist.add(split3);
 ////
 ////					}
-					listview_detail.setAdapter(adapter);
-					adapter.notifyDataSetChanged();
+
+					//// TODO: 2017/6/26
+//					listview_detail.setAdapter(adapter);
+//					setListViewHeightBasedOnChildren(listview_detail);
+//					adapter.notifyDataSetChanged();
+
+
+					myrecviewadapter.notifyDataSetChanged();
+
 					initPopWindow();
 				}
 			}
@@ -322,7 +326,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			@Override
 			public void onResponse(String arg0) {
 				Querycollection querycollection = GsonUtils.parseJSON(arg0, Querycollection.class);
-				Integer errorCode = querycollection.getErrorCode();
+//				Integer errorCode = querycollection.getErrorCode();
 				List<collectionModel.Result> queryresult = querycollection.getResult();
 				if(queryresult!=null &&queryresult.size() !=0)
 				{
@@ -380,8 +384,20 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 		TextView tv_addCar = (TextView) findViewById(R.id.tv_addCar);
 		tv_addCar.setOnClickListener(this);
 		// 图片信息的listview
-		listview_detail = (ListView4ScrollView) findViewById(R.id.listview_detail);
+//		listview_detail = (MyListview) findViewById(R.id.listview_detail);
+       //todo recviewadr
+
+		recyclerView = (RecyclerView)findViewById(R.id.recycleview);
+		recyclerView.setLayoutManager(new LinearLayoutManager(GoodsDetailActivity.this,LinearLayoutManager.VERTICAL,false));
+		((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
+		myrecviewadapter = new Myrecviewadapter();
+		recyclerView.setAdapter(myrecviewadapter);
+
+
+
 		adapter = new ImageAdapter();
+
 
 		// 初始化scrollview
 		ScrollView scrollview = (ScrollView) findViewById(R.id.scrollview);
@@ -431,6 +447,71 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 		});
 		autoScroll();
 	}
+
+
+
+
+ class Myrecviewadapter  extends RecyclerView.Adapter<Myrecviewholder>
+ {
+
+
+	 @Override
+	 public Myrecviewholder onCreateViewHolder(ViewGroup parent, int viewType) {
+		 View inflate = getLayoutInflater().inflate(R.layout.layout_item_detail, null);
+		 Myrecviewholder holder = new Myrecviewholder(inflate);
+
+		 return holder;
+	 }
+
+	 @Override
+	 public void onBindViewHolder(Myrecviewholder holder, int position) {
+		 //更新数据
+		 String s = arrayList.get(position);
+		 holder.setimg(s);
+
+	 }
+
+	 @Override
+	 public int getItemCount() {
+		 return arrayList.size();
+	 }
+ }
+
+
+class Myrecviewholder extends  RecyclerView.ViewHolder
+{
+
+
+	private final ImageView img;
+
+	public Myrecviewholder(View itemView) {
+		super(itemView);
+
+
+		  img = (ImageView) itemView.findViewById(R.id.image_goods);
+
+	}
+
+	public void  setimg (String s)
+	{
+		Glide.with(GoodsDetailActivity.this).load(s).into(img);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// 轮播图适配器
 	class BannerAdapter extends FragmentPagerAdapter {
 
@@ -496,17 +577,24 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 				hold = (ViewHolder) layout.getTag();
 			}
 
-			if (arrayList.size() != 0) {
-//				ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + splits[position], hold.image_goods, MyApplication.options);
-				//ImageLoader.getInstance().displayImage(TCHConstants.url.detailimgurl +split3[position] , hold.image_goods, MyApplication.options);
+            hold.image_goods.setTag(arrayList.get(position));
+            hold.image_goods.setImageResource(R.drawable.err);
+
+//            // 通过 tag 来防止图片错位
+//            if (hold.image_goods.getTag() != null && hold.image_goods.getTag().equals(arrayList.get(position))) {
+//                hold.image_goods.setImageBitmap(result);
+//            }
+            if (arrayList.size() != 0) {
 				if(!TextUtils.isEmpty(arrayList.get(position)))
 				{
 //					ImageLoader.getInstance().displayImage(arrayList.get(position), hold.image_goods, MyApplication.options);
+                    // 通过 tag 来防止图片错位
+                    if (hold.image_goods.getTag() != null && hold.image_goods.getTag().equals(arrayList.get(position))) {
+                        Glide.with(GoodsDetailActivity.this).load(arrayList.get(position)).dontAnimate().placeholder(R.drawable.ic_empty);
+                    }
 
 					Glide.with(GoodsDetailActivity.this).load(arrayList.get(position)).dontAnimate().placeholder(R.drawable.ic_empty);
 				}
-
-
 
 				final ViewHolder finalHold = hold;
 				Glide.with(GoodsDetailActivity.this).load(arrayList.get(position)).asBitmap().into(new SimpleTarget<Bitmap>() {
@@ -533,9 +621,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			return  arrayList.size();
 		}
 
-
-
-
 		@Override
 		public Object getItem(int position) {
 			return null;
@@ -551,6 +636,37 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 	class ViewHolder {
 		ImageView image_goods;
 	}
+
+
+
+	/**
+	 * scrollview嵌套listview显示不全 解决
+	 *
+	 * @param listview_detail
+	 */
+	public static void setListViewHeightBasedOnChildren(MyListview listview_detail) {
+		ListAdapter listAdapter = listview_detail.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listview_detail);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listview_detail.getLayoutParams();
+		params.height = totalHeight
+				+ (listview_detail.getDividerHeight() * (listAdapter.getCount() - 1));
+		listview_detail.setLayoutParams(params);
+	}
+
+
+
+
+
 
 	private int totalCount = 0;//购买的总量
 	private TextView tv_sure, tv_totalprice, tv_goods_price1;
@@ -687,7 +803,9 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 				try {
 					object.put("GOODSDETAILSID", cmidlist.get(number));
 					object.put("SPEC_NUMBER", str);
+					object.put("COLOR",cmcolor );
 					array.put(number, object);
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -743,7 +861,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			while (it.hasNext()) {
 				String size;
 				int count;
-
 				Entry<Integer, int[]> entry = it.next();
 				key = entry.getKey();
 				int[] value = entry.getValue();
@@ -767,21 +884,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 			}
 			// TODO 得到拼接好的json
 			final JSONObject object4 = getJson();
-
-//			Map<String, String> params = new HashMap<String, String>();
-//			params.put("account", "111111");
-//			params.put("password", "222222");
-
 			submitOrder(object4,TCHConstants.url.token);
-
-
-
-//			Log.e("resultList**", resultList.get(0).toString());
-//			Intent intent = new Intent(GoodsDetailActivity.this, FirmorderActivity.class);
-//			intent.setAction("action");
-//			intent.putExtra("order", object4.toString());
-//			intent.putExtra("resultList",resultList);
-//			startActivity(intent);
 
 		} else {
 			Toast.makeText(GoodsDetailActivity.this, "请选择颜色和尺寸", Toast.LENGTH_SHORT).show();
@@ -823,14 +926,19 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 		try {
 			object3.put("GOODSLIST", array2);
 
-			array3.put(0, object3);
+			array3.put(0, object3);//0 JSONArray的第一个元素
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 		final JSONObject object4 = new JSONObject();
+
+        // todo
+		JSONArray array4 = new JSONArray();
+		JSONArray array5=new JSONArray() ;
+
 		try {
-			object4.put("INTEGRAL", 0);
+			object4.put("INTEGRAL", array4);
 			object4.put("ORDERS", array3);
 			object4.put("BALANCE", "0");
 		} catch (JSONException e) {
@@ -856,7 +964,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 				params, new ResponseListener() {
 					@Override
 					public void onResponse(String arg0) {
-						Log.e("======1====", arg0);
+						Log.e("======submitOrder====", arg0);
 						try {
 							JSONObject object = new JSONObject(arg0);
 							int errocode = object.getInt("ErrorCode");
@@ -876,7 +984,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 								Log.e("orderid=",orderid);
 								Log.e("money=",money);
 								//TODO 提交成功跳转到确认订单页
-								Intent intent = new Intent(GoodsDetailActivity.this, FirmorderActivity.class);
+								Intent intent = new Intent(GoodsDetailActivity.this, DetailFirmorderActivity.class);
 								intent.setAction("action");
 								intent.putExtra("order", object4.toString());
 								intent.putExtra("resultList",resultList);
@@ -884,6 +992,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 
 							} else {
 								Log.e("ErrorCode = ",""+ errocode);
+								Toast.makeText(GoodsDetailActivity.this ,"商品信息错误" ,Toast.LENGTH_SHORT).show();
 
 							}
 
@@ -899,6 +1008,7 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 					}
 				});
 	}
+
 
 	// 颜色适配器
 	class ColorAdapter extends BaseAdapter {
@@ -1316,6 +1426,8 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			//startsWith是String类中的一个方法，用来检测某字符串是否以另一个字符串开始，返回值为boolean类型
 			if (s.toString().trim().startsWith("0") && s.toString().trim().length() == 1) {
 				editText.setText("1");
 				editText.setSelection(1);
@@ -1445,7 +1557,6 @@ public class GoodsDetailActivity extends FragmentActivity implements OnClickList
 						new ResponseListener() {
 							@Override
 							public void onResponse(String arg0) {
-
 								Joincollection joincollection = GsonUtils.parseJSON(arg0, Joincollection.class);
 								// 收藏token作为参数传到查询收藏界面
 								Integer errorCode = joincollection.getErrorCode();

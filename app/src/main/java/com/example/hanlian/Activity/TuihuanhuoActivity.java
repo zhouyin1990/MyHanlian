@@ -1,7 +1,9 @@
 package com.example.hanlian.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -13,37 +15,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.example.hanlian.DateModel.KeShouHouBean;
 import com.example.hanlian.R;
-import com.example.hanlian.TestToken.TestToken;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.xinbo.utils.GsonUtils;
 import com.xinbo.utils.HTTPUtils;
 import com.xinbo.utils.ResponseListener;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import okhttp3.Call;
 import shouhoushenqingModel.Result;
-import shouhoushenqingModel.Shouhoushenqing;
 import shouhoushenqingModel.TBORDERDETAIL;
+import utils.JsonHelper;
+import utils.LogUtil;
 import utils.TCHConstants;
 
 public class TuihuanhuoActivity extends Activity implements OnClickListener {
 
     private ListView mlistview_jindu;
     private ListView mlistview_shouhou;
-    private int type;
+    private int type=0;
     private int pageNum = 1;
     private int pageSize = 0;
     private DisplayImageOptions options;
     private Button sh, jd;
 
-    private ArrayList<Result> shouhoulist = new ArrayList<Result>();
-    private ArrayList<TBORDERDETAIL> tb_list = new ArrayList<TBORDERDETAIL>();
+    private ArrayList<KeShouHouBean.ResultBean> shouhoulist = new ArrayList<KeShouHouBean.ResultBean>();
+    private ArrayList<KeShouHouBean.ResultBean.TBORDERDETAILSBean> tb_list = new ArrayList<KeShouHouBean.ResultBean.TBORDERDETAILSBean>();
     private ImageView imgtuhuanhuo_back;
 
 
@@ -68,19 +75,23 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
 
         HTTPUtils.get(TuihuanhuoActivity.this, TCHConstants.url.MYshouhou, paramsshouhou, new ResponseListener() {
 
-            private Integer errorCode2;
 
             @Override
             public void onResponse(String arg0) {
                 // TODO Auto-generated method stub
-                Shouhoushenqing shouhoujson = GsonUtils.parseJSON(arg0, Shouhoushenqing.class);
-                errorCode2 = shouhoujson.getErrorCode();
-                String token = shouhoujson.getToken();
-                TCHConstants.url.token=token;
-                Toast.makeText(TuihuanhuoActivity.this,
-                        "token == " + token, Toast.LENGTH_SHORT).show();
-                if (errorCode2 == 0) {
-                    List<Result> result = shouhoujson.getResult();
+
+                LogUtil.e("可售后商品json ==",""+arg0);
+
+                KeShouHouBean keShouHouBean = JsonHelper.fromJson(arg0, KeShouHouBean.class);
+                int errorCode = keShouHouBean.getErrorCode();
+                String token = keShouHouBean.getToken();
+                TCHConstants.url.token = token;
+                Log.e("shouhoutoken==", ""+token);
+
+                Log.e("errorCode", ""+errorCode);
+
+                if (errorCode == 0) {
+                    List<KeShouHouBean.ResultBean> result = keShouHouBean.getResult();
                     if (result != null && result.size() != 0) {
                         shouhoulist.clear();
                         shouhoulist.addAll(result);
@@ -90,7 +101,7 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
                     }
                 } else {
                     Toast.makeText(TuihuanhuoActivity.this,
-                            "ErrorCode = " + errorCode2, Toast.LENGTH_SHORT).show();
+                            "MYshouhouErrorCode = " + errorCode, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -103,7 +114,6 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
 
     private void intiUIL() {
         // TODO Auto-generated method stub
-
         options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.err)
                 // 设置图片在下载期间显示的默认图片
                 .showImageForEmptyUri(R.drawable.err)
@@ -126,7 +136,17 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
         jd = (Button) findViewById(R.id.button2);
         jd.setOnClickListener(this);
         sh.setOnClickListener(this);
-        TextView mTextView = (TextView) findViewById(R.id.textView1);
+        TextView mTextView = (TextView) findViewById(R.id.tv_title);
+
+        if(type==0 || type==1)
+        {
+           mTextView.setText("售后申请");
+
+        }else if (type==2)
+        {
+            mTextView.setText("进度查询");
+        }
+
         mlistview_jindu = (ListView) findViewById(R.id.listview_jindu);
         mlistview_shouhou = (ListView) findViewById(R.id.listview_shouhou);
         imgtuhuanhuo_back = (ImageView) findViewById(R.id.imgtuhuanhuo_back);
@@ -140,53 +160,79 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
         ViewHolder holder;
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
 
             if (convertView == null) {
                 holder = new ViewHolder();
-                layout = getLayoutInflater().inflate(R.layout.shouhou_listview_item, null);
-                holder.img_shouhou = (ImageView) layout.findViewById(R.id.img_shouhou);
-                holder.tv_dingdanbianhao = (TextView) layout.findViewById(R.id.tv_dingdanbianhao);
-                holder.tv_order_time = (TextView) layout.findViewById(R.id.tv_order_time);
-                holder.tv_state = (TextView) layout.findViewById(R.id.tv_state);
+                layout = getLayoutInflater().inflate(R.layout.shouhoushengqing_item, null);
+                holder.img_recouce = (ImageView) layout.findViewById(R.id.img_recouce);
+                holder.tv_shouhounumber = (TextView) layout.findViewById(R.id.tv_shouhounumber);
+                holder.tv_shouhoustate = (TextView) layout.findViewById(R.id.tv_shouhoustate);
                 holder.tv_title = (TextView) layout.findViewById(R.id.tv_title);
-                holder.tv_salenumber = (TextView) layout.findViewById(R.id.tv_salenumber);
-                holder.btn_sqshouhou = (Button) layout.findViewById(R.id.btn_sqshouhou);
+                holder.tv_shouhoutime = (TextView) layout.findViewById(R.id.tv_shouhoutime);
+                holder.tv_number_shouhou = (TextView) layout.findViewById(R.id.tv_number_shouhou);
+                holder.btn_shouhoushengqing = (Button) layout.findViewById(R.id.btn_shouhoushengqing);
+
                 layout.setTag(holder);
             } else {
                 layout = convertView;
                 holder = (ViewHolder) layout.getTag();
             }
-            String cmcreatetime = shouhoulist.get(position).getCMCREATETIME();
-            holder.tv_order_time.setText("下单时间：" + cmcreatetime);
-            String cmorderid = shouhoulist.get(position).getCMORDERID();
-            holder.tv_dingdanbianhao.setText("订单编号：" + cmorderid);
-            List<TBORDERDETAIL> tborderdetails = shouhoulist.get(position).getTBORDERDETAILS();
+//          String cmcreatetime = shouhoulist.get(position).getCMCREATETIME();
+
+            String cm_createtime = shouhoulist.get(position).getCM_CREATETIME();
+
+
+            holder.tv_shouhoutime.setText(cm_createtime);
+
+//          String cmorderid = shouhoulist.get(position).getCMORDERID();
+//          holder.tv_dingdanbianhao.setText("订单编号：" + cmorderid);
+
+
+            List<KeShouHouBean.ResultBean.TBORDERDETAILSBean> tb_orderdetails = shouhoulist.get(position).getTB_ORDERDETAILS();
+
             tb_list.clear();
-            tb_list.addAll(tborderdetails);
-            Integer cmnumber = tb_list.get(0).getCMNUMBER();
-            holder.tv_salenumber.setText("销量x" + cmnumber);
-            String cmtitle = tb_list.get(0).getCMTITLE();
+            tb_list.addAll(tb_orderdetails);
+
+            Log.e("tb_orderdetails==", ""+tb_orderdetails.size());
+            Log.e("tb_list", ""+tb_list.size());
+
+            Integer cmnumber = tb_list.get(0).getCM_NUMBER();
+            holder.tv_number_shouhou.setText("销量x" + cmnumber);
+            String cmtitle = tb_list.get(0).getCM_TITLE();
             holder.tv_title.setText(cmtitle);
-            Integer cmservicestate = tb_list.get(0).getCMSERVICESTATE();
-            Integer cmorderstate = shouhoulist.get(position).getCMORDERSTATE();
+            // 服务状态
+//           Integer cmservicestate = tb_list.get(0).getCMSERVICESTATE();
+            Integer cmservicestate = tb_list.get(0).getCM_SERVICE_STATE();
+
+
+            //订单状态
+            Integer cmorderstate = shouhoulist.get(position).getCM_ORDER_STATE();
 
             if (cmorderstate == 0) {
-                holder.tv_state.setText("正常");
+                holder.tv_shouhoustate.setText("正常");
             } else if (cmorderstate == 1) {
-                holder.tv_state.setText("换货");
+                holder.tv_shouhoustate.setText("换货");
             } else if (cmorderstate == 2) {
-                holder.tv_state.setText("退货");
+                holder.tv_shouhoustate.setText("退货");
             } else if (cmorderstate == 3) {
-                holder.tv_state.setText("返修");
+                holder.tv_shouhoustate.setText("返修");
             } else if (cmorderstate == 4) {
-                holder.tv_state.setText("完成");
+                holder.tv_shouhoustate.setText("完成");
             }
-            String cmmainfigurepath = tb_list.get(0).getCMMAINFIGUREPATH();
+            String cmmainfigurepath = tb_list.get(0).getCM_MAINFIGUREPATH();
             if (cmmainfigurepath != null) {
-                ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + cmmainfigurepath, holder.img_shouhou, options);
+                ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + cmmainfigurepath, holder.img_recouce, options);
             }
+
+            holder.btn_shouhoushengqing.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //申请退货
+                    customer(position);
+                }
+            });
 
             return layout;
         }
@@ -207,21 +253,23 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
         @Override
         public long getItemId(int position) {
             // TODO Auto-generated method stub
+
+
             return 0;
         }
 
     }
 
     class ViewHolder {
-        ImageView img_shouhou;
-        TextView tv_dingdanbianhao;
-        TextView tv_order_time;
-        TextView tv_state;
+        ImageView img_recouce;
+        TextView tv_shouhounumber; //编号
+        TextView tv_shouhoustate;
         TextView tv_title;
-        TextView tv_salenumber;
-        Button btn_sqshouhou;
-
+        TextView tv_shouhoutime;
+        TextView tv_number_shouhou;// 数量
+        Button btn_shouhoushengqing;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -232,22 +280,25 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
                 finish();
                 break;
             case R.id.button1:
+
+                type = 1 ;
+
                 sh.setTextColor(getResources().getColor(R.color.white));
                 sh.setBackgroundColor(getResources().getColor(R.color.red));
                 jd.setTextColor(getResources().getColor(R.color.red));
                 jd.setBackgroundColor(getResources().getColor(R.color.white));
                 mlistview_shouhou.setVisibility(View.VISIBLE);
-                mlistview_jindu.setVisibility(View.GONE);
+                mlistview_jindu.setVisibility(View.INVISIBLE);
                 break;
             case R.id.button2:
+                type =2 ;
                 sh.setTextColor(getResources().getColor(R.color.red));
                 sh.setBackgroundColor(getResources().getColor(R.color.white));
                 jd.setTextColor(getResources().getColor(R.color.white));
                 jd.setBackgroundColor(getResources().getColor(R.color.red));
-                mlistview_shouhou.setVisibility(View.GONE);
+                mlistview_shouhou.setVisibility(View.INVISIBLE);
                 mlistview_jindu.setVisibility(View.VISIBLE);
                 break;
-
             default:
                 break;
         }
@@ -255,4 +306,91 @@ public class TuihuanhuoActivity extends Activity implements OnClickListener {
 
     }
 
+    //暂时没界面 申请 退货
+
+    private void customer(int postion) {
+        for (int i = 0; i < tb_list.size(); i++) {
+            String cm_orderdetailsid = tb_list.get(postion).getCM_ORDERDETAILSID();
+            TCHConstants.url.Orderdetailsids = cm_orderdetailsid;
+            Log.e("cm_orderdetailsid==", TCHConstants.url.Orderdetailsids);
+
+        }
+
+        HashMap<String, String> parms = new HashMap<>();
+        parms.put("orderdetailsid",TCHConstants.url.Orderdetailsids);
+        parms.put("type", ""+1);
+        parms.put("token", TCHConstants.url.token);
+        parms.put("reason", "退货");
+
+
+
+        OkHttpUtils.post().params(parms).url(TCHConstants.url.ApplyAfterService).build().execute(new StringCallback() {
+              @Override
+              public void onError(Call call, Exception e, int id) {
+
+              }
+
+              @Override
+              public void onResponse(String response, int id) {
+                 Log.e("response==", response);
+                  try {
+                      JSONObject jsonObject = new JSONObject(response);
+                      String token = jsonObject.getString("Token");
+                      //返回toekn
+                      int errorCode = jsonObject.getInt("ErrorCode");
+                      if (errorCode==0) {
+                          TCHConstants.url.token=token ;
+                          Toast.makeText(TuihuanhuoActivity.this ,"申请售后成功",Toast.LENGTH_SHORT).show();
+//                          intidata();
+                      } else if (errorCode==26){
+
+                          Toast.makeText(TuihuanhuoActivity.this ,"已申请售后",Toast.LENGTH_SHORT).show();
+                      }
+
+                  } catch (JSONException e) {
+                      e.printStackTrace();
+                  }
+              }
+          });
+
+
+    }
+
+    //todo 返回token 赋值
+    private void cancelorder() {
+        HashMap<String, String> parms = new HashMap<>();
+        for (int i = 0; i < shouhoulist.size(); i++) {
+
+            String orderid = shouhoulist.get(i).getCM_ORDERID();
+            parms.put("orderid", orderid);
+            parms.put("token", TCHConstants.url.token);
+        }
+
+//
+        OkHttpUtils.get().params(parms).url(TCHConstants.url.DelMyOrder).build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e("Exception e ==", "" + e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.e("取消订单json == ", "" + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String token = jsonObject.getString("Token");
+                    TCHConstants.url.token = token;
+                    int errorCode = jsonObject.getInt("ErrorCode");
+                    if (errorCode == 0) {
+                        Toast.makeText(TuihuanhuoActivity.this, "已删除订单", Toast.LENGTH_SHORT).show();
+                        intidata();//删除后重新查询
+                    } else {
+                        Log.e("取消订单errorCode==", "" + errorCode);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

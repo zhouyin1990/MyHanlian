@@ -19,7 +19,7 @@ public class CardGoodsInfo extends Model implements Serializable, Cloneable{
 	@Column
 	String ImgURL;
 	@Column
-	int totalprice; //单价
+	int totalprice;
 	@Column
 	String goodsid;
 	@Column

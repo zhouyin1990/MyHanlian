@@ -87,10 +87,8 @@ public class NewFragment extends Fragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 				Intent intent=new Intent(getActivity(), GoodsDetailActivity.class);
-//				String goodsid = homegoodlist.get(position).getCMGOODSID();								
-//			    intent.putExtra("goodsid", goodsid) ;
-				
 				String goodsid = newlist.get(position).getCMGOODSID();							
 			    intent.putExtra("goodsid", goodsid) ;
 			    startActivity(intent);

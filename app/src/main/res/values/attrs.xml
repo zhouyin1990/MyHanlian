@@ -8,7 +8,7 @@
         <attr name="content_ringwidth" format="dimension|reference" />
         <attr name="content_distance" format="float|reference" />     
     </declare-styleable>
-    
+           <!--attrs  自定义控件名称-->
       <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
         <attr name="border_color" format="color" />

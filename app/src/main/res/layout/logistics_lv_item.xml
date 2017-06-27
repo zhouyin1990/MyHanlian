@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="100dp"
+     android:layout_alignParentTop="true"
+     android:layout_alignParentLeft="true"
+     android:layout_alignParentStart="true">
+    <TextView
+           android:layout_marginTop="10dp"
+           android:id="@+id/tv_logistics_content"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
+           android:text="[杭州城南区] [杭州市] [杭州城南区]的方海文已收件 电话:15381009209"
+           />
+
+        <TextView
+            android:id="@+id/tv_logistics_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="2017-04-27 20:23:48"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/tv_logistics_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+           <TextView
+               android:id="@+id/tv_view"
+               android:layout_width="2dp"
+               android:layout_height="92dp"
+               android:layout_marginLeft="10dp"
+               android:background="@color/gray"/>
+ </RelativeLayout>
+
+
+</RelativeLayout>

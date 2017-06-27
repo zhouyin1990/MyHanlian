@@ -1,11 +1,16 @@
 package com.example.hanlian.Activity;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -49,12 +54,18 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private CountDownButtonHelper helper;
 	private Button btn_getyzm;
 	private TextView  tv_wangjimima ;
+
+
+	SharedPreferences sp = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 //		PushAgent.getInstance(this).onAppStart();
+
+		sp = this.getSharedPreferences("登录", 1);
+
 		intiUi();		
 	}	
 	private void intiUi() {
@@ -72,8 +83,26 @@ public class LoginActivity extends Activity implements OnClickListener{
 		srphone.setOnClickListener(this);
 		btn_getyzm.setOnClickListener(this);//获取验证码
 		tv_wangjimima.setOnClickListener(this);
-		
+
+		mpassname.setText(sp.getString("username", ""));
+		srphone.setText(sp.getString("phone", ""));
+
+
 		findViewById(R.id.btn_login).setOnClickListener(this);//登录
+
+         findViewById(R.id.tv_call).setOnClickListener(v ->
+				 {
+
+					 Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:4006009388"));
+					 if (ActivityCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+						 return;
+					 }
+					 startActivity(intent);
+
+				 }
+		 );
+
+
 	}
 	@Override
 	public void onClick(View v) {
@@ -94,11 +123,11 @@ public class LoginActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.btn_login: //登录
 		     login();
-//			startActivity(new Intent(LoginActivity.this,MainActivity.class));
+//			startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //			finish();
+
 			break;
 		case R.id.ed_phNum: //手机验证是否符合规则
-			String strnumber = srphone.getText().toString();
 			break;
 		case R.id.tv_wangjimima :
 			 Intent intent10= new Intent(LoginActivity.this, FindPassWordActivity.class);
@@ -162,20 +191,16 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 
 	private void login() //登录
-	{				
+	{
+
+//		SharedPreferences sp = getSharedPreferences("登录", 1);
+
 		final String usrname = mpassname.getText().toString().trim();
-        if(usrname!=null)
-		{
-			mpassname.setText(usrname);   //show usename
-		}
+
 	    final String userpassword = mpassword.getText().toString().trim();
 		final String useryzm = mshuruyzm.getText().toString().trim();
 		final String phone = srphone.getText().toString().trim();
 
-		if (phone !=null)
-		{
-			srphone.setText(phone); // show phone
-		}
 
 
 		if(TextUtils.isEmpty(usrname)){
@@ -211,25 +236,21 @@ public class LoginActivity extends Activity implements OnClickListener{
 				{
 					String token = loginJSON.getToken();
                     TCHConstants.url.token=token;
-
+                    Log.e("logintoen==",token);
 					LoginModel.ResultBean result = loginJSON.getResult();
 					String cm_shopeaddress = result.getCM_SHOPEADDRESS();
+
 					String cm_name = result.getCM_NAME();
 					int cm_integral = result.getCM_INTEGRAL();
 					long cm_phone = result.getCM_PHONE();
-					SharedPreferences sp = getSharedPreferences("登录", 1);
+//					SharedPreferences sp = getSharedPreferences("登录", 1);
 					Editor editor = sp.edit();
 					editor.putString("success", "登录成功");
 					//保存用户名，
 					editor.putString("username", usrname);
 					editor.putString("phone", phone);
 
-
-
-
 					editor.putString("cm_shopeaddress",cm_shopeaddress);
-
-
 
                     editor.putString("cm_name",cm_name);
 					editor.putString("cm_phone",""+cm_phone);
@@ -240,9 +261,9 @@ public class LoginActivity extends Activity implements OnClickListener{
 
 					startActivity(new Intent(LoginActivity.this, MainActivity.class));
 					finish();
-				}else
+				}else if (errorCode ==6)
 				{
-					Toast.makeText(LoginActivity.this ,"errcode ="+errorCode ,
+					Toast.makeText(LoginActivity.this ,"账号或密码错误 请检查" ,
 							Toast.LENGTH_SHORT).show();
 				}
 			}

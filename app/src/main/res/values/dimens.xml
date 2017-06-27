@@ -8,4 +8,9 @@
     <dimen name="rl_height">30dp</dimen>
     <dimen name="yzm_size">13dp</dimen>
 
+    <!--屏幕距离-->
+    <dimen name="maginleftscree">15dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
+
+
 </resources>

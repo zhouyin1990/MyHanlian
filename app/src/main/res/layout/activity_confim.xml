@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentLeft="true"
+        android:background="#ffffff"
         android:layout_below="@+id/RelativeLayout1" >
 
         <TextView
@@ -84,6 +85,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/RelativeLayout2"
         android:layout_alignParentLeft="true"
+        android:layout_above="@+id/linearlayout1"
+
         android:layout_alignParentStart="true">
     </ListView>
 

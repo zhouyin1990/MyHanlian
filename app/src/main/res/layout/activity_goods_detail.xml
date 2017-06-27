@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="商品标题"
+                    android:text="休闲两件套"
                     android:textSize="14sp" />
 
                 <TextView
@@ -101,7 +101,7 @@
                     android:layout_below="@+id/tv_goods_title"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
-                    android:text="¥ 888.00"
+                    android:text="¥ 60.00"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -151,12 +151,21 @@
 
 <!--             </RelativeLayout> -->
 
-            <com.xinbo.widget.ListView4ScrollView
-                android:id="@+id/listview_detail"
+            <!--<com.example.widget.MyListview-->
+                <!--android:id="@+id/listview_detail"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginTop="1dp">-->
+            <!--</com.example.widget.MyListview>-->
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="1dp">
-            </com.xinbo.widget.ListView4ScrollView>
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+
+
         </LinearLayout>
     </ScrollView>
 

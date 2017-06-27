@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
+import utils.LogUtil;
 import utils.TCHConstants;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
@@ -57,10 +58,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 	public ViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
 		View view = LayoutInflater.from(arg0.getContext()).inflate(R.layout.item_sort, arg0, false);
         final ViewHolder holder = new ViewHolder(view);
+
         holder.goodsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
+                int position = holder.getAdapterPosition();//
                 GoodsInfo fruit = mGoodsInfo.get(position);
             }
         });
@@ -71,6 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 GoodsInfo goods = mGoodsInfo.get(position);             
                 Intent intent = new Intent(mContext, GoodsSortDetail.class);
                 intent.putExtra("sort", goods.name);
+                LogUtil.e(" ==",""+goods.name);
                 mContext.startActivity(intent);
             }
         });

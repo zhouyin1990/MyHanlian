@@ -143,7 +143,7 @@
             android:layout_toRightOf="@+id/textView1"
             android:drawableTop="@drawable/daifukuan"
             android:gravity="center"
-            android:text="代付款"          
+            android:text="待付款"
             android:textSize="10dp" />
 
         <TextView

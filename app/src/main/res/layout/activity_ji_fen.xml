@@ -123,17 +123,17 @@
         android:layout_toRightOf="@+id/textView1"
         android:src="@drawable/tuijian" />
 
-       <com.xinbo.widget.GridView4ScrollView
-                android:id="@+id/jifen_gridView_detail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/textView1"
-                android:horizontalSpacing="10dp"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="2"
-                android:scrollbars="none"
-                android:verticalSpacing="10dp" >
-            </com.xinbo.widget.GridView4ScrollView> 
+       <!--<com.xinbo.widget.GridView4ScrollView-->
+                <!--android:id="@+id/jifen_gridView_detail"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_below="@+id/textView1"-->
+                <!--android:horizontalSpacing="10dp"-->
+                <!--android:listSelector="@android:color/transparent"-->
+                <!--android:numColumns="2"-->
+                <!--android:scrollbars="none"-->
+                <!--android:verticalSpacing="10dp" >-->
+            <!--</com.xinbo.widget.GridView4ScrollView> -->
                                  
        </RelativeLayout>
        

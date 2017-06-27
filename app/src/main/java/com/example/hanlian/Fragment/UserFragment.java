@@ -132,68 +132,11 @@ public class UserFragment extends Fragment implements OnClickListener{
 					e.printStackTrace();
 				}
 
-//				String token= personinfo.getToken();
-//				Toast.makeText(getContext(), "token=="+token, Toast.LENGTH_SHORT).show();
-//				com.example.hanlian.DateModel.personinfo.ResultBean
-//						result1 = personinfo.getResult();
-//				int cm_integral = result1.getCM_INTEGRAL();
-//				String cm_shopeaddress = result1.getCM_SHOPEADDRESS();
-//				long cm_phone = result1.getCM_PHONE();
-//				String cm_name = result1.getCM_NAME();
-//				String cm_shopname = result1.getCM_SHOPNAME();
-//
-//				jifeninfo.setText("积分:"+cm_integral);
-//
-//				shopname.setText("店铺名:"+cm_shopname);
-//
-//				tv_usename.setText("用户名:"+cm_name);
-//
-//				tv_adress1.setText(cm_shopeaddress);
+
 			}
 		});
 
-//
-//					HTTPUtils.get(getContext(), TCHConstants.url.QueryMyInformationurl, parms ,new ResponseListener() {
-//						@Override
-//						public void onResponse(String arg0) {
-//							Log.e("arg0",arg0+"");
-//							personinfo personinfo = new Gson().fromJson(arg0, personinfo.class);
-//							String token= personinfo.getToken();
-//							TCHConstants.url.token=token;
-//							Toast.makeText(getContext(), "token=="+token, Toast.LENGTH_SHORT).show();
-//							com.example.hanlian.DateModel.personinfo.ResultBean
-//									result1 = personinfo.getResult();
-//
-//							int cm_integral = result1.getCM_INTEGRAL();
-//							String cm_shopeaddress = result1.getCM_SHOPEADDRESS();
-//							long cm_phone = result1.getCM_PHONE();
-//							String cm_name = result1.getCM_NAME();
-//							String cm_shopname = result1.getCM_SHOPNAME();
-//
-////							try {
-////								JSONObject jsonResult = new JSONObject(arg0.toString()).getJSONObject("Result");
-////								String cm_shopname1 = jsonResult.getString("CM_SHOPNAME");
-////								int cm_integral1 = jsonResult.getInt("CM_INTEGRAL");
-////								jsonResult.getString()
-////								tv_jifen.setText(""+cm_integral1);
-////
-////							} catch (JSONException e) {
-////								e.printStackTrace();
-////							}
-//							jifeninfo.setText("积分:"+cm_integral);
-//
-//							shopname.setText("店铺名:"+cm_shopname);
-//
-//							tv_usename.setText("用户名:"+cm_name);
-//
-//							tv_adress1.setText(cm_shopeaddress);
-//
-//						}
-//						@Override
-//						public void onErrorResponse(VolleyError arg0) {
-//
-//						}
-//					});
+
 	}
 
 	private void intiUI() {
@@ -250,7 +193,12 @@ public class UserFragment extends Fragment implements OnClickListener{
 				break;			
 			case R.id.tv_tuihuanhuo :  //退换货
 				Intent tuihuanhuointent=new Intent(getActivity(), TuihuanhuoActivity.class) ;
-				startActivity(tuihuanhuointent);				
+				startActivity(tuihuanhuointent);
+
+				startActivity(new Intent(getContext(),TuihuanhuoActivity.class));
+
+
+
 				break;
 			case  R.id.re_jifen:// 积分
 				Intent jifenintent=new Intent(getActivity(), JiFenActivity.class) ;				

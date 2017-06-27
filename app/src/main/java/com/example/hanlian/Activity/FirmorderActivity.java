@@ -51,17 +51,21 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 
 	private ArrayList<CardGoodsInfo> infolist = new ArrayList<CardGoodsInfo>();
 	private ListView confim_list;
+	private boolean isChange;
 	private boolean isShow;
-	private int index = -1;//详情显示的位置
+	private int index;//详情显示的位置
 	private MyAdapter myAdapter;
 	private TextView tv_count;
 	private TextView tv_totalprice;
 	private int totalNumber;//总数量
 	private int totalPrice;//总价格
 	private String name;//名称
-	private JSONObject productObject;
-	private ArrayList<DetailsModle.Result> resultList = new ArrayList<Result>();// 商品数据
-	private ArrayList<productSpec> specList = new ArrayList<productSpec>();// 商品规格
+	private JSONArray ordersArray;
+	private JSONArray submitOrder;
+	private ArrayList<ProductDetails> resultList = new ArrayList<>();// 商品数据
+
+	private ArrayList<productSpec> specList = new ArrayList<>();// 商品规格 ArrayList<productSpec>
+
 	private TextView tv_shouhuoname;
 	private TextView tv_phone;
 	private TextView tv_adress;
@@ -80,7 +84,6 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 		List<CardGoodsInfo> list = DButils.query();
 		infolist.clear();
 		infolist.addAll(list);
-//		myAdapter.notifyDataSetChanged();
 		SharedPreferences sp = getSharedPreferences("登录", 1);
 		String cm_shopeaddress = sp.getString("cm_shopeaddress","");
 		String cm_phone = sp.getString("cm_phone","");
@@ -93,38 +96,31 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 			Intent intent = getIntent();
 			String data = intent.getStringExtra("order");
 
-			if ("action".equals(intent.getAction())) {
-				resultList = (ArrayList<DetailsModle.Result>) intent.getSerializableExtra("resultList");
+			JSONObject productObject = new JSONObject(data);
+
+			Log.e("productObject==", productObject.toString());
+
+			ordersArray = productObject.getJSONArray("ORDERS");
+
+			totalNumber = 0;
+			totalPrice = 0;
+
+			for (int i = 0; i < ordersArray.length(); i++) {
+
+				JSONObject details = ordersArray.getJSONObject(i);
+
+				String title = details.getString("title");
+				String ImgURL = details.getString("ImgURL");
+				String shoppingName = details.getString("shoppingName");
+				int count = details.getInt("count");
+				int totalprice = details.getInt("totalprice");
+
+				resultList.add(new ProductDetails(title, ImgURL, shoppingName, count, totalprice));
+
+				totalNumber += count;
+				totalPrice += totalprice;
 			}
-			productObject = new JSONObject(data);
-			JSONArray oRDERS = productObject.getJSONArray("ORDERS");
-			JSONArray goodSLIST = oRDERS.getJSONObject(0).getJSONArray("GOODSLIST");
-			JSONArray goodsDETAILS = goodSLIST.getJSONObject(0).getJSONArray("GOODSDETAILS");
 
-//			Log.e("goodsDETAILS===", goodsDETAILS.toString());
-
-			for (int i = 0; i < goodsDETAILS.length(); i++) {
-				int number = 0 ;
-				String size = "";
-
-				String id = goodsDETAILS.getJSONObject(i).getString("GOODSDETAILSID");
-				String color = goodsDETAILS.getJSONObject(i).getString("COLOR");
-				String specNumber = goodsDETAILS.getJSONObject(i).getString("SPEC_NUMBER");
-				// 建议身高100CM_0|建议身高110CM_3|建议身高120CM_0|建议身高130CM_0|建议身高140CM_0|
-				Log.e("specNumber===", specNumber);
-
-				String[] split = specNumber.split("\\|");
-				for (int j = 0; j < split.length; j++) {
-					String[] split2 = split[j].split("_");
-					int parseInt = Integer.parseInt(split2[1]);
-					if(parseInt > 0){
-						totalNumber += parseInt;
-						number = parseInt;
-						size = split2[0];
-						specList.add(new productSpec(color, size, number));
-					}
-				}
-			}
 			myAdapter.notifyDataSetChanged();
 			tv_count.setText("共" + totalNumber + "件");
 			tv_totalprice.setText("合计：¥ " + totalPrice);
@@ -132,6 +128,40 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void getData(int index){
+
+		try {
+
+			JSONObject details = ordersArray.getJSONObject(index);
+
+			JSONArray GOODSLIST = details.getJSONArray("GOODSLIST");
+
+			int number = 0 ;
+			String size = "";
+			specList.clear();
+
+			for (int j = 0; j < GOODSLIST.length(); j++) {
+				String color = GOODSLIST.getJSONObject(j).getString("COLOR");
+				String id = GOODSLIST.getJSONObject(j).getString("GOODSDETAILSID");
+				String specNumber = GOODSLIST.getJSONObject(j).getString("SPEC_NUMBER");
+
+				String[] split = specNumber.split("\\|");
+				for (int k = 0; k < split.length; k++) {
+					String[] split2 = split[k].split("_");
+					int parseInt = Integer.parseInt(split2[1]);
+					if(parseInt > 0){
+						number = parseInt;
+						size = split2[0];
+						specList.add(new productSpec(color, size, number));
+					}
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void intiUI() {
@@ -151,8 +181,6 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 	}
 
 	class MyAdapter extends BaseAdapter{
-
-
 		@Override
 		public int getCount() {
 			return resultList.size();
@@ -189,46 +217,37 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 				hold = (ViewHold)view.getTag();
 			}
 
-			Result result = resultList.get(position);
+			ProductDetails productDetails = resultList.get(position);
 
-			Log.e("result===", result.toString());
+			hold.name.setText(productDetails.title);
+			hold.price.setText(productDetails.price+ "");
+			hold.number.setText(productDetails.number +"");
 
-			hold.name.setText(result.getCMTITLE());
-			hold.price.setText(result.getCMPRESENTPRICE()+ "");
-			hold.number.setText(totalNumber +"");
+			ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + productDetails.imageUrl, hold.goodsImage);
 
-			tv_totalprice.setText("合计：¥ " + result.getCMPRESENTPRICE() * totalNumber);
-
-			ImageLoader.getInstance().displayImage(TCHConstants.url.imgurl + result.getCMMAINFIGUREPATH(),
-					hold.goodsImage);
-
-//			String shoppingName = goodsInfo.getShoppingName();
-			String shoppingName = result.getCMSELLERNAME();
+			String shoppingName = productDetails.shoppingName;
 			hold.shoppingName.setText(shoppingName);
 			// 隐藏相同的商店名称
-//			if(position > 0){
-//				String lastName = infolist.get(position - 1).getShoppingName();
-//				if(lastName.equals(shoppingName)){
-//					hold.shoppingName.setVisibility(View.GONE);
-//					hold.shoppingName.setText(shoppingName);
-//				} else {
-//					hold.shoppingName.setVisibility(View.VISIBLE);
-//					hold.shoppingName.setText(shoppingName);
-//				}
-//			} else {
-//				hold.shoppingName.setVisibility(View.VISIBLE);
-//				hold.shoppingName.setText(shoppingName);
-//			}
+			if(position > 0){
+				String lastName = infolist.get(position - 1).getShoppingName();
+				if(lastName.equals(shoppingName)){
+					hold.shoppingName.setVisibility(View.GONE);
+					hold.shoppingName.setText(shoppingName);
+				} else {
+					hold.shoppingName.setVisibility(View.VISIBLE);
+					hold.shoppingName.setText(shoppingName);
+				}
+			} else {
+				hold.shoppingName.setVisibility(View.VISIBLE);
+				hold.shoppingName.setText(shoppingName);
+			}
 			if(isShow && index == position){
-				//hold.spec_listview.setVisibility(View.GONE);
-
 				hold.spec_listview.setVisibility(View.VISIBLE);//显示规格listview
 			} else {
 				hold.spec_listview.setVisibility(View.GONE);//
-
-			//hold.spec_listview.setVisibility(View.VISIBLE)
 			}
-			specAdapter specAdapter = new specAdapter();
+
+			specAdapter specAdapter = new specAdapter(index);
 			setListViewHeightBasedOnChildren(hold.spec_listview);
 			hold.spec_listview.setAdapter(specAdapter);
 
@@ -240,6 +259,8 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 					index = position;
 					isShow = !isShow;
 
+					getData(index);
+
 					myAdapter.notifyDataSetChanged();
 				}
 			});
@@ -249,6 +270,12 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 	}
 
 	class specAdapter extends BaseAdapter{
+
+		int index;
+
+		public  specAdapter(int index){
+			this.index = index;
+		}
 
 		@Override
 		public int getCount() {
@@ -281,6 +308,7 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 				view = convertView;
 				hold = (ViewHold2)view.getTag();
 			}
+
 			productSpec productSpec = specList.get(position);
 			hold.color.setText(productSpec.color + "");
 			hold.size.setText(productSpec.size + "");
@@ -331,7 +359,22 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 		TextView number;
 	}
 
+	class ProductDetails{
+		String title;
+		String imageUrl;
+		String shoppingName;
+		int price;
+		int number;
+		public ProductDetails(String title, String imageUrl, String shoppingName, int price, int number) {
+			super();
+			this.title = title;
+			this.imageUrl = imageUrl;
+			this.shoppingName = shoppingName;
+			this.price = price;
+			this.number = number;
+		}
 
+	}
 
 	class productSpec{
 		String color;
@@ -357,11 +400,13 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 				finish();
 				break;
 			case R.id.tv_jiesuan:
-				//todo  跳到支付页面
-				Intent intent=new Intent(FirmorderActivity.this ,PayActivity.class);
-				startActivity(intent);
 
-				//--------提交成功后-----------
+				JSONObject object = getJson();
+
+				Log.e("object4==",object.toString());
+
+				submitOrder(object);
+
 				break;
 
 			default:
@@ -370,49 +415,74 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 
 	}
 
+	//-----------------------拼接json------------------------
+	private JSONObject getJson() {
+
+		JSONObject object4 = new JSONObject();
+		JSONArray array3 = new JSONArray();
+		try {
+
+			for (int i = 0; i < ordersArray.length(); i++) {
+				JSONArray array = new JSONArray();
+
+				JSONObject details = ordersArray.getJSONObject(i);
+
+				String GOODSID = details.getString("GOODSID");
+				String CM_SELLERID = details.getString("CM_SELLERID");
+
+				JSONArray GOODSLIST = details.getJSONArray("GOODSLIST");
+
+				for (int j = 0; j < GOODSLIST.length(); j++) {
+					String color = GOODSLIST.getJSONObject(j).getString("COLOR");
+					String id = GOODSLIST.getJSONObject(j).getString("GOODSDETAILSID");
+					String specNumber = GOODSLIST.getJSONObject(j).getString("SPEC_NUMBER");
+
+					JSONObject object = new JSONObject();
+					object.put("GOODSDETAILSID", id);
+					object.put("SPEC_NUMBER", specNumber);
+					object.put("COLOR", color);
+					array.put(j, object);
+				}
+
+				JSONObject object2 = new JSONObject();
+				object2.put("CM_SELLERID", CM_SELLERID);
+				object2.put("GOODSID", GOODSID);
+				object2.put("GOODSDETAILS", array);
+				JSONArray array2 = new JSONArray();
 
 
-//		tv_jiesuan.setOnClickListener(new OnClickListener() {
+
+				array2.put(0, object2);
+
+				JSONObject object3 = new JSONObject();
+				object3.put("GOODSLIST", array2);
+
+
+				array3.put(i, object3);
+			}
+
+//			JSONArray array3 = new JSONArray();
+//			JSONObject object3 = new JSONObject();
+//			object3.put("GOODSLIST", array2);
 //
-//			@SuppressWarnings("unused")
-//			@Override
-//			public void onClick(View v) {
-//
-//				JSONArray array3 = new JSONArray();
-//				for (int i = 0; i < infolist.size(); i++) {
-//
-//					boolean ischeck = infolist.get(i).isIscheck();
-//					if (ischeck) {
-//						JSONObject object3 = new JSONObject();
-//						try {
-//							object3.put("GOODSLIST", infolist.get(i).getGOODSLIST());
-//
-//							array3.put(i, object3);
-//						} catch (JSONException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//				}
-//				if (array3 != null) {
-//					final JSONObject object4 = new JSONObject();
-//					try {
-//						object4.put("INTEGRAL", 0);
-//						object4.put("ORDERS", array3);
-//						submitOrder(object4, TCHConstants.url.token);
-//
-//					} catch (JSONException e) {
-//						e.printStackTrace();
-//					}
-//				}else{
-//					Toast.makeText(getContext(), "请选择商品", Toast.LENGTH_SHORT).show();
-//				}
-//			}
-//		});
+//			array3.put(0, object3);
+
+//			final JSONObject object4 = new JSONObject();
+
+
+			object4.put("INTEGRAL", 0);
+			object4.put("BALANCE", "0");
+			object4.put("ORDERS", array3);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return object4;
+	}
 
 	//-------------------------提交订单------------------------------
-	private void submitOrder(JSONObject object4, String token) {
+	private void submitOrder(JSONObject object4) {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("token", token);// TODO
+		params.put("token", TCHConstants.url.token);// TODO
 		params.put("goodsjson", object4.toString());// json
 
 		HTTPUtils.post(FirmorderActivity.this, TCHConstants.url.SUBMITORDER,
@@ -422,12 +492,25 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 					public void onResponse(String arg0) {
 						try {
 							JSONObject object = new JSONObject(arg0);
+
+							Log.e("提交订单==", object.toString());
+
 							int errocode = object.getInt("ErrorCode");
 							if (errocode == 0) {
-								Toast.makeText(FirmorderActivity.this, "提交订单成功",
-										Toast.LENGTH_SHORT).show();
 								String token1 = object.getString("Token");
-								TCHConstants.url.token=token1;
+								Log.e("token1==", token1);
+								TCHConstants.url.token = token1;
+								Log.e("TCHConstantoken==", TCHConstants.url.token);
+
+								String result = object.getString("Result");
+								// 截取订单和金额
+								String orderid =result.substring(result.indexOf(":")+1,result.indexOf(","));
+								String money = result.substring(result.lastIndexOf(":") + 1, result.length() - 1);
+                                Log.e("orderid== " , orderid);
+                                Log.e("money== " , money);
+								TCHConstants.url.ordermoney=money ;
+								Intent intent=new Intent(FirmorderActivity.this ,PayActivity.class);
+								startActivity(intent);
 
 								//TODO 提交成功后 删除该商品
 								for (int i = 0; i < infolist.size(); i++) {
@@ -439,9 +522,13 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 									}
 								}
 
+
 							} else {
 								Toast.makeText(FirmorderActivity.this,
 										"ErrorCode = " + errocode, Toast.LENGTH_SHORT).show();
+
+
+
 							}
 
 						} catch (JSONException e) {
@@ -453,20 +540,14 @@ public class FirmorderActivity extends Activity  implements OnClickListener{
 					@Override
 					public void onErrorResponse(VolleyError arg0) {
 
+						Log.e("arg0==", arg0.toString());
 
 
 					}
 				});
 
 
-
-
-
-
 	}
-
-
-
 
 
 
